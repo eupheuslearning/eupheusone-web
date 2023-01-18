@@ -106,9 +106,23 @@ const SearchDropDown = ({
           break;
         // manage School
         case "select_state":
-          return option.fk_state.state;
+          // console.log(option)
+          return option.fk_state.state          ;
+          break;
+        case "select_state_training":
+          // console.log(option)
+          return option.state;
+          break;
+          case "select_city_training":
+          // console.log(option)
+          return option.city;
+          break;
+        case "select_type":
+          // console.log(option)
+          return option.types;
           break;
         case "select_city":
+          // console.log(option);
           return option.city;
           break;
         // aof
@@ -164,6 +178,7 @@ const SearchDropDown = ({
   // };
 
   const handleDropDown = (value, type) => {
+    console.log(value, type)
     if (
       type === "order_type" ||
       type === "customer_name" ||
@@ -207,6 +222,16 @@ const SearchDropDown = ({
     }
 
     if (type === "select_state") {
+      handleOrderProcessingForm(value, type);
+    }
+    if (type === "select_state_training") {
+      console.log(value, type)
+      handleOrderProcessingForm(value, type);
+    }
+    if (type === "select_city_training") {
+      handleOrderProcessingForm(value, type);
+    }
+    if (type === "select_type") {
       handleOrderProcessingForm(value, type);
     }
     if (type === "publisher_name") {

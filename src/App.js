@@ -42,6 +42,16 @@ import Workshop from "./Pages/KYS/Workshop";
 import PageNotFound from "./Pages/PageNotFound";
 import Projection from "./Pages/Projection";
 import Addprojection from "./Pages/Addprojection";
+import Return from "./Pages/RETURN/Return";
+import ReturnRequest from "./Pages/RETURN/RequestReturn";
+import Invoice from "./Pages/Invoice";
+import InvoiceItem from "./Pages/InvoiceItem";
+import ManageSchoolTraining from "./Pages/ManageSchoolTraining";
+import AddSchoolTraining from "./Pages/AddSchoolTraining";
+import UpdateSchoolTraining from "./Pages/UpdateSchoolTraining";
+import InvoiceTraining from "./Pages/InvoiceTraining";
+import Inv from "./Pages/PDF/Inv";
+import ViewPdf from "./Pages/ViewPdf";
 
 function App() {
   const isAuth = useSelector((state) => state.auth.user);
@@ -52,155 +62,204 @@ function App() {
   const Admin = true;
 
   return (
-    <div className=" font-Roboto bg-[#111322]">
-      <BrowserRouter>
-        <Routes>
-          <Route
-            path="/login"
-            element={isAuth || MsAuth ? <Home /> : <Login />}
-          />
-          <Route path="/" element={isAuth || MsAuth ? <Home /> : <Login />} />
-          {/* <Route
+    <div>
+      <div>
+      <div className=" font-Roboto bg-[#111322]">
+        <BrowserRouter>
+          <Routes>
+            <Route
+              path="/login"
+              element={isAuth || MsAuth ? <Home /> : <Login />}
+            />
+            <Route path="/" element={isAuth || MsAuth ? <Home /> : <Login />} />
+            {/* <Route
             path="/mySchool"
             element={isAuth || MsAuth ? <MySchool /> : <Login />}
           /> */}
-          <Route
-            path="/tagging"
-            element={isAuth || MsAuth ? <Tagging /> : <Login />}
-          />
-          {/* <Route
+            <Route
+              path="/tagging"
+              element={isAuth || MsAuth ? <Tagging /> : <Login />}
+            />
+            {/* <Route
             path="/schoolDirectory"
             element={isAuth || MsAuth ? <SchoolDirectory /> : <Login />}
           /> */}
-          {/* <Route
+            {/* <Route
             path="/salesInvoices"
             element={isAuth || MsAuth ? <SalesInvoices /> : <Login />}
           /> */}
-          {/* <Route
+            {/* <Route
             path="/updateStocks"
             element={isAuth || MsAuth ? <UpdateStocks /> : <Login />}
           /> */}
-          {/* <Route
+            {/* <Route
             path="/opportunities"
             element={isAuth || MsAuth ? <Opportunities /> : <Login />}
           /> */}
-          <Route
-            path="/manageSchool"
-            element={isAuth || MsAuth ? <ManageSchool /> : <Login />}
-          />
-          <Route
-            path="/school/tagging"
-            element={isAuth || MsAuth ? <SchoolTagging /> : <Login />}
-          />
-          <Route
-            path="/school/schools"
-            element={isAuth || MsAuth ? <Schools /> : <Login />}
-          />
-          <Route
-            path="/tagschool"
-            element={isAuth || MsAuth ? <TagSchool /> : <Login />}
-          />
-          <Route
-            path="/addschool"
-            element={isAuth || MsAuth ? <AddSchool /> : <Login />}
-          />
-          <Route
-            path="/update_school/:id"
-            element={isAuth || MsAuth ? <UpdateSchool /> : <Login />}
-          />
+            <Route
+              path="/manageSchool"
+              element={isAuth || MsAuth ? <ManageSchool /> : <Login />}
+            />
+            <Route
+              path="/manageSchoolTraining"
+              element={isAuth || MsAuth ? <ManageSchoolTraining /> : <Login />}
+            />
+            <Route
+              path="/school/tagging"
+              element={isAuth || MsAuth ? <SchoolTagging /> : <Login />}
+            />
+            <Route
+              path="/school/schools"
+              element={isAuth || MsAuth ? <Schools /> : <Login />}
+            />
+            <Route
+              path="/tagschool"
+              element={isAuth || MsAuth ? <TagSchool /> : <Login />}
+            />
+            <Route
+              path="/addschool"
+              element={isAuth || MsAuth ? <AddSchool /> : <Login />}
+            />
+            <Route
+              path="/addschooltraining"
+              element={isAuth || MsAuth ? <AddSchoolTraining /> : <Login />}
+            />
+            <Route
+              path="/update_school/:id"
+              element={isAuth || MsAuth ? <UpdateSchool /> : <Login />}
+            />
 
-          <Route
-            path="/school/punch_in"
-            element={isAuth || MsAuth ? <SchoolPunchIn /> : <Login />}
-          />
-          <Route
-            path="/order_processing"
-            element={isAuth || MsAuth ? <OrderProcessing /> : <Login />}
-          />
-          <Route
-            path="/manage_order"
-            element={isAuth || MsAuth ? <ManageOrder /> : <Login />}
-          />
-          <Route
-            path="/projection"
-            element={isAuth || MsAuth ? <Projection /> : <Login />}
-          />
-          <Route
-            path="/addprojection"
-            element={isAuth || MsAuth ? <Addprojection /> : <Login />}
-          />
+            <Route
+              path="/update_school_training/:id"
+              element={isAuth || MsAuth ? <UpdateSchoolTraining /> : <Login />}
+            />
 
-          {/* <Route
+            <Route
+              path="/school/punch_in"
+              element={isAuth || MsAuth ? <SchoolPunchIn /> : <Login />}
+            />
+            <Route
+              path="/order_processing"
+              element={isAuth || MsAuth ? <OrderProcessing /> : <Login />}
+            />
+            <Route
+              path="/manage_order"
+              element={isAuth || MsAuth ? <ManageOrder /> : <Login />}
+            />
+            <Route
+              path="/projection"
+              element={isAuth || MsAuth ? <Projection /> : <Login />}
+            />
+            <Route
+              path="/addprojection"
+              element={isAuth || MsAuth ? <Addprojection /> : <Login />}
+            />
+
+            {/* <Route
             path="/pdf_view"
             element={isAuth || MsAuth ? <MyDocument /> : <Login />}
           /> */}
-          {/* <Route path="/aof" element={isAuth || MsAuth ? <AOF /> : <Login />} /> */}
-          {/* kys */}
-          <Route path="/kys" element={isAuth || MsAuth ? <KYS /> : <Login />} />
-          <Route
-            path="/kys/products/:id"
-            element={isAuth || MsAuth ? <Products /> : <Login />}
-          />
-          <Route
-            path="/kys/products/add_product/:id"
-            element={isAuth || MsAuth ? <AddProduct /> : <Login />}
-          />
-          <Route
-            path="/kys/strength/:id"
-            element={isAuth || MsAuth ? <Strength /> : <Login />}
-          />
-          <Route
-            path="/kys/strength/add_strength/:id"
-            element={isAuth || MsAuth ? <AddStrength /> : <Login />}
-          />
-          <Route
-            path="/kys/tution_fees/:id"
-            element={isAuth || MsAuth ? <UpdateFees /> : <Login />}
-          />
-          <Route
-            path="/kys/add_competition/:id"
-            element={isAuth || MsAuth ? <Competition /> : <Login />}
-          />
-          <Route
-            path="/kys/workshop/:id"
-            element={isAuth || MsAuth ? <Workshop /> : <Login />}
-          />
-          <Route
-            path="/kys/add_workshop/:id"
-            element={isAuth || MsAuth ? <AddWorkShop /> : <Login />}
-          />
+            {/* <Route path="/aof" element={isAuth || MsAuth ? <AOF /> : <Login />} /> */}
+            {/* kys */}
+            <Route
+              path="/kys"
+              element={isAuth || MsAuth ? <KYS /> : <Login />}
+            />
+            <Route
+              path="/kys/products/:id"
+              element={isAuth || MsAuth ? <Products /> : <Login />}
+            />
+            <Route
+              path="/kys/products/add_product/:id"
+              element={isAuth || MsAuth ? <AddProduct /> : <Login />}
+            />
+            <Route
+              path="/kys/strength/:id"
+              element={isAuth || MsAuth ? <Strength /> : <Login />}
+            />
+            <Route
+              path="/kys/strength/add_strength/:id"
+              element={isAuth || MsAuth ? <AddStrength /> : <Login />}
+            />
+            <Route
+              path="/kys/tution_fees/:id"
+              element={isAuth || MsAuth ? <UpdateFees /> : <Login />}
+            />
+            <Route
+              path="/kys/add_competition/:id"
+              element={isAuth || MsAuth ? <Competition /> : <Login />}
+            />
+            <Route
+              path="/kys/workshop/:id"
+              element={isAuth || MsAuth ? <Workshop /> : <Login />}
+            />
+            <Route
+              path="/kys/add_workshop/:id"
+              element={isAuth || MsAuth ? <AddWorkShop /> : <Login />}
+            />
 
-          <Route
-            path="/web-release-notes"
-            element={isAuth || MsAuth ? <ReleaseNote /> : <Login />}
-          />
-          {/* release notes */}
+            <Route
+              path="/web-release-notes"
+              element={isAuth || MsAuth ? <ReleaseNote /> : <Login />}
+            />
+            {/* release notes */}
 
-          <Route
-            path="/web-release-notes/v_1_0_0"
-            element={isAuth || MsAuth ? <V_1_0_0 /> : <Login />}
-          />
+            <Route
+              path="/web-release-notes/v_1_0_0"
+              element={isAuth || MsAuth ? <V_1_0_0 /> : <Login />}
+            />
 
-          {/* Admin */}
+            <Route
+              path="/return"
+              element={isAuth || MsAuth ? <Return /> : <Login />}
+            />
 
-          {/* <Route path="/admin/signIn" element={<AdminLogin />} /> */}
-          {/* <Route
+            <Route
+              path="/return_request"
+              element={isAuth || MsAuth ? <ReturnRequest /> : <Login />}
+            />
+
+            <Route
+              path="/invoice"
+              element={isAuth || MsAuth ? <Invoice /> : <Login />}
+            />
+
+            <Route
+              path="/invoice_item/:id"
+              // path="/invoice_item/"
+              element={isAuth || MsAuth ? <InvoiceItem /> : <Login />}
+            />
+
+            <Route
+              path="/invoice_training"
+              element={isAuth || MsAuth ? <InvoiceTraining /> : <Login />}
+            />
+
+            <Route
+              path="/view_pdf"
+              element={isAuth || MsAuth ? <ViewPdf /> : <Login />}
+            />
+
+            {/* Admin */}
+
+            {/* <Route path="/admin/signIn" element={<AdminLogin />} /> */}
+            {/* <Route
             path="/admin/home"
             element={Admin ? <AdminHome /> : <Login />}
           /> */}
-          {/* <Route
+            {/* <Route
             path="/admin/user/create/new"
             element={Admin ? <AdminSignUp /> : <Login />}
           /> */}
-          {/* <Route
+            {/* <Route
             path="/admin/all/user"
             element={Admin ? <AdminAllUser /> : <Login />}
           /> */}
-          {/* <Route
+            {/* <Route
             path="/admin/location/state"
             element={Admin ? <AdminState /> : <Login />}
           /> */}
-          {/* <Route
+            {/* <Route
             path="/admin/location/city"
             element={Admin ? <AdminCity /> : <Login />}
           />
@@ -208,9 +267,11 @@ function App() {
             path="/admin/location/country"
             element={Admin ? <AdminCountry /> : <Login />}
           /> */}
-          <Route path="*" element={isAuth ? <PageNotFound /> : <Login />} />
-        </Routes>
-      </BrowserRouter>
+            <Route path="*" element={isAuth ? <PageNotFound /> : <Login />} />
+          </Routes>
+        </BrowserRouter>
+      </div>
+      </div>
     </div>
   );
 }

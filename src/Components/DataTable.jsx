@@ -1,7 +1,11 @@
 import * as React from "react";
+import { useRef } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { Search } from "@mui/icons-material";
+import { CleaningServices, Search } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { Dialog } from "@mui/material";
+
+import DialogSlide from "../Components/Material/Dialog";
 
 // const columns = [
 //   { field: "id", headerName: "CRM ID", width: 100 },
@@ -25,6 +29,11 @@ export default function DataTable({
   const [q, setQ] = React.useState("");
   const [entries, setEntries] = React.useState(10);
   const navigate = useNavigate();
+
+  const openDialog = () => {
+    dialogRef.current.openDialog();
+  };
+
   const search = (rowss) => {
     return rowss.filter((row) => {
       switch (tableName) {
@@ -102,6 +111,50 @@ export default function DataTable({
             row?.Quantity?.toLowerCase().indexOf(q) > -1
           );
           break;
+        case "ReturnOrder":
+          return (
+            row?.Customer?.toLowerCase().indexOf(q) > -1 ||
+            // row.City.toLowerCase().indexOf(q) > -1 ||
+            row?.Quantity?.toLowerCase().indexOf(q) > -1 ||
+            row?.Status?.toLowerCase().indexOf(q) > -1
+          );
+          break;
+        case "Invoice":
+          // console.log(tableName, row)
+          return (
+            row.cardname.toLowerCase().indexOf(q) > -1
+            // row.City.toLowerCase().indexOf(q) > -1 ||
+            // row?.Quantity?.toLowerCase().indexOf(q) > -1 ||
+            // row?.Status?.toLowerCase().indexOf(q) > -1
+          );
+          break;
+        case "InvoiceItem":
+          // console.log(row);
+          return (
+            row?.ItemName?.toLowerCase().indexOf(q) > -1
+            // row.City.toLowerCase().indexOf(q) > -1 ||
+            // row?.Quantity?.toLowerCase().indexOf(q) > -1 ||
+            // row?.Status?.toLowerCase().indexOf(q) > -1
+          );
+          break;
+        case "ManageSchoolTraining":
+          console.log(row);
+          return (
+            row?.SchoolName?.toLowerCase().indexOf(q) > -1 ||
+            // row.City.toLowerCase().indexOf(q) > -1 ||
+            row?.State?.toLowerCase().indexOf(q) > -1 ||
+            row?.Address?.toLowerCase().indexOf(q) > -1
+          );
+          break;
+        case "InvoiceTraining":
+          // console.log(row)
+          return (
+            row?.CustomerName?.toLowerCase().indexOf(q) > -1
+            // row.City.toLowerCase().indexOf(q) > -1 ||
+            // row?.Quantity?.toLowerCase().indexOf(q) > -1 ||
+            // row?.Status?.toLowerCase().indexOf(q) > -1
+          );
+          break;
         default:
           break;
       }
@@ -109,6 +162,7 @@ export default function DataTable({
   };
 
   const handleClick = (value) => {
+    console.log(value)
     switch (tableName) {
       case "ManageSchool":
         navigate(`/update_school/${value[0]}`);
@@ -117,26 +171,44 @@ export default function DataTable({
         // console.log('hi')
         handleTaggingClick(value);
         break;
+      case "Invoice":
+        // console.log(value)
+        // handleTaggingClick(value);
+        // navigate(`/invoice_item/${value[0]}`);
+        navigate(`/invoice_item`);
+        break;
+      case "InvoiceItem":
+        console.log(value, tableName);
+        dialogRef.current.openDialog();
+        // navigate(`/invoice_item`);
+        break;
+      case "ManageSchoolTraining":
+        navigate(`/update_school_training/${value[0]}`);
+        break;
       default:
         // console.log(value)
         break;
     }
   };
 
+  const dialogRef = useRef();
+
   return (
     <div className="relative mt-14">
+      <DialogSlide ref={dialogRef} />
+
       <div
         style={{ height: 450, width: "100%" }}
         className="bg-slate-200 rounded-md px-10 pt-16"
       >
         <DataGrid
           rows={search(rows)}
-          // onRowClick={(event) => navigate(`/update_school/:id`)}
+          onRowClick={(event) => console.log(event)}
           columns={Tablecolumns}
           pageSize={entries}
           rowsPerPageOptions={[entries]}
           checkboxSelection={checkbox}
-          onSelectionModelChange={(event) => handleClick(event)}
+          // onSelectionModelChange={(event) => handleClick(event)}
         />
       </div>
       <Search className=" text-gray-500 absolute top-[1.9rem] lg:top-[1.6rem] md:top-[1.4rem] !text-[1.2rem] right-[29.5vw] lg:right-[10.7rem] md:right-[16.5vw] z-20" />

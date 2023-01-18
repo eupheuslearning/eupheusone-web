@@ -3,7 +3,7 @@ import { useState } from "react";
 import Navbar from "../Components/Navbar";
 import Sidebar from "../Components/Sidebar";
 // import { Add } from '@mui/icons-material'
-import { Link } from "react-router-dom";
+import { Link, useParams  } from "react-router-dom";
 import DataTable from "../Components/DataTable";
 // import { rows, ManageSchoolRows } from '../DummyData'
 import SearchDropDown from "../Components/SearchDropDown";
@@ -14,39 +14,58 @@ import Cookies from "js-cookie";
 import BasicButton from "../Components/Material/Button";
 import { Backdrop, CircularProgress } from "@mui/material";
 
-const ManageSchool = () => {
+const InvoiceItem = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [highLight, setHighLight] = useState("manageSchool");
+  const [highLight, setHighLight] = useState("invoice");
   const [loading, setLoading] = useState(false);
   const [stateAndCity, setStateAndCity] = useState({ state: "", city: "" });
   const sidebarRef = useRef();
   const [states, setStates] = useState([]);
   const [city, setCity] = useState({ disable: true });
   const [schoolRow, setSchoolRow] = useState([]);
+
   const navInfo = {
-    title: "Manage School",
-    details: ["Home", " / Manage School"],
+    title: "Invoice Item",
+    details: ["Home", " / Invoice Item"],
   };
 
   const Tablecolumns = [
-    { field: "SchoolName", headerName: "School Name", width: 300 },
+    { field: "SlNo", headerName: "Sl No", width: 100 },
     {
-      field: "State",
-      headerName: "State",
-      width: 120,
+      field: "InvoiceNo",
+      headerName: "Invoice No",
+      width: 200,
     },
     {
-      field: "Address",
-      headerName: "Address",
-      width: 400,
+      field: "ItemName",
+      headerName: "Item Name",
+      width: 300,
     },
+    {
+      field: "Quantity",
+      headerName: "Quantity",
+      width: 100,
+    },
+    {
+      field: "UnitPrice",
+      headerName: "Unit Price",
+      width: 150,
+    },
+      {
+        field: "TotalPrice",
+        headerName: "Total Price",
+        width: 130,
+      },
   ];
+
+  let { userId } = useParams();
 
   const handleSidebarCollapsed = () => {
     sidebarRef.current.openSidebar();
   };
 
   useEffect(() => {
+    getInvoiceDetails()
     const handleWidth = () => {
       if (window.innerWidth > 1024) {
         setSidebarCollapsed(false);
@@ -107,11 +126,9 @@ const ManageSchool = () => {
   };
 
   const handleOrderProcessingForm = async (value, type) => {
-    console.log(value, type)
     switch (type) {
       case "select_state":
-        console.log(value)
-        getCity(value.fk_state_id);
+        // getCity(value.fk_state_id);
         getSchoolByState(value.fk_state_id);
         setStateAndCity({ ...stateAndCity, state: value.fk_state_id });
         break;
@@ -123,16 +140,18 @@ const ManageSchool = () => {
     }
   };
 
-  const getCity = async (Id) => {
-    setLoading(true);
-    const res = await instance({
-      url: `location/city/${Id}`,
-      method: "GET",
-      headers: {
-        Authorization: `${Cookies.get("accessToken")}`,
-      },
-    });
-    setCity(res.data.message);
+  const getInvoiceDetails = async () => {
+    // setLoading(true);
+    // const res = await instance({
+    //   url: `eup_invoice/geteupinvoices//${121}`,
+    //   method: "GET",
+    //   headers: {
+    //     Authorization: `${Cookies.get("accessToken")}`,
+    //   },
+    // });
+    // console.log(res.data.message)
+    console.log(userId)
+    // setCity(res.data.message);
     setLoading(false);
   };
 
@@ -145,7 +164,6 @@ const ManageSchool = () => {
           Authorization: `${Cookies.get("accessToken")}`,
         },
       });
-      console.log(res.data.message);
 
       setStates(res.data.message);
     };
@@ -158,7 +176,7 @@ const ManageSchool = () => {
           Authorization: `${Cookies.get("accessToken")}`,
         },
       });
-      // console.log(res.data.message);
+      console.log(res.data.message);
       const rows = res.data.message.map((item, index) => {
         return {
           id: item.id,
@@ -173,6 +191,83 @@ const ManageSchool = () => {
 
     getSchoolData();
   }, []);
+
+  let tempData = [
+    {
+      id: 135,
+      ItemName: "FirstName",
+      SlNo: "1",
+      InvoiceNo: "123",
+      Quantity: "4",
+      UnitPrice: "350",
+      TotalPrice: "40000"
+    },
+    {
+      id: 246,
+      ItemName: "SecondName",
+      SlNo: "8",
+      InvoiceNo: "234",
+      Quantity: "3",
+      UnitPrice: "320",
+      TotalPrice: "50000"
+    },
+    {
+      id: 357,
+      ItemName: "ThirdName",
+      SlNo: "7",
+      InvoiceNo: "345",
+      Quantity: "14",
+      UnitPrice: "1250",
+      TotalPrice: "60000"
+    },
+    {
+      id: 468,
+      ItemName: "FourthName",
+      SlNo: "6",
+      InvoiceNo: "456",
+      Quantity: "23",
+      UnitPrice: "950",
+      TotalPrice: "70000"
+    },
+    {
+      id: 579,
+      ItemName: "FifthName",
+      SlNo: "5",
+      InvoiceNo: "567",
+      Quantity: "41",
+      UnitPrice: "800",
+      TotalPrice: "80000"
+    },
+    {
+      id: 680,
+      ItemName: "SixthName",
+      SlNo: "4",
+      InvoiceNo: "678",
+      Quantity: "9",
+      UnitPrice: "650",
+      TotalPrice: "90000"
+    },
+    {
+      id: 791,
+      ItemName: "SeventhName",
+      SlNo: "3",
+      InvoiceNo: "789",
+      Quantity: "6",
+      UnitPrice: "100",
+      TotalPrice: "20000"
+    },
+    {
+      id: 802,
+      ItemName: "EighthName",
+      SlNo: "2",
+      InvoiceNo: "890",
+      Quantity: "18",
+      UnitPrice: "300",
+      TotalPrice: "10000"
+    },
+  ];
+
+
 
   return (
     <div className="flex bg-[#111322]">
@@ -202,9 +297,9 @@ const ManageSchool = () => {
           handleSidebarCollapsed={handleSidebarCollapsed}
           info={navInfo}
         />
-        <div className="min-h-[100vh] pt-[2vh] max-h-full bg-[#141728]">
+        <div className="min-h-[100vh] pt-[0vh] max-h-full bg-[#141728]">
           <div className=" sm:px-8 px-2 py-3 bg-[#141728]">
-            <div className="grid grid-cols-2 grid-rows-2 md:flex md:justify-around md:items-center px-6 mb-8 py-3 mt-6 gap-6 rounded-md bg-slate-600">
+            {/* <div className="grid grid-cols-2 grid-rows-2 md:flex md:justify-around md:items-center px-6 mb-8 py-3 mt-6 gap-6 rounded-md bg-slate-600">
               <div className="flex flex-col gap-2 w-full md:w-[20vw]">
                 <label className="text-gray-100">State</label>
 
@@ -227,11 +322,11 @@ const ManageSchool = () => {
                   data={city}
                   Name="select_city"
                 />
-              </div>
-              {/* <button className="w-full md:w-[20vw] col-span-2 md:ml-10 focus:outline-0 mt-8 text-gray-300 hover:shadow-md h-10 bg-slate-500 transition-all duration-200 ease-linear active:bg-slate-700 active:scale-95 rounded-md">
+              </div> */}
+            {/* <button className="w-full md:w-[20vw] col-span-2 md:ml-10 focus:outline-0 mt-8 text-gray-300 hover:shadow-md h-10 bg-slate-500 transition-all duration-200 ease-linear active:bg-slate-700 active:scale-95 rounded-md">
                 Search School
               </button> */}
-              <div
+            {/* <div
                 className="sm:w-auto w-[50vw]"
                 onClick={() => {
                   if (stateAndCity.state && stateAndCity.city) {
@@ -249,14 +344,15 @@ const ManageSchool = () => {
               <Link to="/tagging">
                 <BasicButton text={"Tag Existing School"} />
               </Link>
-            </div>
+            </div> */}
 
             <DataTable
-              rows={schoolRow}
+              rows={tempData}
               checkbox={false}
               Tablecolumns={Tablecolumns}
-              tableName="ManageSchool"
+              tableName="InvoiceItem"
             />
+
           </div>
         </div>
       </div>
@@ -264,4 +360,4 @@ const ManageSchool = () => {
   );
 };
 
-export default ManageSchool;
+export default InvoiceItem;

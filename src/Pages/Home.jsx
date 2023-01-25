@@ -173,7 +173,7 @@ const Home = () => {
                 Welcome
               </h1>
               <a
-                href="https://skool.ai/bucket/crmv2/androidApp/app-release9.apk"
+                href="https://lmseupheus.s3.amazonaws.com/crmv2/androidApp/app-release.apk"
                 download="latest_apk_download"
                 className="absolute sm:top-[2rem] top-[3rem] sm:right-[2rem] right-[1rem]"
               >

@@ -220,30 +220,30 @@ function App() {
                 element={isAuth || MsAuth ? <V_1_0_0 /> : <Login />}
               />
 
-              {/* <Route
+              <Route
                 path="/return"
                 element={isAuth || MsAuth ? <Return /> : <Login />}
-              /> */}
+              />
 
-              {/* <Route
+              <Route
                 path="/return_request"
                 element={isAuth || MsAuth ? <ReturnRequest /> : <Login />}
-              /> */}
+              />
 
-              {/* <Route
+              <Route
                 path="/invoice"
                 element={isAuth || MsAuth ? <Invoice /> : <Login />}
-              /> */}
+              />
 
-              {/* <Route
+              <Route
                 path="/invoice_item/:invoiceid"
                 // path="/invoice_item/"
                 element={isAuth || MsAuth ? <InvoiceItem /> : <Login />}
-              /> */}
-              {/* <Route
+              />
+              <Route
                 path="/addschoolquantity/:invoiceid"
                 element={isAuth || MsAuth ? <AddSchoolQuantity /> : <Login />}
-              /> */}
+              />
 
               <Route
                 path="/invoice_training"

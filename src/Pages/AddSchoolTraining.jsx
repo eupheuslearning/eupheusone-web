@@ -25,7 +25,7 @@ const AddSchoolTraining = () => {
   const [errMessage, setErrMessage] = useState("");
   const [snackbarErrStatus, setSnackbarErrStatus] = useState(true);
   const [state, setState] = useState([]);
-  const [city, setCity] = useState(null);
+  const [city, setCity] = useState([]);
   const [steps, setSteps] = useState({
     step1: true,
     step2: false,

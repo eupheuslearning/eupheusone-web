@@ -107,8 +107,10 @@ const ManageSchool = () => {
   };
 
   const handleOrderProcessingForm = async (value, type) => {
+    console.log(value, type)
     switch (type) {
       case "select_state":
+        console.log(value)
         getCity(value.fk_state_id);
         getSchoolByState(value.fk_state_id);
         setStateAndCity({ ...stateAndCity, state: value.fk_state_id });
@@ -143,6 +145,7 @@ const ManageSchool = () => {
           Authorization: `${Cookies.get("accessToken")}`,
         },
       });
+      console.log(res.data.message);
 
       setStates(res.data.message);
     };

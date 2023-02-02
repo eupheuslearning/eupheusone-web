@@ -1,0 +1,124 @@
+* {
+    margin: 0;
+    padding: 0;
+    text-indent: 0;
+  }
+  .p,
+  p {
+    color: black;
+    font-family: Arial, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: none;
+    font-size: 10pt;
+    margin: 0pt;
+  }
+  h1 {
+    color: black;
+    font-family: Arial, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 10pt;
+  }
+  .s1 {
+    color: black;
+    font-family: Arial, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 11pt;
+  }
+  .s2 {
+    color: black;
+    font-family: Tahoma, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 8pt;
+  }
+  .s3 {
+    color: black;
+    font-family: Tahoma, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: none;
+    font-size: 8pt;
+  }
+  .s4 {
+    color: black;
+    font-family: Arial, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 9pt;
+  }
+  .s5 {
+    color: black;
+    font-family: Arial, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: none;
+    font-size: 10pt;
+  }
+  .s6 {
+    color: black;
+    font-family: Arial, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 10pt;
+  }
+  .s7 {
+    color: black;
+    font-family: Tahoma, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 6pt;
+  }
+  .s8 {
+    color: black;
+    font-family: Tahoma, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 7pt;
+  }
+  .s9 {
+    color: black;
+    font-family: Tahoma, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 7pt;
+  }
+  .s10 {
+    color: black;
+    font-family: "Times New Roman", serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: none;
+    font-size: 9pt;
+  }
+  .s11 {
+    color: black;
+    font-family: Arial, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 7.5pt;
+  }
+  .s12 {
+    color: black;
+    font-family: Arial, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: none;
+    font-size: 9pt;
+  }
+  table,
+  tbody {
+    vertical-align: top;
+    overflow: visible;
+  }

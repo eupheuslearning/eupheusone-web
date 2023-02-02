@@ -23,6 +23,12 @@ import { Add, ExpandMore } from "@mui/icons-material";
 import RowRadioButtonsGroup from "../Components/Material/RowRadioButtonGroup";
 import instance from "../Instance";
 import Cookies from "js-cookie";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
 
 const AOF = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -43,6 +49,8 @@ const AOF = () => {
     tod: { applicable: false, type: false },
     special: { applicable: false, type: "" },
   });
+  const [publisherData, setPublisherData] = useState([]);
+  const [pubData, setPubData] = useState([])
   const sidebarRef = useRef();
 
   const handleRadioButtons = (type, value) => {
@@ -165,6 +173,16 @@ const AOF = () => {
         getTitleBySeries(value.id);
         setLoading(false);
         break;
+      case "publisher":
+        let tempArr = [...publisherData];
+        for (let ele of tempArr) {
+          if (ele === value) return;
+        }
+        tempArr.push(value);
+        // console.log(tempArr)
+        setPublisherData(tempArr);
+        console.log(publisherData)
+        break;
 
       default:
         break;
@@ -276,6 +294,10 @@ const AOF = () => {
       window.removeEventListener("resize", handleWidth);
     };
   }, []);
+
+  const handlePublisher = () => {
+    setPubData([{id: "123"}, {id: "234"}, {id: "345"}])
+  }
 
   return (
     <>
@@ -558,7 +580,7 @@ const AOF = () => {
               ) : null}
               {/* step 4 */}
               {steps.step4 ? (
-                <div className="flex flex-col gap-4  md:w-[50%] sm:w-[70%] w-[95%] px-6 bg-slate-600 rounded-md py-6 mb-[5rem] justify-center items-start">
+                <div className="flex flex-col gap-4  md:w-[90%] sm:w-[70%] w-[95%] px-6 bg-slate-600 rounded-md py-6 mb-[5rem] justify-center items-start">
                   <div className="flex flex-col justify-center items-start w-full mt-6 rounded-md bg-slate-600">
                     <Accordion
                       defaultExpanded={true}
@@ -703,28 +725,68 @@ const AOF = () => {
                               <h1 className="sm:text-base text-sm font-semibold text-gray-100">
                                 Select Publisher:
                               </h1>
-                              <SearchDropDown
-                                Name={"publisher"}
-                                data={publisher}
-                                // handleOrderProcessingForm={handleOrderProcessingForm}
-                                label={"Select Publisher"}
-                                color={"rgb(243, 244, 246)"}
-                              />
-                              <div className="flex justify-around items-center">
-                                <TextField
-                                  InputLabelProps={{
-                                    style: { color: "white" },
-                                  }}
-                                  inputProps={{
-                                    style: { color: "white" },
-                                  }}
+                              <div className="!flex">
+                                <SearchDropDown
+                                  Name={"publisher"}
+                                  data={publisher}
+                                  handleOrderProcessingForm={
+                                    handleOrderProcessingForm
+                                  }
+                                  label={"Select Publisher"}
+                                  color={"rgb(243, 244, 246)"}
+                                />
+                                <div className="!flex justify-end" onClick={handlePublisher}>
+                                  <BasicButton text={"Add"} />
+                                </div>
+                              </div>
+
+                              <Table sx={{ minWidth: 650 }} aria-label="customized table">
+                    <TableHead className="bg-slate-600">
+                      <TableRow>
+                        <TableCell className="!w-[13rem]" align="center">
+                          Publisher
+                        </TableCell>
+                        <TableCell className="!w-[8rem]" align="center">
+                          Percentage
+                        </TableCell>
+                        <TableCell className="!w-[10rem]" align="center">
+                         
+                        </TableCell>
+                       
+                      </TableRow>
+                    </TableHead>
+                    {pubData.map((row) => {
+                    <TableBody className="bg-slate-400">
+                            <TableRow
+                              key={"row.series"}
+                              sx={{
+                                "&:last-child td, &:last-child th": {
+                                  border: 0,
+                                },
+                              }}
+                            >
+                            
+                          
+                              <TableCell align="center">
+                                {row.bp_name}
+                              </TableCell>
+                              <TableCell align="center">
+                              <TextField
+                                  // InputLabelProps={{
+                                  //   style: { color: "white" },
+                                  // }}
+                                  // inputProps={{
+                                  //   style: { color: "white" },
+                                  // }}
                                   id="outlined-basic"
                                   label="Enter Percentage"
                                   variant="standard"
                                 />
-                                <RowRadioButtonsGroup
+                              </TableCell>
+                              <TableCell align="center">
+                              <RowRadioButtonsGroup
                                   handleRadioButtons={handleRadioButtons}
-                                  name={"tod"}
+                                  name={"special"}
                                   value={[
                                     {
                                       label: "Gross",
@@ -733,7 +795,13 @@ const AOF = () => {
                                     { label: "Net", value: "no" },
                                   ]}
                                 />
-                              </div>
+                              </TableCell>
+                            </TableRow>   
+                    </TableBody>
+                  })}
+                  </Table>
+
+
                             </Typography>
                             <div className="w-full flex justify-center">
                               <hr className="text-gray-100 w-[80%] my-4" />

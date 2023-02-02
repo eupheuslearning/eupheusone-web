@@ -30,7 +30,7 @@ import TransitionsModal from "./Model";
 import { useRef } from "react";
 // import DialogSlide from "./Dialog";
 
-const SwipeableTemporaryDrawer = React.forwardRef((props, ref) => {
+const SwipeableTemporaryDrawer2 = React.forwardRef((props, ref) => {
   const [modelOpen, setModelOpen] = useState(false);
 
   const [userType, setUserType] = useState();
@@ -473,7 +473,7 @@ const SwipeableTemporaryDrawer = React.forwardRef((props, ref) => {
       </Link>
     </div> 
     : <div>
-         <Link to="/">
+         <Link to="/ck_dashboard">
         <aside
           className={`px-6 py-2 my-4 hover:bg-gray-500 flex ${
             highLight === "dashboard" ? "bg-gray-500" : ""
@@ -496,7 +496,7 @@ const SwipeableTemporaryDrawer = React.forwardRef((props, ref) => {
           {/* <hr className="text-gray-300" /> */}
         </aside>
       </Link>
-      <Link to="/manageSchool">
+      <Link to="/ck_manageSchool">
         <aside
           className={`px-6 py-2 my-4 flex gap-4 cursor-pointer ${
             highLight === "manageSchool" ? "bg-gray-500" : ""
@@ -524,7 +524,7 @@ const SwipeableTemporaryDrawer = React.forwardRef((props, ref) => {
           School Visit
         </span>
       </aside> */}
-      <Link to="/order_processing">
+      {/* <Link to="/order_processing">
         <aside
           className={`px-6 py-2 my-4 flex gap-4 ${
             highLight === "order_pro" ? "bg-gray-500" : ""
@@ -543,8 +543,8 @@ const SwipeableTemporaryDrawer = React.forwardRef((props, ref) => {
             Order Processing
           </span>
         </aside>
-      </Link>
-      <Link to="/manage_order">
+      </Link> */}
+      {/* <Link to="/manage_order">
         <aside
           className={`px-6 py-2 my-4 flex gap-4 ${
             highLight === "manageOrder" ? "bg-gray-500" : ""
@@ -563,7 +563,7 @@ const SwipeableTemporaryDrawer = React.forwardRef((props, ref) => {
             Manage Order
           </span>
         </aside>
-      </Link>
+      </Link> */}
       {/* <Link to="/aof">
         <aside
           className={`px-6 py-2 my-4 flex gap-4 ${
@@ -584,7 +584,7 @@ const SwipeableTemporaryDrawer = React.forwardRef((props, ref) => {
           </span>
         </aside>
       </Link> */}
-      <Link to="/kys">
+      {/* <Link to="/kys">
         <aside
           className={`px-6 py-2 my-4 flex gap-4 ${
             highLight === "kys" ? "bg-gray-500" : ""
@@ -603,8 +603,8 @@ const SwipeableTemporaryDrawer = React.forwardRef((props, ref) => {
             KYS
           </span>
         </aside>
-      </Link>
-      <Link to="/projection">
+      </Link> */}
+      {/* <Link to="/projection">
         <aside
           // onClick={openDialog}
           className={`px-6 py-2 flex gap-4 ${
@@ -624,7 +624,7 @@ const SwipeableTemporaryDrawer = React.forwardRef((props, ref) => {
             Projection
           </span>
         </aside>
-      </Link>
+      </Link> */}
 
       {/* <Link to="/return">
         <aside
@@ -695,4 +695,4 @@ const SwipeableTemporaryDrawer = React.forwardRef((props, ref) => {
   );
 });
 
-export default SwipeableTemporaryDrawer;
+export default SwipeableTemporaryDrawer2;

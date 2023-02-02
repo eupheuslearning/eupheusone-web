@@ -80,12 +80,31 @@ const Login = () => {
       );
       Cookies.set("id", `${res.data.id}`);
       Cookies.set("accessToken", `${res.data.accessToken}`);
+      Cookies.set("type", `${res.data.type}`);
+      Cookies.set("company", `${res.data.company}`)
       if (res.data.admin) {
         Cookies.set("admin", true);
         dispatch(authActions.adminLogin());
       }
+      
       dispatch(authActions.login());
-      navigate("/");
+
+      if(res.data.type === "training"){
+        navigate("/manageSchoolTraining");
+        // console.log("testing1")
+      }
+      // else if(res.data.company === "Euphues"){
+      //   navigate("/ck_dashboard");
+      //   // console.log("testing2")
+      // }
+      // else if(res.data.company === "Euphues"){
+        // navigate("/ck_dashboard");
+        // console.log("testing2")
+      // }
+      else{
+        navigate("/");
+      }
+      
     }
     if (res.data.message) {
       setErrMessage(res.data.message);

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "react-pro-sidebar/dist/css/styles.css";
 import {
-  Place,
   School,
   AccountBalance,
   KeyboardArrowDown,
@@ -14,9 +13,7 @@ import {
   ListAlt,
   LocationCity,
   AssignmentReturnOutlined,
-  ReceiptOutlined,
-  PrintOutlined,
-  
+  ReceiptOutlined
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import logoLight from "../assets/img/logo-light-icon.png";
@@ -31,7 +28,7 @@ import TransitionsModal from "./Material/Model";
 import DialogSlide from "./Material/Dialog";
 import { useRef } from "react";
 
-const Sidebar = ({ sidebarCollapsed, highLight, show }) => {
+const Sidebar2 = ({ sidebarCollapsed, highLight, show }) => {
   const [modelOpen, setModelOpen] = useState(false);
   const [isSchoolClicked, setIsSchoolClicked] = useState(
     show === 2 ? false : true
@@ -139,6 +136,12 @@ const Sidebar = ({ sidebarCollapsed, highLight, show }) => {
             </span>
           </aside>
         </Link>
+    
+ 
+    
+  
+  
+
 
 
         <Link to="/invoice_training">
@@ -158,29 +161,6 @@ const Sidebar = ({ sidebarCollapsed, highLight, show }) => {
               } group-hover:!text-gray-100 transition-all duration-150 ease-linear`}
             >
               Invoice Tagging
-            </span>
-          </aside>
-        </Link>
-
-        <Link to="/locationTraining">
-          <aside
-            className={`px-6 py-2 flex gap-4 cursor-pointer ${
-              highLight === "location" ? "bg-gray-500" : ""
-            } group hover:bg-gray-500 rounded-md transition-all duration-150 ease-linear`}
-          >
-            <Place
-              className={`${
-                highLight === "location"
-                  ? "!text-[#659DBD]"
-                  : "!text-gray-400"
-              } group-hover:!text-[#659DBD] !transition-all !duration-150 !ease-linear`}
-            />
-            <span
-              className={`${
-                highLight === "location" ? "text-gray-200" : "text-gray-400"
-              } group-hover:!text-gray-100 transition-all duration-150 ease-linear`}
-            >
-              Location
             </span>
           </aside>
         </Link>
@@ -506,7 +486,7 @@ const Sidebar = ({ sidebarCollapsed, highLight, show }) => {
           <span className="text-sm text-gray-300">{user.emp_id}</span>
           <hr className="text-gray-100 mt-4" />
         </aside>
-        <Link to="/">
+        <Link to="/ck_dashboard">
           <aside
             className={`px-6 py-2 hover:bg-gray-500 flex ${
               highLight === "dashboard" ? "bg-gray-500" : ""
@@ -532,7 +512,7 @@ const Sidebar = ({ sidebarCollapsed, highLight, show }) => {
           </aside>
         </Link>
 
-        <Link to="/manageSchool">
+        <Link to="/ck_manageSchool">
           <aside
             className={`px-6 py-2 flex gap-4 cursor-pointer ${
               highLight === "manageSchool" ? "bg-gray-500" : ""
@@ -560,7 +540,7 @@ const Sidebar = ({ sidebarCollapsed, highLight, show }) => {
             School Visit
           </span>
         </aside> */}
-        <Link to="/order_processing">
+        {/* <Link to="/order_processing">
           <aside
             className={`px-6 py-2 flex gap-4 ${
               highLight === "order_pro" ? "bg-gray-500" : ""
@@ -579,8 +559,8 @@ const Sidebar = ({ sidebarCollapsed, highLight, show }) => {
               Order Processing
             </span>
           </aside>
-        </Link>
-        <Link to="/manage_order">
+        </Link> */}
+        {/* <Link to="/manage_order">
           <aside
             className={`px-6 py-2 flex gap-4 ${
               highLight === "manageOrder" ? "bg-gray-500" : ""
@@ -601,7 +581,7 @@ const Sidebar = ({ sidebarCollapsed, highLight, show }) => {
               Manage Order
             </span>
           </aside>
-        </Link>
+        </Link> */}
         {/* <Link to="/aof">
           <aside
             className={`px-6 py-2 flex gap-4 ${
@@ -622,7 +602,7 @@ const Sidebar = ({ sidebarCollapsed, highLight, show }) => {
             </span>
           </aside>
         </Link> */}
-        <Link to="/kys">
+        {/* <Link to="/kys">
           <aside
             className={`px-6 py-2 flex gap-4 ${
               highLight === "kys" ? "bg-gray-500" : ""
@@ -641,9 +621,9 @@ const Sidebar = ({ sidebarCollapsed, highLight, show }) => {
               KYS
             </span>
           </aside>
-        </Link>
+        </Link> */}
         {/* <Link to="/kys"> */}
-        <Link to="/projection">
+        {/* <Link to="/projection">
           <aside
             className={`px-6 py-2 flex gap-4 ${
               highLight === "projection" ? "bg-gray-500" : ""
@@ -664,9 +644,9 @@ const Sidebar = ({ sidebarCollapsed, highLight, show }) => {
               Projection
             </span>
           </aside>
-        </Link>
-{/* 
-        <Link to="/return">
+        </Link> */}
+
+        {/* <Link to="/return">
           <aside
             className={`px-6 py-2 flex gap-4 ${
               highLight === "return" ? "bg-gray-500" : ""
@@ -708,27 +688,6 @@ const Sidebar = ({ sidebarCollapsed, highLight, show }) => {
           </aside>
         </Link> */}
 
-        {/* <Link to="/print_pdf">
-          <aside
-            className={`px-6 py-2 flex gap-4 ${
-              highLight === "printpdf" ? "bg-gray-500" : ""
-            } cursor-pointer group hover:bg-gray-500 rounded-md transition-all duration-150 ease-linear`}
-          >
-            <PrintOutlined
-              className={`${
-                highLight === "printpdf" ? "!text-[#659DBD]" : "!text-gray-400"
-              } group-hover:!text-[#659DBD] !transition-all !duration-150 !ease-linear`}
-            />
-            <span
-              className={`${
-                highLight === "printpdf" ? "text-gray-200" : "text-gray-400"
-              } group-hover:!text-gray-100 transition-all duration-150 ease-linear`}
-            >
-              Print PDF
-            </span>
-          </aside>
-        </Link> */}
-
         {/* </Link> */}
       </div>
       }
@@ -736,4 +695,4 @@ const Sidebar = ({ sidebarCollapsed, highLight, show }) => {
   );
 };
 
-export default Sidebar;
+export default Sidebar2;

@@ -1,0 +1,140 @@
+* {
+    margin: 0;
+    padding: 0;
+    text-indent: 0;
+}
+
+h1 {
+    color: black;
+    font-family: Arial, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 12pt;
+}
+
+h3 {
+    color: black;
+    font-family: Arial, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 10pt;
+}
+
+.s1 {
+    color: black;
+    font-family: Arial, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 11pt;
+}
+
+.s2 {
+    color: black;
+    font-family: Arial, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: none;
+    font-size: 11pt;
+    vertical-align: -5pt;
+}
+
+.s3 {
+    color: black;
+    font-family: Arial, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: none;
+    font-size: 11pt;
+}
+
+.s4 {
+    color: black;
+    font-family: Arial, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 9pt;
+}
+
+.s5 {
+    color: black;
+    font-family: Arial, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: none;
+    font-size: 8pt;
+}
+
+.s6 {
+    color: black;
+    font-family: Arial, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: none;
+    font-size: 9pt;
+}
+
+.s7 {
+    color: black;
+    font-family: Arial, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 8pt;
+}
+
+h2 {
+    color: black;
+    font-family: Arial, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 11pt;
+}
+
+.s8 {
+    color: black;
+    font-family: Arial, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: none;
+    font-size: 11pt;
+}
+
+.s9 {
+    color: black;
+    font-family: Arial, sans-serif;
+    font-style: italic;
+    font-weight: normal;
+    text-decoration: none;
+    font-size: 10pt;
+}
+
+h4 {
+    color: black;
+    font-family: Arial, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 8pt;
+}
+
+.p,
+p {
+    color: black;
+    font-family: Arial, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: none;
+    font-size: 8pt;
+    margin: 0pt;
+}
+
+table,
+tbody {
+    vertical-align: top;
+    overflow: visible;
+}

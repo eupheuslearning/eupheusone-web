@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef } from "react";
 import { useState } from "react";
 import Navbar from "../Components/Navbar";
-import Sidebar from "../Components/Sidebar";
+import Sidebar from "../Components/Sidebar2";
 import GoogleMap from "../Components/GoogleMap";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,7 +10,7 @@ import Loader from "../Components/Loader";
 import orderImg from "../assets/img/order.png";
 import documentImg from "../assets/img/documents.png";
 import zohoImg from "../assets/img/zoho.png";
-import SwipeableTemporaryDrawer from "../Components/Material/MaterialSidebar";
+import SwipeableTemporaryDrawer2 from "../Components/Material/MaterialSidebar2";
 
 // import { Map } from "@mui/icons-material";
 import GMap from "../assets/map.png";
@@ -27,7 +27,7 @@ const Home = () => {
   const show = null;
   const temp = [];
   const Co_ordinates = JSON.parse(localStorage.getItem("co_ordinates"));
- 
+
   useLayoutEffect(() => {
     navigator.geolocation.watchPosition(function (position) {
       // console.log("Latitude is :", position.coords.latitude);
@@ -143,7 +143,7 @@ const Home = () => {
         />
 
         <div>
-          <SwipeableTemporaryDrawer
+          <SwipeableTemporaryDrawer2
             ref={sidebarRef}
             sidebarCollapsed={sidebarCollapsed}
             show={show}
@@ -172,13 +172,13 @@ const Home = () => {
               <h1 className="text-gray-100 sm:text-2xl text-base font-semibold absolute top-[2rem] left-[2rem]">
                 Welcome
               </h1>
-              <a
-                href="https://lmseupheus.s3.amazonaws.com/crmv2/androidApp/app-release.apk"
+              {/* <a
+                href="https://skool.ai/bucket/crmv2/androidApp/app-release9.apk"
                 download="latest_apk_download"
                 className="absolute sm:top-[2rem] top-[3rem] sm:right-[2rem] right-[1rem]"
               >
                 <BasicButton text={"download latest apk"} size={"small"} />
-              </a>
+              </a> */}
 
               <div className="w-full flex flex-col px-4 pb-6 sm:flex-row gap-6 items-center justify-center">
                 <section className="flex sm:w-[30%] sm:h-[19rem] w-full sm:flex-col flex-row gap-4 hover:shadow-2xl items-center justify-between px-4 py-4 bg-gray-200 rounded-md">
@@ -202,7 +202,7 @@ const Home = () => {
                   {/* </div> */}
                 </section>
                 <div className="flex sm:w-[60%]  flex-row gap-4 ">
-                  <section className="flex w-1/2 flex-col hover:shadow-2xl cursor-pointer gap-4 items-center justify-around sm:px-4 sm:py-4 bg-gray-200 rounded-md">
+                  {/* <section className="flex w-1/2 flex-col hover:shadow-2xl cursor-pointer gap-4 items-center justify-around sm:px-4 sm:py-4 bg-gray-200 rounded-md">
                     <a target="_blank" href="https://analytics.zoho.com/">
                       <img
                         src={zohoImg}
@@ -210,11 +210,8 @@ const Home = () => {
                         alt=""
                       />
                     </a>
-                  </section>
-
-                  <section onClick={()=>{
-                      navigate('/print_pdf')
-                  }} className="flex grayscale w-1/2 flex-col gap-4 hover:shadow-2xl cursor-pointer items-center justify-around px-4 py-4 bg-gray-200 rounded-md">
+                  </section> */}
+                  {/* <section className="flex grayscale w-1/2 flex-col gap-4 hover:shadow-2xl cursor-not-allowed items-center justify-around px-4 py-4 bg-gray-200 rounded-md">
                     <img
                       src={documentImg}
                       className="sm:w-[14rem] w-[5rem] h-auto"
@@ -224,7 +221,7 @@ const Home = () => {
                     <span className="md:text-2xl sm:text-base text-sm font-bold">
                       Documents
                     </span>
-                  </section>
+                  </section> */}
                   {/* <section className='flex grayscale w-1/2 flex-col gap-4
                    hover:shadow-2xl items-center justify-around px-4 py-4 bg-gray-200 rounded-md'>
                     <a href='https://skool.ai/bucket/crmv2/androidApp/app-release9.apk' download='latest_apk_download'>

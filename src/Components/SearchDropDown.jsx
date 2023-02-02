@@ -106,15 +106,52 @@ const SearchDropDown = ({
           break;
         // manage School
         case "select_state":
-          return option.fk_state.state;
+          // console.log(option)
+          return option.fk_state.state          ;
+          break;
+        case "select_state_training":
+          // console.log(option)
+          return option.state;
+          break;
+
+          case "select_state_location":
+            // console.log(option)
+            return option.state;
+            break;
+
+            case "select_city_location":
+              // console.log(option)
+              return option.city;
+              break;
+          case "select_school_id":
+            // console.log(option)
+            return option.school_name;
+            break;
+          case "select_city_training":
+          // console.log(option)
+          return option.city;
+          break;
+        case "select_type":
+          // console.log(option)
+          return option.types;
+          break;
+        case "to_convert":
+          // console.log(option)
+          return option.convert;
           break;
         case "select_city":
+          // console.log(option);
           return option.city;
           break;
         // aof
         case "publisher":
+          // console.log(option)
           return option.bp_name;
           break;
+        case "invoice_pdf_data":
+            // console.log(option)
+            return option.bp_name;
+            break;
         case "series_aof":
           return option.series;
           break;
@@ -164,6 +201,7 @@ const SearchDropDown = ({
   // };
 
   const handleDropDown = (value, type) => {
+    // console.log(value, type)
     if (
       type === "order_type" ||
       type === "customer_name" ||
@@ -209,6 +247,16 @@ const SearchDropDown = ({
     if (type === "select_state") {
       handleOrderProcessingForm(value, type);
     }
+    if (type === "select_state_training") {
+      console.log(value, type)
+      handleOrderProcessingForm(value, type);
+    }
+    if (type === "select_city_training") {
+      handleOrderProcessingForm(value, type);
+    }
+    if (type === "select_type") {
+      handleOrderProcessingForm(value, type);
+    }
     if (type === "publisher_name") {
       handleOrderProcessingForm(value, type);
     }
@@ -217,6 +265,9 @@ const SearchDropDown = ({
     }
     // aof
     if (type === "series_aof") {
+      handleOrderProcessingForm(value, type);
+    }
+    if (type === "publisher") {
       handleOrderProcessingForm(value, type);
     }
     if (type === "grades") {
@@ -228,12 +279,27 @@ const SearchDropDown = ({
     if (type === "individual") {
       handleOrderProcessingForm(value, type);
     }
+    if (type === "select_school_id") {
+      handleOrderProcessingForm(value, type, seriesId);
+    }
     if (type === "fees") {
+      handleOrderProcessingForm(value, type);
+    }
+    if (type === "to_convert") {
+      // console.log(value, type, seriesId)
+      handleOrderProcessingForm(value.convert, type, seriesId);
+    }
+    if (type === "select_state_location") {
+      // console.log(value, type, seriesId)
       handleOrderProcessingForm(value, type);
     }
     if (type === "kys_comp_publisher") {
       handleOrderProcessingForm(value, type);
-    } else {
+    }
+    if (type === "invoice_pdf_data") {
+      handleOrderProcessingForm(value, type);
+    }  
+    else {
       return;
     }
   };

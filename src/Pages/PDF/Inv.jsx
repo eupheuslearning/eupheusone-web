@@ -35,9 +35,10 @@ const Inv = () => {
   const [motorVehicleNo, setmotorVehicleNo] = useState("")
   const [termsOfDelivery, settermsOfDelivery] = useState("")
   const [total, settotal] = useState("")
-  const [untaxedAmount, setuntaxedAmount] = useState("")
+  const [taxedAmount, setTaxedAmount] = useState("")
   const [tableData, setTableData] = useState([])
   const [totalQuantity, setTotalQuantity] = useState("")
+  const [freightCharge, setFreightCharge] = useState("")
 
 
 
@@ -58,9 +59,9 @@ const Inv = () => {
       },}
     );
     
-    console.log(res.data);
+    // console.log(res.data);
     let data = res.data.message[0]
-    // console.log(data)
+    console.log(data)
     setBillTo(data.bill_to[0])
     setBillToAddress(data.bill_to[1])
     setShipTo(data.SHIPTOCODE)
@@ -85,8 +86,9 @@ const Inv = () => {
     setmotorVehicleNo(data.U_UNE_VEH_NO)
     settermsOfDelivery(data.delivery_term)
     settotal(data.total)
-    setuntaxedAmount(data.tax_amount)
+    setTaxedAmount(data.tax_amount)
     setstateCode(data.state_code)
+    setFreightCharge(data.Freight_charges)
 
     let dataTable = res.data.items
     let totalQuant = 0
@@ -1300,7 +1302,7 @@ const Inv = () => {
               colSpan={9}
             >
               <p
-                className="s6"
+                className="s1"
                 style={{
                   paddingLeft: "23pt",
                   textIndent: "0pt",
@@ -1327,7 +1329,7 @@ const Inv = () => {
               colSpan={4}
             >
               <p
-                className="s2"
+                className="s1"
                 style={{
                   paddingLeft: "5pt",
                   textIndent: "0pt",
@@ -1372,7 +1374,7 @@ const Inv = () => {
               rowSpan={2}
             >
               <p
-                className="s7"
+                className="s1"
                 style={{
                   paddingTop: "4pt",
                   textIndent: "0pt",
@@ -1398,9 +1400,9 @@ const Inv = () => {
               rowSpan={2}
             >
               <p
-                className="s8"
+                className="s1"
                 style={{
-                  paddingTop: "11pt",
+                  paddingTop: "5pt",
                   paddingLeft: "6pt",
                   paddingRight: "1pt",
                   textIndent: "0pt",
@@ -1412,9 +1414,9 @@ const Inv = () => {
                 HSN/SAC
               </p>
               <p
-                className="s8"
+                className="s1"
                 style={{
-                  paddingTop: "8pt",
+                  paddingTop: "4pt",
                   paddingLeft: "6pt",
                   paddingRight: "1pt",
                   textIndent: "0pt",
@@ -1441,9 +1443,9 @@ const Inv = () => {
               rowSpan={2}
             >
               <p
-                className="s8"
+                className="s1"
                 style={{
-                  paddingTop: "3pt",
+                  paddingTop: "4pt",
                   paddingLeft: "30pt",
                   paddingRight: "14pt",
                   textIndent: "-14pt",
@@ -1469,7 +1471,7 @@ const Inv = () => {
               rowSpan={2}
             >
               <p
-                className="s8"
+                className="s1"
                 style={{
                   paddingTop: "4pt",
                   paddingLeft: "10.2pt",
@@ -1496,7 +1498,7 @@ const Inv = () => {
               rowSpan={2}
             >
               <p
-                className="s8"
+                className="s1"
                 style={{
                   paddingTop: "4pt",
                   paddingLeft: "10pt",
@@ -1523,9 +1525,9 @@ const Inv = () => {
               rowSpan={2}
             >
               <p
-                className="s8"
+                className="s1"
                 style={{
-                  paddingTop: "9pt",
+                  paddingTop: "5pt",
                   paddingLeft: "6pt",
                   textIndent: "0pt",
                   lineHeight: "8pt",
@@ -1536,9 +1538,9 @@ const Inv = () => {
                 Disc
               </p>
               <p
-                className="s8"
+                className="s1"
                 style={{
-                  marginTop: "6pt",
+                  marginTop: "3pt",
                   paddingLeft: "10pt",
                   textIndent: "0pt",
                   lineHeight: "8pt",
@@ -1564,7 +1566,7 @@ const Inv = () => {
               rowSpan={2}
             >
               <p
-                className="s8"
+                className="s1"
                 style={{
                   paddingTop: "4pt",
                   paddingLeft: "16pt",
@@ -1591,7 +1593,7 @@ const Inv = () => {
               colSpan={2}
             >
               <p
-                className="s8"
+                className="s1"
                 style={{
                   paddingTop: "8pt",
                   paddingLeft: "10.2pt",
@@ -1619,7 +1621,7 @@ const Inv = () => {
               colSpan={2}
             >
               <p
-                className="s8"
+                className="s1"
                 style={{
                   paddingTop: "8pt",
                   paddingLeft: "16pt",
@@ -1647,7 +1649,7 @@ const Inv = () => {
               colSpan={2}
             >
               <p
-                className="s8"
+                className="s1"
                 style={{
                   paddingTop: "8pt",
                   paddingLeft: "19pt",
@@ -1691,7 +1693,7 @@ const Inv = () => {
               }}
             >
               <p
-                className="s8"
+                className="s1"
                 style={{
                   paddingTop: "2pt",
                   paddingLeft: "6pt",
@@ -1717,7 +1719,7 @@ const Inv = () => {
               }}
             >
               <p
-                className="s8"
+                className="s1"
                 style={{
                   paddingTop: "2pt",
                   paddingLeft: "4pt",
@@ -1743,7 +1745,7 @@ const Inv = () => {
               }}
             >
              <p
-                className="s8"
+                className="s1"
                 style={{
                   paddingTop: "2pt",
                   paddingLeft: "10pt",
@@ -1769,7 +1771,7 @@ const Inv = () => {
               }}
             >
               <p
-                className="s8"
+                className="s1"
                 style={{
                   paddingTop: "2pt",
                   paddingLeft: "5pt",
@@ -1795,7 +1797,7 @@ const Inv = () => {
               }}
             >
               <p
-                className="s8"
+                className="s1"
                 style={{
                   paddingTop: "2pt",
                   paddingLeft: "5pt",
@@ -1821,7 +1823,7 @@ const Inv = () => {
               }}
             >
               <p
-                className="s8"
+                className="s1"
                 style={{
                   paddingTop: "2pt",
                   paddingLeft: "10pt",
@@ -2584,7 +2586,7 @@ const Inv = () => {
               }}
             >
               <p
-                className="s4"
+                className="s1"
                 style={{
                   paddingTop: "5pt",
                   paddingRight: "9pt",
@@ -2758,7 +2760,7 @@ const Inv = () => {
               colSpan={7}
             >
               <p
-                className="s2"
+                className="s1"
                 style={{
                   paddingTop: "5pt",
                   paddingLeft: "2pt",
@@ -2798,7 +2800,7 @@ const Inv = () => {
               colSpan={6}
             >
               <p
-                className="s2"
+                className="s1"
                 style={{
                   paddingTop: "5pt",
                   paddingLeft: "5pt",
@@ -2822,7 +2824,7 @@ const Inv = () => {
                   fontSize: "8pt"
                 }}
               >
-                Freight :- INR 0.00 
+                Freight :- INR {freightCharge}
               </p>
             </td>
             <td
@@ -2839,7 +2841,7 @@ const Inv = () => {
               </p>
             </td>
           </tr>
-          <tr style={{ height: "30pt" }}>
+          <tr style={{ height: "20pt" }}>
             <td
               style={{
                 width: "324pt",
@@ -2865,20 +2867,7 @@ const Inv = () => {
                 }}
               >
                 Tax Amount (In Words) :
-              </p>
-              <p style={{ textIndent: "0pt", textAlign: "left" }}>
-                <br />
-              </p>
-              <p
-                className="s3"
-                style={{
-                  paddingLeft: "5pt",
-                  textAlign: "left",
-                  fontSize: "8pt",
-                }}
-              >
-                {/* need -- */}
-                INR Zero Only
+                {`INR ${converter.toWords(Number(taxedAmount))} Only`}
               </p>
             </td>
             <td
@@ -2892,12 +2881,11 @@ const Inv = () => {
                 borderBottomWidth: "1pt",
               }}
             >
-              <p style={{ textIndent: "0pt", textAlign: "left" }}>
-                <br />
-              </p>
+            
               <p
-                className="s2"
+                className="s1"
                 style={{
+                  marginTop: "4pt",
                   paddingLeft: "5pt",
                   textIndent: "0pt",
                   textAlign: "left",
@@ -2930,19 +2918,17 @@ const Inv = () => {
               }}
               colSpan={2}
             >
-              <p style={{ textIndent: "0pt", textAlign: "left" }}>
-                <br />
-              </p>
               <p
                 className="s2"
                 style={{
+                  marginTop: "4pt",
                   paddingLeft: "21pt",
                   textIndent: "0pt",
                   textAlign: "left",
                   fontSize: "8pt"
                 }}
               >
-               :- INR {untaxedAmount}
+               :- INR {taxedAmount}
               </p>
             </td>
             <td
@@ -3030,7 +3016,7 @@ const Inv = () => {
               }}
             >
               <p
-               className="s2"
+               className="s1"
                 style={{
                   paddingTop: "4pt",
                   paddingLeft: "5pt",

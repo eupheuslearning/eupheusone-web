@@ -182,6 +182,10 @@ const SearchDropDown = ({
           return option.title;
           break;
 
+        case "select_school_type":
+          return option.type;
+          break;
+
         default:
           return "";
           break;
@@ -299,6 +303,9 @@ const SearchDropDown = ({
     if (type === "invoice_pdf_data") {
       handleOrderProcessingForm(value, type);
     }  
+    if (type === "select_school_type") {
+      handleOrderProcessingForm(value, type);
+    } 
     else {
       return;
     }

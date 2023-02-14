@@ -42,6 +42,7 @@ const ViewInvoice = () => {
   const [searchRow, setSearchRow] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [bpCode, setBpCode] = useState("")
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -181,7 +182,8 @@ const ViewInvoice = () => {
           // setStateAndCity({ ...stateAndCity, state: value.fk_state_id });
           break;
         case "invoice_pdf_data":
-            console.log(value);
+            // console.log(value);
+            setBpCode(value.bp_code)
             // setType(value.types);
             // setStateAndCity({ ...stateAndCity, city: value.id });
             break;
@@ -246,55 +248,56 @@ const ViewInvoice = () => {
   }, []);
 
   const searchSchool = async () => {
+    console.log(bpCode)
     setSchoolRow([]);
-    setSearchRow([]);
-    if (type === "Classklap") {
-      console.log(stateId)
+    // setSearchRow([]);
+    // if (type === "Classklap") {
+    //   console.log(stateId)
       const res = await instance({
-        url: `school/ckschools/get/${stateId}`,
+        url: `eup_invoice/get/allbps/${bpCode}`,
         method: "GET",
         headers: {
           Authorization: `${Cookies.get("accessToken")}`,
         },
       });
-      // console.log(res.data.message);
-      if(res.data.message.length === 0){
-        alert("No Data Available")
-      }
+      console.log(res.data.message);
+    //   if(res.data.message.length === 0){
+    //     alert("No Data Available")
+    //   }
       setSchoolRow(res.data.message);
-      // console.log(stateId)
-      // console.log(type)
-    } else if (type === "Eupheus Learning") {
-      const res = await instance({
-        url: `school/eupschools/get/${stateId}`,
-        method: "GET",
-        headers: {
-          Authorization: `${Cookies.get("accessToken")}`,
-        },
-      });
-      // console.log(res.data.message);
-      if(res.data.message.length === 0){
-        alert("No Data Available")
-      }
-      setSchoolRow(res.data.message);
-      // console.log(stateId)
-      // console.log(type)
-    } else if (type === "All") {
-      const res = await instance({
-        url: `school/ckeupschools/get/${stateId}`,
-        method: "GET",
-        headers: {
-          Authorization: `${Cookies.get("accessToken")}`,
-        },
-      });
-      // console.log(res.data.message);
-      if(res.data.message.length === 0){
-        alert("No Data Available")
-      }
-      setSchoolRow(res.data.message);
-      // console.log(stateId)
-      // console.log(type)
-    }
+    //   // console.log(stateId)
+    //   // console.log(type)
+    // } else if (type === "Eupheus Learning") {
+    //   const res = await instance({
+    //     url: `school/eupschools/get/${stateId}`,
+    //     method: "GET",
+    //     headers: {
+    //       Authorization: `${Cookies.get("accessToken")}`,
+    //     },
+    //   });
+    //   // console.log(res.data.message);
+    //   if(res.data.message.length === 0){
+    //     alert("No Data Available")
+    //   }
+    //   setSchoolRow(res.data.message);
+    //   // console.log(stateId)
+    //   // console.log(type)
+    // } else if (type === "All") {
+    //   const res = await instance({
+    //     url: `school/ckeupschools/get/${stateId}`,
+    //     method: "GET",
+    //     headers: {
+    //       Authorization: `${Cookies.get("accessToken")}`,
+    //     },
+    //   });
+    //   // console.log(res.data.message);
+    //   if(res.data.message.length === 0){
+    //     alert("No Data Available")
+    //   }
+    //   setSchoolRow(res.data.message);
+    //   // console.log(stateId)
+    //   // console.log(type)
+    // }
   };
 
   const updateSchoolCode = async (schoolId, statId) => {
@@ -409,7 +412,7 @@ const ViewInvoice = () => {
                 />
               </div> */}
 
-              <div className="flex flex-col gap-2 w-full md:w-[20vw]">
+              <div className="flex flex-col gap-2 w-full md:w-[30vw]">
                 <label className="text-gray-100">Customer</label>
 
                 <SearchDropDown
@@ -436,7 +439,7 @@ const ViewInvoice = () => {
                 Search School
               </button> */}
               <div className="sm:w-auto w-[50vw]" onClick={searchSchool}>
-                <BasicButton text={"Search School"} />
+                <BasicButton text={"Search Customer"} />
               </div>
             </div>
             {/* <div className="w-full flex gap-3 justify-end">
@@ -450,13 +453,13 @@ const ViewInvoice = () => {
                 <TableContainer component={Paper}>
                   <Toolbar className="bg-slate-400">
                     {/* <form> */}
-                    <TextField
+                    {/* <TextField
                       id="search-bar"
                       className="text"
                       onInput={(e) => {
                         handleSearch(e.target.value);
                       }}
-                      label="Enter School Name"
+                      label="Enter Invoice Number"
                       variant="outlined"
                       placeholder="Search..."
                       size="small"
@@ -469,7 +472,7 @@ const ViewInvoice = () => {
                       >
                         <SearchIcon style={{ fill: "blue" }} />
                       </IconButton>
-                    </div>
+                    </div> */}
 
                     <TablePagination
                       rowsPerPageOptions={[
@@ -501,21 +504,17 @@ const ViewInvoice = () => {
                     <TableHead className="bg-slate-500">
                       <TableRow>
                         <TableCell className="!w-[13rem]" align="center">
-                          School Name
+                          Invoice No
                         </TableCell>
                         <TableCell className="!w-[13rem]" align="center">
-                          State
+                          Doc Date
                         </TableCell>
                         <TableCell className="!w-[13rem]" align="center">
-                          City
+                          Doc Total
                         </TableCell>
                         <TableCell className="!w-[10rem]" align="center">
-                          School Code
+                          Print
                         </TableCell>
-                        <TableCell
-                          className="!w-[8rem]"
-                          align="center"
-                        ></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody className="bg-slate-200">
@@ -528,7 +527,7 @@ const ViewInvoice = () => {
                             : schoolRow
                           ).map((row) => (
                             <TableRow
-                              key={row.school_name}
+                              key={row.id}
                               sx={{
                                 "&:last-child td, &:last-child th": {
                                   border: 0,
@@ -540,43 +539,20 @@ const ViewInvoice = () => {
                                 component="th"
                                 scope="row"
                               >
-                                {row.school_name}
+                                {row.inv_no}
                               </TableCell>
                               <TableCell align="center">
-                                {row.school_addresses[0].fk_state.state}
+                                {row.docdate}
                               </TableCell>
                               <TableCell align="center">
-                                {row.school_addresses[0].fk_city.city}
+                                {row.doctotal}
                               </TableCell>
-                              {row.ck_code ? (
+                       
                                 <TableCell align="center">
-                                  {row.ck_code}
+                                  {"row.ck_code"}
                                 </TableCell>
-                              ) : (
-                                <TableCell align="center">
-                                  <div
-                                    className="sm:w-auto w-[50vw]"
-                                    onClick={() => {
-                                      updateSchoolCode(row.id, stateId);
-                                    }}
-                                  >
-                                    <BasicButton text={"Get Code"} />
-                                  </div>
-                                </TableCell>
-                              )}
-                              <TableCell align="center">
-                                {type === "Classklap" ? (
-                                  <div className="w-full flex gap-3 justify-end">
-                                    <Link
-                                      to={`/update_school_training/${row.id}`}
-                                    >
-                                      <BasicButton text={"Edit"} />
-                                    </Link>
-                                  </div>
-                                ) : (
-                                  ""
-                                )}
-                              </TableCell>
+                         
+                  
                             </TableRow>
                           ))
                         : (rowsPerPage > 0
@@ -633,19 +609,6 @@ const ViewInvoice = () => {
                                   )}
                                 </TableCell>
                               )}
-                              <TableCell align="center">
-                                {type === "Classklap" ? (
-                                  <div className="w-full flex gap-3 justify-end">
-                                    <Link
-                                      to={`/update_school_training/${row.id}`}
-                                    >
-                                      <BasicButton text={"Edit"} />
-                                    </Link>
-                                  </div>
-                                ) : (
-                                  ""
-                                )}
-                              </TableCell>
                             </TableRow>
                           ))}
                     </TableBody>

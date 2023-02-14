@@ -26,6 +26,7 @@ const AddSchoolTraining = () => {
   const [snackbarErrStatus, setSnackbarErrStatus] = useState(true);
   const [state, setState] = useState([]);
   const [city, setCity] = useState([]);
+  const [schoolType, setSchoolType] = useState("")
   const [steps, setSteps] = useState({
     step1: true,
     step2: false,
@@ -174,7 +175,7 @@ const AddSchoolTraining = () => {
   };
 
   const handleOrderProcessingForm = async (value, type) => {
-    console.log(value, type);
+    // console.log(value, type);
     switch (type) {
       // step 1
       case "board_name_addschool":
@@ -221,7 +222,7 @@ const AddSchoolTraining = () => {
         formik.values.school_city = value;
         break;
       case "School State *":
-        console.log(value.id);
+        // console.log(value.id);
         formik.values.school_state = value.id;
         break;
       case "School Pin Code *":
@@ -251,6 +252,13 @@ const AddSchoolTraining = () => {
       case "select_city_training":
         // console.log(value);
         formik.values.school_city = value.id;
+        // console.log(formik.values.school_city);
+        // getCity(value.id)
+        break;
+      case "select_school_type":
+        // console.log(value);
+        setSchoolType(value.type)
+        // formik.values.school_city = value.id;
         // console.log(formik.values.school_city);
         // getCity(value.id)
         break;
@@ -289,7 +297,7 @@ const AddSchoolTraining = () => {
           Authorization: Cookies.get("accessToken"),
         },
       });
-      console.log(state.data.message);
+      // console.log(state.data.message);
       setState(state.data.message);
     };
     getBoards();
@@ -298,7 +306,7 @@ const AddSchoolTraining = () => {
   }, []);
 
   const getCity = async (id) => {
-    console.log(id);
+    // console.log(id);
     const city = await instance({
       url: `location/city/${id}`,
       method: "GET",
@@ -306,7 +314,7 @@ const AddSchoolTraining = () => {
         Authorization: Cookies.get("accessToken"),
       },
     });
-    console.log(city.data.message);
+    // console.log(city.data.message);
     setCity(city.data.message);
   };
 
@@ -335,7 +343,6 @@ const AddSchoolTraining = () => {
 
   const navigate = useNavigate();
 
-
   useEffect(() => {
     const handleWidth = () => {
       if (window.innerWidth > 1024) {
@@ -357,27 +364,30 @@ const AddSchoolTraining = () => {
     let newData = {
       schoolContanct: [
         {
-          category: "signatory"
+          category: "signatory",
         },
         {
-          category: "service"
+          category: "service",
         },
-      ]
+      ],
     };
 
-    newData.school_name = formik.values.school_name
-    newData.state = formik.values.school_state
-    newData.city = formik.values.school_city
-    newData.pin = formik.values.school_pin
-    newData.address = formik.values.school_address
-    newData.schoolContanct[0].pName = formik.values.school_signatory_name
-    newData.schoolContanct[0].pEmail = formik.values.school_signatory_email
-    newData.schoolContanct[0].pPhone = formik.values.school_signatory_mobile
-    newData.schoolContanct[0].designation = formik.values.school_signatory_designation
-    newData.schoolContanct[1].pName = formik.values.school_service_name
-    newData.schoolContanct[1].pEmail = formik.values.school_service_email
-    newData.schoolContanct[1].pPhone = formik.values.school_service_mobile
-    newData.schoolContanct[1].designation = formik.values.school_service_designation
+    newData.school_name = formik.values.school_name;
+    newData.state = formik.values.school_state;
+    newData.city = formik.values.school_city;
+    newData.pin = formik.values.school_pin;
+    newData.address = formik.values.school_address;
+    newData.school_type = schoolType;
+    newData.schoolContanct[0].pName = formik.values.school_signatory_name;
+    newData.schoolContanct[0].pEmail = formik.values.school_signatory_email;
+    newData.schoolContanct[0].pPhone = formik.values.school_signatory_mobile;
+    newData.schoolContanct[0].designation =
+      formik.values.school_signatory_designation;
+    newData.schoolContanct[1].pName = formik.values.school_service_name;
+    newData.schoolContanct[1].pEmail = formik.values.school_service_email;
+    newData.schoolContanct[1].pPhone = formik.values.school_service_mobile;
+    newData.schoolContanct[1].designation =
+      formik.values.school_service_designation;
 
     // console.log(newData)
 
@@ -389,10 +399,10 @@ const AddSchoolTraining = () => {
         Authorization: Cookies.get("accessToken"),
       },
     });
-    console.log(res);
+    // console.log(res);
     if (res.data.status === "success") {
-      console.log(res);
-      setSnackbarErrStatus(false)
+      // console.log(res);
+      setSnackbarErrStatus(false);
       setErrMessage("New School Added");
       snackbarRef.current.openSnackbar();
       setTimeout(() => {
@@ -486,14 +496,14 @@ const AddSchoolTraining = () => {
                       multiline={false}
                     /> */}
 
-                    {/* <SearchDropDown
+                    <SearchDropDown
                       handleOrderProcessingForm={handleOrderProcessingForm}
-                      Name={"board_name_addschool"}
-                      Initialvalue={formik.values.board}
-                      label={"Select Board *"}
-                      data={boards}
+                      Name={"select_school_type"}
+                      label={"School Type *"}
+                      required={true}
+                      data={[{ type: "New Business" }, { type: "Renewal" }]}
                       color={"rgb(243, 244, 246)"}
-                    /> */}
+                    />
                     {/* <SearchDropDown
                       handleOrderProcessingForm={handleOrderProcessingForm}
                       Name={"category_addschool"}
@@ -507,6 +517,7 @@ const AddSchoolTraining = () => {
                     className="mt-3"
                     onClick={() => {
                       if (
+                        schoolType &&
                         // formik.values.category &&
                         // formik.values.board &&
                         formik.values.school_name
@@ -523,7 +534,7 @@ const AddSchoolTraining = () => {
                         });
                       } else {
                         setSnackbarErrStatus(true);
-                        setErrMessage("Please Enter School Name");
+                        setErrMessage("Please Enter All the Fields");
                         snackbarRef.current.openSnackbar();
                       }
                     }}

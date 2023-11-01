@@ -14,6 +14,7 @@ const initialAuthState = {
   editorial: Cookies.get("editorial") || null,
   IT: Cookies.get("IT") || null,
   SM: Cookies.get("SM") || null,
+  salesCoordinator: Cookies.get("sales_coordinator") || null,
 };
 
 const authSlice = createSlice({
@@ -38,6 +39,7 @@ const authSlice = createSlice({
       state.gatepass = false;
       state.editorial = false;
       state.SM = false;
+      state.salesCoordinator = false;
     },
     adminLogin(state) {
       state.admin = Cookies.get("admin");
@@ -56,6 +58,9 @@ const authSlice = createSlice({
     },
     trainingLogin(state) {
       state.training = Cookies.get("training");
+    },
+    salesCoordinatorLogin(state) {
+      state.salesCoordinator = Cookies.get("sales_coordinator");
     },
     HRLogin(state) {
       state.HR = Cookies.get("HR");

@@ -17,6 +17,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
 import { PictureAsPdf } from "@mui/icons-material";
+import { useSelector } from "react-redux";
 
 const ViewInvoiceSingle = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -37,6 +38,8 @@ const ViewInvoiceSingle = () => {
     start: "2023-04-01",
     end: "2024-03-31",
   });
+  const SM = useSelector((state) => state.auth.SM);
+  console.log(SM);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -65,14 +68,16 @@ const ViewInvoiceSingle = () => {
   };
 
   useEffect(() => {
-    if (!bpCode) {
+    if (!bpCode && !SM) {
       searchPDF();
     }
   }, [finYear]);
 
   useEffect(() => {
     getCustomers();
-    searchPDF();
+    if (!SM) {
+      searchPDF();
+    }
     if (Admin) {
       getUsers();
     }

@@ -518,8 +518,8 @@ const ReturnOrder = () => {
         GetContactRes(value.id);
         formik.values.cutomer_name = value.id;
         break;
-      case "pref_transpoter":
-        formik.values.pref_transpoter_name = value.id;
+      case "Preffered Transpoter Name":
+        formik.values.pref_transpoter_name = value;
         break;
       case "Sales Order Date":
         formik.values.order_date = handleDate(value.toString());
@@ -929,6 +929,12 @@ const ReturnOrder = () => {
                           <TableCell className="!w-[15rem]" align="center">
                             Item Code
                           </TableCell>
+                          <TableCell className="!w-[15rem]" align="center">
+                            Invoice No.
+                          </TableCell>
+                          <TableCell className="!w-[15rem]" align="center">
+                            Invoice Date
+                          </TableCell>
 
                           <TableCell className="!w-[8rem]" align="center">
                             Series Name
@@ -969,7 +975,12 @@ const ReturnOrder = () => {
                               <TableCell align="center">
                                 {item.item_code}
                               </TableCell>
-
+                              <TableCell align="center">
+                                {item?.inv_no}
+                              </TableCell>
+                              <TableCell align="center">
+                                {item?.docdate}
+                              </TableCell>
                               <TableCell align="center">
                                 {item?.series}
                               </TableCell>
@@ -1039,13 +1050,21 @@ const ReturnOrder = () => {
                 </div>
               </div>
               <div className="flex sm:flex-row flex-col items-center gap-[2rem] justify-between">
-                <div className=" flex flex-col gap-2 w-full md:col-span-2">
+                {/* <div className=" flex flex-col gap-2 w-full md:col-span-2">
                   <SearchDropDown
                     handleOrderProcessingForm={handleOrderProcessingForm}
                     data={transpoterData}
                     label={"Preffered Transpoter Name"}
                     Name={"pref_transpoter"}
                     color={"rgb(243, 244, 246)"}
+                  />
+                </div> */}
+                <div className=" flex flex-col gap-2 w-full">
+                  <BasicTextFields
+                    handleOrderProcessingForm={handleOrderProcessingForm}
+                    lable={"Preffered Transpoter Name"}
+                    variant={"standard"}
+                    multiline={false}
                   />
                 </div>
                 <div className=" flex flex-col gap-2 w-full md:col-span-2">

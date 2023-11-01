@@ -102,6 +102,14 @@ const Login = () => {
           );
           dispatch(authActions.trainingLogin());
         }
+        if (res.data.type === "sales_coordinator") {
+          Cookies.set(
+            "sales_coordinator",
+            // true
+            `id: ${res.data.id}, accessToken: ${res.data.accessToken}`
+          );
+          dispatch(authActions.salesCoordinatorLogin());
+        }
 
         if (res.data.type === "admin") {
           Cookies.set(
@@ -194,6 +202,11 @@ const Login = () => {
           res.data.company === "Euphues"
         ) {
           navigate("/admin/home");
+        } else if (
+          res.data.type === "sales_coordinator" &&
+          res.data.company === "Euphues"
+        ) {
+          navigate("/sc/all_return");
         } else if (res.data.type === "zsm" && res.data.company === "Euphues") {
           navigate("/");
         } else if (

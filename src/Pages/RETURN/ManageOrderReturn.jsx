@@ -42,7 +42,6 @@ const ManageOrderReturn = () => {
   }, []);
 
   const uploadAttachment = async (file, id) => {
-    console.log(file);
     let formdata = new FormData();
     if (file.type !== "image/jpeg" && file.type !== "image/png") {
       ShowError("Please Select an image file only");

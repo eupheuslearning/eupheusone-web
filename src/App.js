@@ -6,6 +6,7 @@ import GlobelErrorSnackbar from "./Components/Material/GlobelErrorSnackbar";
 import Loader from "./Components/Material/Loader";
 import ManageOrderReturn from "./Pages/RETURN/ManageOrderReturn";
 import { ReturnOrderPdf } from "./Pages/RETURN/ReturnOrderPdf";
+import AllReturn from "./Pages/SalesCoordinator/AllReturn";
 // Pages
 // import MySchool from "./Pages/MySchool";
 // import SchoolDirectory from "./Pages/SchoolDirectory";
@@ -132,6 +133,7 @@ function App() {
   const Editorial = useSelector((state) => state.auth.editorial);
   const IT = useSelector((state) => state.auth.IT);
   const SM = useSelector((state) => state.auth.SM);
+  const SalesCoordinator = useSelector((state) => state.auth.salesCoordinator);
   useEffect(() => {
     ReactGA.initialize("G-WWFF5R3TB6");
   }, []);
@@ -690,6 +692,11 @@ function App() {
                 <Route
                   path="*"
                   element={isAuth ? <PageNotFound /> : <Login />}
+                />
+                {/* Sales-Coordinator */}
+                <Route
+                  path="/sc/all_return"
+                  element={SalesCoordinator ? <AllReturn /> : <Login />}
                 />
               </Routes>
             </Suspense>

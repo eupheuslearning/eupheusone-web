@@ -67,6 +67,7 @@ const Navbar = ({ handleSidebarCollapsed, info, changeYear, defaultYear }) => {
     Cookies.remove("HR");
     Cookies.remove("warehouse_GP");
     Cookies.remove("SM");
+    Cookies.remove("sales_coordinator");
     dispatch(authActions.logout());
     navigate("/");
   };

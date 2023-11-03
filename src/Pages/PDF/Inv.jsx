@@ -3,9 +3,7 @@ import "./Inv.css";
 import eupheusLogo from "./eupheusLogo.png";
 import { useParams } from "react-router-dom";
 import instance from "../../Instance";
-import { DataGrid } from "@mui/x-data-grid";
-import axios from "axios";
-import Cookies from "js-cookie";
+
 import { ToWords } from "to-words";
 
 // var converter = require("number-to-words");
@@ -52,6 +50,7 @@ const Inv = () => {
   const [taxAmnt, setTaxAmnt] = useState("");
   const [vatSum, setVatSum] = useState("");
   const [cinNum, setCinNum] = useState("");
+  const [remarks, setRemarks] = useState("");
   useEffect(() => {
     getAllData();
   }, []);
@@ -115,6 +114,7 @@ const Inv = () => {
     setdispatchThrough(data.Transporter_Name);
     setLRno(data.LRNo);
     setGRdate(data.GR_Date);
+    setRemarks(data.remarrks);
     setnoOfBox(data.U_Boxes);
     setmotorVehicleNo(data.U_UNE_VEH_NO);
     settermsOfDelivery(data.delivery_term);
@@ -3155,7 +3155,7 @@ const Inv = () => {
                     fontSize: "9pt",
                   }}
                 >
-                  :- Based On Sales Orders 23471. Based On Deliveries 23780.
+                  :- {remarks}
                 </span>
               </p>
             </td>

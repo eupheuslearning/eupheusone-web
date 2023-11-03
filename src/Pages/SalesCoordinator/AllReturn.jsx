@@ -13,17 +13,20 @@ import {
   CircularProgress,
   Paper,
   Table,
+  TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
 } from "@mui/material";
 import UploadButton from "../../Components/Material/UploadButton";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
-import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import BasicTextFields from "../../Components/Material/TextField";
+import { useFormik } from "formik";
 
 const AllReturn = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -182,44 +185,7 @@ const AllReturn = () => {
             className={`sm:px-8 px-4 py-3 grid sm:grid-cols-1 grid-cols-1 gap-4 bg-[#141728]`}
           >
             {returnData.map((item, index) => {
-              return (
-                // <div className="flex flex-col gap-2">
-                //   <div
-                //     key={index}
-                //     className="flex font-medium flex-wrap gap-4 text-gray-100 justify-start rounded-md items-start px-4 py-4 bg-slate-600"
-                //   >
-                //     <span>Return Type: {item.return_type}</span>
-                //     <span>Return Reference: {item.return_ref}</span>
-                //     <span>School Code: {item.school_code}</span>
-                //     <span>School Name: {item.fk_school.school_name}</span>
-                //     <span>Sales Order Date: {item.sales_order_date}</span>
-                //     <span>Return Date: {item.return_date}</span>
-                //   </div>
-                //   <div className="flex gap-2">
-                //     <div onClick={() => getPrint(item?.id)}>
-                //       <BasicButton size={"small"} text={"Get Print"} />
-                //     </div>
-
-                //     {!item.is_final ? (
-                //       <UploadButton
-                //         name={"Upload Attachment"}
-                //         accept={"image/*"}
-                //         uploadContent={uploadAttachment}
-                //         id={item.id}
-                //       />
-                //     ) : null}
-                //     {!item.is_final && item.attachment ? (
-                //       <div onClick={() => SubmitReturn(item?.id)}>
-                //         <BasicButton size={"small"} text={"Submit"} />
-                //       </div>
-                //     ) : null}
-                //     {/* {item.is_final ? (
-                //       <BasicButton size={"small"} text={"Copy to Sap"} />
-                //     ) : null} */}
-                //   </div>
-                // </div>
-                <ReturnDetails data={item} />
-              );
+              return <ReturnDetails data={item} setLoading={setLoading} />;
             })}
           </div>
         </div>
@@ -228,13 +194,131 @@ const AllReturn = () => {
   );
 };
 
-const ReturnDetails = ({ data }) => {
+const ReturnDetails = ({ data, setLoading }) => {
   const [expanded, setExpended] = useState(false);
+  const [items, setItems] = useState([]);
+
+  const formik = useFormik({
+    initialValues: {
+      items: [],
+      remarks: "",
+      grNumber: "",
+      grDate: "",
+      numOfBoxes: "",
+      recievedQty: "",
+      transporterName: "",
+    },
+    validate: (values) => {
+      //   const errors = {};
+      //   if (
+      //     !values.return_type ||
+      //     !values.sales_order_num ||
+      //     !values.cutomer_name ||
+      //     !values.school_code ||
+      //     !values.s_address ||
+      //     !values.b_address ||
+      //     !values.return_ref ||
+      //     !values.bp_contact_id ||
+      //     !values.school ||
+      //     !values.grNum ||
+      //     !values.grDate ||
+      //     !values.numOfBoxes ||
+      //     !values.pref_transpoter_name
+      //   ) {
+      //     ShowError("All fields are required");
+      //     errors.return_type = "Required";
+      //     return errors;
+      //   }
+    },
+    onSubmit: async (values) => {
+      //   setLoading(true);
+      //   const res = await instance({
+      //     url: `sales_data/createreturn`,
+      //     method: "POST",
+      //     headers: {
+      //       Authorization: `${Cookies.get("accessToken")}`,
+      //     },
+      //     data: {
+      //       returnType: values.return_type,
+      //       returnReference: values.return_ref,
+      //       salesOrderNumber: values.sales_order_num,
+      //       salesOrderDate: values.order_date,
+      //       returnDate: values.returnDate,
+      //       schoolCode: values.school_code,
+      //       bpId: values.cutomer_name,
+      //       schoolId: values.school,
+      //       transporterName: "test",
+      //       contactId: values.bp_contact_id,
+      //       remarks: values.remarks,
+      //       grNumber: values.grNum,
+      //       grDate: values.grDate,
+      //       numberOfBoxes: values.numOfBoxes,
+      //       quantity: value.total_quan,
+      //       amount: value.total,
+      //       shippingAddressId: values.s_address,
+      //       billingAddressId: values.b_address,
+      //       isFullCancel: !values.full_return,
+      //       items: values.items.map((item) => {
+      //         return {
+      //           itemId: item.id,
+      //           quantity: item.quantity,
+      //           itemCode: item.item_id,
+      //           series: item.series,
+      //           grade: item.grade,
+      //           price: item.price,
+      //           discountPercent: item.discount,
+      //         };
+      //       }),
+      //     },
+      //   }).catch(() => {
+      //     setLoading(false);
+      //   });
+      //   if (res.data.status === "success") {
+      //     setErrMessage(res.data.message);
+      //     setSnackbarErrStatus(false);
+      //     snackbarRef.current.openSnackbar();
+      //     setTimeout(() => {
+      //       window.location.reload();
+      //     }, 2000);
+      //   }
+      //   setLoading(false);
+      console.log(values);
+    },
+  });
+
+  const getItems = async () => {
+    const res = await instance({
+      url: `sales_data/get-return-details/${data.id}`,
+      method: "GET",
+      headers: {
+        Authorization: Cookies.get("accessToken"),
+      },
+    }).catch(() => {
+      setLoading(false);
+    });
+    if (res.status === 200) {
+      res.data.data.return_processing_items.map((item) => {
+        formik.values.items.push({
+          ...item,
+          recievedQty: 0,
+          damageQty: 0,
+          defective: 0,
+        });
+      });
+      setItems(res.data.data.return_processing_items);
+    }
+  };
+
   return (
     <Accordion
       expanded={expanded}
       className="!bg-slate-500"
-      onChange={() => {
+      onChange={async () => {
+        if (items.length === 0) {
+          setLoading(true);
+          await getItems();
+          setLoading(false);
+        }
         setExpended((prev) => {
           return !prev;
         });
@@ -296,67 +380,68 @@ const ReturnDetails = ({ data }) => {
                   </TableCell>
                 </TableRow>
               </TableHead>
-              {/* {rowData.map((item, index) => {
-                        return (
-                          <TableBody className="bg-slate-300">
-                            <TableRow
-                              key={item.id}
-                              sx={{
-                                "&:last-child td, &:last-child th": {
-                                  border: 0,
-                                },
-                              }}
-                            >
-                              <TableCell align="left">
-                                <Remove
-                                  className="!mr-2 !bg-slate-500 !rounded-full !text-white !cursor-pointer"
-                                  onClick={() => {
-                                    removeItemRow(item.id);
-                                  }}
-                                />
-                                {item.item_name}
-                              </TableCell>
-                              <TableCell align="center">
-                                {item.item_code}
-                              </TableCell>
-                              <TableCell align="center">
-                                {item?.inv_no}
-                              </TableCell>
-                              <TableCell align="center">
-                                {item?.docdate}
-                              </TableCell>
-                              <TableCell align="center">
-                                {item?.series}
-                              </TableCell>
-
-                              <TableCell align="center">
-                                {item?.price}
-                              </TableCell>
-
-                              <TableCell align="center">
-                                {item?.grade}
-                              </TableCell>
-                              <TableCell align="center">
-                                <TextField
-                                  id="search-bar"
-                                  type={"number"}
-                                  className="text_black"
-                                  onChange={(e) => {
-                                    alterItemQuantity(index, e.target.value);
-                                  }}
-                                  label="Enter Value *"
-                                  variant="outlined"
-                                  defaultValue={item?.quantity}
-                                  size="small"
-                                />
-                              </TableCell>
-                            </TableRow>
-                          </TableBody>
-                        );
-                      })} */}
+              {items.length !== 0 &&
+                items.map((item, index) => {
+                  return (
+                    <TableBody className="bg-slate-300">
+                      <TableRow
+                        key={item.id}
+                        sx={{
+                          "&:last-child td, &:last-child th": {
+                            border: 0,
+                          },
+                        }}
+                      >
+                        <TableCell align="left">{item.item_name}</TableCell>
+                        <TableCell align="center">{item.item_code}</TableCell>
+                        <TableCell align="center">
+                          <TextField
+                            type={"number"}
+                            className="text_black"
+                            variant="outlined"
+                            size="small"
+                          />
+                        </TableCell>
+                        <TableCell align="center">
+                          <TextField
+                            type={"number"}
+                            className="text_black"
+                            variant="outlined"
+                            size="small"
+                          />
+                        </TableCell>
+                        <TableCell align="center">
+                          <TextField
+                            type={"number"}
+                            className="text_black"
+                            variant="outlined"
+                            size="small"
+                          />
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  );
+                })}
             </Table>
           </TableContainer>
         </Paper>
+        <div className="w-full flex gap-4 mt-8">
+          <BasicTextFields lable={"Remarks"} />
+          <BasicTextFields lable={"GR number"} defaultValue={data?.gr_number} />
+          <BasicTextFields lable={"GR date"} />
+          <BasicTextFields lable={"No of boxes"} defaultValue={data?.boxes} />
+          <BasicTextFields lable={"Received QTY"} />
+          <BasicTextFields
+            lable={"Transporter name"}
+            defaultValue={data?.transporter_name}
+          />
+        </div>
+        <div className="w-full flex gap-4 mt-8">
+          <BasicButton size={"small"} text={"Reject"} />
+          <div onClick={formik.handleSubmit}>
+            <BasicButton size={"small"} text={"Approve"} />
+          </div>
+        </div>
       </AccordionDetails>
     </Accordion>
   );

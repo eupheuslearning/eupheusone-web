@@ -81,6 +81,7 @@ const ReturnOrder = () => {
     },
     validate: (values) => {
       const errors = {};
+      console.log(values);
       if (
         !values.return_type ||
         !values.sales_order_num ||
@@ -94,6 +95,10 @@ const ReturnOrder = () => {
         !values.pref_transpoter_name
       ) {
         ShowError("All fields are required");
+        errors.return_type = "Required";
+        return errors;
+      } else if (checkZeroQTY()) {
+        ShowError("Item Quantity cannot be zero");
         errors.return_type = "Required";
         return errors;
       }
@@ -145,6 +150,19 @@ const ReturnOrder = () => {
       setLoading(false);
     },
   });
+
+  const checkZeroQTY = () => {
+    let err = false;
+
+    for (let i = 0; i < formik.values.items.length; i++) {
+      const item = formik.values.items[i];
+      if (item.quantity === "0") {
+        err = true;
+        break;
+      }
+    }
+    return err;
+  };
 
   const navInfo = {
     title: "Return Request",
@@ -496,6 +514,7 @@ const ReturnOrder = () => {
   };
 
   const handleOrderProcessingForm = async (value, type) => {
+    console.log(value, type);
     switch (type) {
       case "order_type":
         getSubjectData(value.order_type.toLowerCase());
@@ -510,8 +529,8 @@ const ReturnOrder = () => {
         GetContactRes(value.id);
         formik.values.cutomer_name = value.id;
         break;
-      case "Preffered Transpoter Name":
-        formik.values.pref_transpoter_name = value;
+      case "pref_transpoter":
+        formik.values.pref_transpoter_name = value.id;
         break;
       case "Sales Order Date":
         formik.values.order_date = handleDate(value.toString());
@@ -1039,7 +1058,7 @@ const ReturnOrder = () => {
                 </div>
               </div>
               <div className="flex sm:flex-row flex-col items-center gap-[2rem] justify-between">
-                {/* <div className=" flex flex-col gap-2 w-full md:col-span-2">
+                <div className=" flex flex-col gap-2 w-full md:col-span-2">
                   <SearchDropDown
                     handleOrderProcessingForm={handleOrderProcessingForm}
                     data={transpoterData}
@@ -1047,15 +1066,15 @@ const ReturnOrder = () => {
                     Name={"pref_transpoter"}
                     color={"rgb(243, 244, 246)"}
                   />
-                </div> */}
-                <div className=" flex flex-col gap-2 w-full">
+                </div>
+                {/* <div className=" flex flex-col gap-2 w-full">
                   <BasicTextFields
                     handleOrderProcessingForm={handleOrderProcessingForm}
                     lable={"Preffered Transpoter Name"}
                     variant={"standard"}
                     multiline={false}
                   />
-                </div>
+                </div> */}
                 <div className=" flex flex-col gap-2 w-full md:col-span-2">
                   <BasicTextFields
                     handleOrderProcessingForm={handleOrderProcessingForm}

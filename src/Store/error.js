@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialErrorState = {
   errorMessage: "",
   showMessage: false,
+  severity: "error",
 };
 
 const errorSlice = createSlice({
@@ -17,6 +18,9 @@ const errorSlice = createSlice({
     },
     hideMessage(state) {
       state.showMessage = false;
+    },
+    setSeverity(state, action) {
+      state.severity = action.payload;
     },
   },
 });

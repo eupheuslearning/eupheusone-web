@@ -12,6 +12,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 const GlobelErrorSnackbar = () => {
   const showError = useSelector((state) => state.error.showMessage);
   const errorMessage = useSelector((state) => state.error.errorMessage);
+  const severity = useSelector((state) => state.error.severity);
   const snackbarRef = React.useRef();
   const dispatch = useDispatch();
 
@@ -27,7 +28,7 @@ const GlobelErrorSnackbar = () => {
         onClose={handleClose}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
       >
-        <Alert onClose={handleClose} severity={"error"} sx={{ width: "100%" }}>
+        <Alert onClose={handleClose} severity={severity} sx={{ width: "100%" }}>
           {errorMessage}
         </Alert>
       </Snackbar>

@@ -22,7 +22,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import ReactGA from "react-ga4";
 import { ShowError } from "../../util/showError";
-import { Clear, Delete, Remove } from "@mui/icons-material";
+import { Remove } from "@mui/icons-material";
 
 const ReturnOrder = () => {
   const [loading, setLoading] = useState(false);
@@ -32,7 +32,6 @@ const ReturnOrder = () => {
   const [schoolData, setSchoolData] = useState([]);
   const [subjectData, setSubjectData] = useState([]);
   const [transpoterData, setTranspoterData] = useState([]);
-  const [seriesData, setSeriesData] = useState([{ series: "", disable: true }]);
   const [address, setAddress] = useState({ disable: true });
   const [sAddress, setSaddress] = useState([]);
   const [contactData, setContactData] = useState([]);
@@ -104,6 +103,10 @@ const ReturnOrder = () => {
         ShowError("All fields are required");
         errors.return_type = "Required";
         return errors;
+      } else if (checkNegative()) {
+        ShowError("Item quantity cannot be negative");
+        errors.return_type = "Required";
+        return errors;
       }
     },
     onSubmit: async (values) => {
@@ -123,7 +126,7 @@ const ReturnOrder = () => {
           schoolCode: values.school_code,
           bpId: values.cutomer_name,
           schoolId: values.school,
-          transporterName: "test",
+          transporterName: values.pref_transpoter_name,
           contactId: values.bp_contact_id,
           remarks: values.remarks,
           grNumber: values.grNum,
@@ -148,6 +151,7 @@ const ReturnOrder = () => {
         },
       }).catch(() => {
         setLoading(false);
+        ShowError("Something went wrong");
       });
       if (res.data.status === "success") {
         setErrMessage(res.data.message);
@@ -166,87 +170,18 @@ const ReturnOrder = () => {
     details: ["Home", " / Return Request"],
   };
 
-  // const getCkItemBySubject = async (subId, reset) => {
-  //   if (rowData.length === 0) {
-  //     setLoading(true);
-  //     const CkItems = await instance({
-  //       url: `items/getitembysubject/${subId}`,
-  //       method: "GET",
-  //       headers: {
-  //         Authorization: `${Cookies.get("accessToken")}`,
-  //       },
-  //     });
-
-  //     const filterdRows = [];
-  //     let uniqueIds = new Set();
-  //     CkItems.data.message.map((item) => {
-  //       if (!uniqueIds.has(item?.item_code)) {
-  //         uniqueIds.add(item?.item_code);
-  //         filterdRows.push(item);
-  //       }
-  //     });
-  //     setRowData(filterdRows);
-  //     filterdRows.map((item) => {
-  //       formik.values.items.push({
-  //         id: item?.id,
-  //         item_id: item?.item_code,
-  //         quantity: formik.values.item_quan,
-  //         price: item?.price_master?.price,
-  //         tax: item?.fk_tax?.tax,
-  //         discount: item?.fk_discount?.discount,
-  //       });
-  //     });
-  //     setValue({
-  //       item_quan: false,
-  //       total_quan: calValues("total_quan"),
-  //       total: calValues("total_after_tax"),
-  //       total_before_tax: calValues("total_before_tax"),
-  //     });
-  //     setLoading(false);
-  //     setOpen(true);
-  //   } else if (reset) {
-  //     setLoading(true);
-  //     const CkItems = await instance({
-  //       url: `items/getitembysubject/${subId}`,
-  //       method: "GET",
-  //       headers: {
-  //         Authorization: `${Cookies.get("accessToken")}`,
-  //       },
-  //     });
-
-  //     const filterdRows = [];
-  //     let uniqueIds = new Set();
-  //     CkItems.data.message.map((item) => {
-  //       if (!uniqueIds.has(item?.item_code)) {
-  //         uniqueIds.add(item?.item_code);
-  //         filterdRows.push(item);
-  //       }
-  //     });
-  //     setRowData(filterdRows);
-  //     formik.values.items = [];
-  //     filterdRows.map((item) => {
-  //       formik.values.items.push({
-  //         id: item?.id,
-  //         item_id: item?.item_code,
-  //         quantity: formik.values.item_quan,
-  //         price: item?.price_master?.price,
-  //         tax: item?.fk_tax?.tax,
-  //         discount: item?.fk_discount?.discount,
-  //       });
-  //     });
-  //     setValue({
-  //       item_quan: false,
-  //       total_quan: calValues("total_quan"),
-  //       total: calValues("total_after_tax"),
-  //       total_before_tax: calValues("total_before_tax"),
-  //     });
-  //     setLoading(false);
-  //     setOpen(true);
-  //   }
-  // };
-
   const handleSidebarCollapsed = () => {
     sidebarRef.current.openSidebar();
+  };
+
+  const checkNegative = () => {
+    let err = false;
+    formik.values.items.map((item) => {
+      if (Number(item.quantity) < 0) {
+        err = true;
+      }
+    });
+    return err;
   };
 
   const getCustomerData = async () => {
@@ -329,7 +264,7 @@ const ReturnOrder = () => {
       }
     };
 
-    getTranspoterData();
+    // getTranspoterData();
     getCustomerData();
   }, []);
 
@@ -377,20 +312,6 @@ const ReturnOrder = () => {
     });
     setContactData(res.data.message);
   };
-
-  // const getSeriesData = async (id) => {
-  //   setLoading(true);
-  //   const SeriesRes = await instance({
-  //     url: `series/getseries/${id}`,
-  //     method: "GET",
-  //     headers: {
-  //       Authorization: Cookies.get("accessToken"),
-  //     },
-  //   });
-  //   setSeriesData(SeriesRes.data.message);
-
-  //   setLoading(false);
-  // };
 
   const getListData = async (seriesID) => {
     setLoading(true);
@@ -854,53 +775,7 @@ const ReturnOrder = () => {
                     size="small"
                   />
                 </div>
-                {/* <div className=" flex flex-col gap-2 w-full">
-                  <SearchDropDown
-                    handleOrderProcessingForm={handleOrderProcessingForm}
-                    getSeriesData={getSeriesData}
-                    disable={subjectData.length > 0 ? false : true}
-                    data={subjectData}
-                    Name={"subject_name"}
-                    label={"Select Subject"}
-                    color={"rgb(243, 244, 246)"}
-                  />
-                </div> */}
-                {/* {formik.values.return_type === "Eupheus" && (
-                  <div className=" flex flex-col gap-2 w-full">
-                    <SearchDropDown
-                      handleOrderProcessingForm={handleOrderProcessingForm}
-                      Name={"series_name"}
-                      disable={seriesData[0].disable}
-                      data={seriesData}
-                      label={"Select Series"}
-                      color={"rgb(243, 244, 246)"}
-                    />
-                  </div>
-                )} */}
-                {/* <div className=" flex flex-col gap-2 w-full">
-                  <TextField
-                    id="standard-basic"
-                    disabled={
-                      formik.values.return_type === "Eupheus"
-                        ? formik.values.subject && formik.values.series
-                          ? false
-                          : true
-                        : formik.values.subject
-                        ? false
-                        : true
-                    }
-                    onBlur={(e) =>
-                      handleOrderProcessingForm(
-                        e.target.value,
-                        "Items Quantity"
-                      )
-                    }
-                    inputProps={{ style: { color: "white" } }}
-                    InputLabelProps={{ style: { color: "white" } }}
-                    label="Items Quantity"
-                    variant="standard"
-                  />
-                </div> */}
+
                 <div className=" flex flex-col gap-2 w-full">
                   <TextField
                     id="standard-basic"
@@ -1050,15 +925,6 @@ const ReturnOrder = () => {
                 </div>
               </div>
               <div className="flex sm:flex-row flex-col items-center gap-[2rem] justify-between">
-                {/* <div className=" flex flex-col gap-2 w-full md:col-span-2">
-                  <SearchDropDown
-                    handleOrderProcessingForm={handleOrderProcessingForm}
-                    data={transpoterData}
-                    label={"Preffered Transpoter Name"}
-                    Name={"pref_transpoter"}
-                    color={"rgb(243, 244, 246)"}
-                  />
-                </div> */}
                 <div className=" flex flex-col gap-2 w-full">
                   <BasicTextFields
                     handleOrderProcessingForm={handleOrderProcessingForm}

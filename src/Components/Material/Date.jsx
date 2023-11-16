@@ -12,8 +12,12 @@ export default function DatePicker({
   name,
   disabled,
   disablePast,
+  defaultDate,
 }) {
-  const [value, setValue] = React.useState(new Date());
+  const [value, setValue] = React.useState(
+    defaultDate ? defaultDate : new Date()
+  );
+  // const [value, setValue] = React.useState("2023-10-31");
 
   const handleChange = (newValue) => {
     // console.log(newValue);

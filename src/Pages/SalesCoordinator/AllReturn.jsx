@@ -27,6 +27,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BasicTextFields from "../../Components/Material/TextField";
 import { useFormik } from "formik";
+import DatePicker from "../../Components/Material/Date";
 
 const AllReturn = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -185,13 +186,38 @@ const AllReturn = () => {
             className={`sm:px-8 px-4 py-3 grid sm:grid-cols-1 grid-cols-1 gap-4 bg-[#141728]`}
           >
             {returnData.map((item, index) => {
-              return <ReturnDetails data={item} setLoading={setLoading} />;
+              return !item.sales_co_status ? (
+                <ReturnDetails data={item} setLoading={setLoading} />
+              ) : null;
             })}
           </div>
         </div>
       </div>
     </div>
   );
+};
+
+const handleDate = (date) => {
+  let months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const month = (months.indexOf(date.split(" ")[1]) + 1)
+    .toString()
+    .padStart(2, "0");
+  let modifiedDate = `${date.split(" ")[3]}-${month}-${date.split(" ")[2]}`;
+
+  return modifiedDate;
 };
 
 const ReturnDetails = ({ data, setLoading }) => {
@@ -270,39 +296,27 @@ const ReturnDetails = ({ data, setLoading }) => {
         setLoading(false);
         ShowError("Couldn't update return");
       });
-      // const res = await instance({
-      //   url: `sales_data/update-return-sales-coordinator`,
-      //   method: "PUT",
-      //   headers: {
-      //     Authorization: `${Cookies.get("accessToken")}`,
-      //   },
-      //   data: {
-      //     id: data.id,
-      //     remarks: values.remarks,
-      //     grNumber: values.grNumber,
-      //     grDate: values.grDate,
-      //     numberOfBoxes: values.numOfBoxes,
-      //     transporterName: values.transporterName,
-      //     items: values.items.map((item) => {
-      //       return {
-      //         id: item.id,
-      //         receivedQuantity: Number(item.recievedQty),
-      //         damagedQuantity: Number(item.damageQty),
-      //         defectiveQuantity: Number(item.defective),
-      //       };
-      //     }),
-      //   },
-      // }).catch(() => {
-      //   setLoading(false);
-      //   ShowError("Couldn't update return");
-      // });
-
+      // approve return
       if (res.data.status === "success") {
-        ShowSuccess(res.data.message);
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
+        const approve = await instance({
+          url: `sales_data/submit-return-sales-coordinator/${data.id}`,
+          method: "PATCH",
+          headers: {
+            Authorization: `${Cookies.get("accessToken")}`,
+          },
+        }).catch(() => {
+          setLoading(false);
+          ShowError("Something went wrong");
+        });
+
+        if (approve.data.status === "success") {
+          ShowSuccess(res.data.message);
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        }
       }
+
       setLoading(false);
     },
   });
@@ -521,7 +535,13 @@ const ReturnDetails = ({ data, setLoading }) => {
               formik.values.grNumber = value;
             }}
           />
-          <BasicTextFields lable={"GR date"} />
+          <DatePicker
+            defaultDate={data.gr_date}
+            handleOrderProcessingForm={(value) => {
+              const newDate = handleDate(value.toString());
+              formik.values.grDate = newDate;
+            }}
+          />
           <BasicTextFields
             lable={"No of boxes"}
             defaultValue={data?.boxes}

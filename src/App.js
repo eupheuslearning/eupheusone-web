@@ -4,9 +4,10 @@ import ReactGA from "react-ga4";
 import { useEffect, lazy, Suspense } from "react";
 import GlobelErrorSnackbar from "./Components/Material/GlobelErrorSnackbar";
 import Loader from "./Components/Material/Loader";
-import ManageOrderReturn from "./Pages/RETURN/ManageOrderReturn";
+
+// import ManageOrderReturn from "./Pages/RETURN/ManageOrderReturn";
 import { ReturnOrderPdf } from "./Pages/RETURN/ReturnOrderPdf";
-import AllReturn from "./Pages/SalesCoordinator/AllReturn";
+// import AllReturn from "./Pages/SalesCoordinator/AllReturn";
 // Pages
 // import MySchool from "./Pages/MySchool";
 // import SchoolDirectory from "./Pages/SchoolDirectory";
@@ -113,6 +114,10 @@ const AddPrintingReq = lazy(() => import("./Pages/Printing/AddPrintingReq"));
 const CheckStatus = lazy(() => import("./Pages/Printing/CheckStatus"));
 const Reimbursment = lazy(() => import("./Pages/Reimbursment"));
 const DocPrint = lazy(() => import("./Pages/SM/DocPrint"));
+const ManageOrderReturn = lazy(() =>
+  import("./Pages/RETURN/ManageOrderReturn")
+);
+const AllReturn = lazy(() => import("./Pages/SalesCoordinator/AllReturn"));
 
 function App() {
   // const [userCache, setUserCache] = useState(false);

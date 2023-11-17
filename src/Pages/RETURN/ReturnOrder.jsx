@@ -388,60 +388,62 @@ const ReturnOrder = () => {
   };
 
   const getItemsBySoNo = async (so_no) => {
-    setLoading(true);
-    const getListData = await instance({
-      url: `items/getItemsBySo`,
-      method: "POST",
-      data: {
-        category: formik.values.return_type.toLowerCase(),
-        so_no,
-        bpId: formik.values.cutomer_name,
-      },
-      headers: {
-        Authorization: Cookies.get("accessToken"),
-      },
-    }).catch(() => {
-      setLoading(false);
-    });
-    if (getListData.status === 200) {
-      formik.values.sales_order_num = so_no;
-      const itemsArr = [];
-      getListData?.data?.data?.map((subArr) => {
-        subArr.map((item) => {
-          if (item) {
-            itemsArr.push({
-              ...item,
-              item_code: item.itemcode,
-              item_name: item.itemdescription,
-            });
-            formik.values.items.push({
-              id: item?.id,
-              item_id: item?.itemcode,
-              quantity: item?.quantity,
-              price: item?.price,
-              tax: 0,
-              discount: item?.discountpercent,
-              series: item?.series,
-              grade: item?.grade,
-            });
-          }
+    if (rowData.length === 0 && formik.values.items.length === 0) {
+      setLoading(true);
+      const getListData = await instance({
+        url: `items/getItemsBySo`,
+        method: "POST",
+        data: {
+          category: formik.values.return_type.toLowerCase(),
+          so_no,
+          bpId: formik.values.cutomer_name,
+        },
+        headers: {
+          Authorization: Cookies.get("accessToken"),
+        },
+      }).catch(() => {
+        setLoading(false);
+      });
+      if (getListData.status === 200) {
+        formik.values.sales_order_num = so_no;
+        const itemsArr = [];
+        formik.values.items = [];
+        getListData?.data?.data?.map((subArr) => {
+          subArr.map((item) => {
+            if (item) {
+              itemsArr.push({
+                ...item,
+                item_code: item.itemcode,
+                item_name: item.itemdescription,
+              });
+              formik.values.items.push({
+                id: item?.id,
+                item_id: item?.itemcode,
+                quantity: item?.quantity,
+                price: item?.price,
+                tax: 0,
+                discount: item?.discountpercent,
+                series: item?.series,
+                grade: item?.grade,
+              });
+            }
+          });
         });
-      });
-      setRowData(itemsArr);
+        setRowData(itemsArr);
 
-      setValue({
-        item_quan: false,
-        total_quan: calValues("total_quan"),
-        total: calValues("total_after_tax"),
-        total_before_tax: calValues("total_before_tax"),
-      });
+        setValue({
+          item_quan: false,
+          total_quan: calValues("total_quan"),
+          total: calValues("total_after_tax"),
+          total_before_tax: calValues("total_before_tax"),
+        });
+      }
+      setLoading(false);
+      setOpen(true);
     }
-    setLoading(false);
-    setOpen(true);
   };
 
   const handleOrderProcessingForm = async (value, type) => {
-    console.log(value, type);
     switch (type) {
       case "order_type":
         getSubjectData(value.order_type.toLowerCase());
@@ -523,7 +525,6 @@ const ReturnOrder = () => {
       default:
         break;
     }
-    console.log(formik.values);
   };
 
   const calValues = (type) => {
@@ -749,11 +750,8 @@ const ReturnOrder = () => {
                   />
                 </div>
                 <div className=" flex flex-col gap-2 w-full">
-                  <BasicTextFields
+                  <AlphaNumericTextField
                     handleOrderProcessingForm={handleOrderProcessingForm}
-                    lable={"GR Number"}
-                    variant={"standard"}
-                    multiline={false}
                   />
                 </div>
                 <div className=" flex flex-col gap-2 w-full">
@@ -977,6 +975,27 @@ const ReturnOrder = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const AlphaNumericTextField = ({ handleOrderProcessingForm }) => {
+  const [value, setValue] = useState("");
+  let aplhaNumericRegex = /^[a-zA-Z0-9]+$/;
+  return (
+    <TextField
+      id="standard-basic"
+      onChange={(e) => {
+        if (e.target.value === "" || aplhaNumericRegex.test(e.target.value)) {
+          setValue(e.target.value);
+          handleOrderProcessingForm(e.target.value, "GR Number");
+        }
+      }}
+      inputProps={{ style: { color: "white" } }}
+      value={value}
+      InputLabelProps={{ style: { color: "white" } }}
+      label="GR Number"
+      variant="standard"
+    />
   );
 };
 

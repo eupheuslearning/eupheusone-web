@@ -39,9 +39,7 @@ export const ReturnOrderPdf = () => {
           <span>Return Date: {pdfData?.return_date}</span>
           <span>School Name: {pdfData?.fk_school?.school_name}</span>
           <span>Customer Name: {pdfData?.fk_bp?.bp_name}</span>
-          <span>
-            Transpoter Name: {pdfData?.transporter_name_pref_transporter?.name}
-          </span>
+          <span>Transpoter Name: {pdfData?.transporter_name}</span>
           <span>Contact Person Name: {pdfData?.bp_contact?.name}</span>
         </div>
       </div>
@@ -92,12 +90,12 @@ export const ReturnOrderPdf = () => {
           {pdfData?.return_processing_items?.map((item) => {
             return (
               <tr>
-                <td align="center">{item?.fk_item?.item_name}</td>
-                <td align="center">{item?.fk_item?.item_code}</td>
+                <td align="center">{item?.item_name}</td>
+                <td align="center">{item?.item_code}</td>
                 <td align="center">{item?.fk_item?.fk_subject?.subject}</td>
-                <td align="center">{item?.fk_item?.fk_sery?.series}</td>
-                <td align="center">{item?.fk_item?.price}</td>
-                <td align="center">{item?.fk_item?.quantity}</td>
+                <td align="center">{item?.series}</td>
+                <td align="center">{item?.price}</td>
+                <td align="center">{item?.quantity}</td>
               </tr>
             );
           })}

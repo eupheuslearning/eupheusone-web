@@ -22,7 +22,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import ReactGA from "react-ga4";
 import { ShowError } from "../../util/showError";
-import { Clear, Delete, Remove } from "@mui/icons-material";
+import { Remove } from "@mui/icons-material";
 
 const ReturnOrder = () => {
   const [loading, setLoading] = useState(false);
@@ -32,7 +32,6 @@ const ReturnOrder = () => {
   const [schoolData, setSchoolData] = useState([]);
   const [subjectData, setSubjectData] = useState([]);
   const [transpoterData, setTranspoterData] = useState([]);
-  const [seriesData, setSeriesData] = useState([{ series: "", disable: true }]);
   const [address, setAddress] = useState({ disable: true });
   const [sAddress, setSaddress] = useState([]);
   const [contactData, setContactData] = useState([]);
@@ -66,6 +65,11 @@ const ReturnOrder = () => {
       returnDate: `${new Date().getFullYear()}-${(new Date().getMonth() + 1)
         .toString()
         .padStart(2, "0")}-${new Date().getDate().toString().padStart(2, "0")}`,
+      grNum: "",
+      grDate: `${new Date().getFullYear()}-${(new Date().getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}-${new Date().getDate().toString().padStart(2, "0")}`,
+      numOfBoxes: "",
       return_ref: "",
       bp_contact_id: "",
       school: null,
@@ -92,13 +96,16 @@ const ReturnOrder = () => {
         !values.return_ref ||
         !values.bp_contact_id ||
         !values.school ||
+        !values.grNum ||
+        !values.grDate ||
+        !values.numOfBoxes ||
         !values.pref_transpoter_name
       ) {
         ShowError("All fields are required");
         errors.return_type = "Required";
         return errors;
-      } else if (checkZeroQTY()) {
-        ShowError("Item Quantity cannot be zero");
+      } else if (checkNegative()) {
+        ShowError("Item quantity cannot be negative");
         errors.return_type = "Required";
         return errors;
       }
@@ -123,6 +130,9 @@ const ReturnOrder = () => {
           transporterName: values.pref_transpoter_name,
           contactId: values.bp_contact_id,
           remarks: values.remarks,
+          grNumber: values.grNum,
+          grDate: values.grDate,
+          numberOfBoxes: values.numOfBoxes,
           quantity: value.total_quan,
           amount: value.total,
           shippingAddressId: values.s_address,
@@ -133,11 +143,16 @@ const ReturnOrder = () => {
               itemId: item.id,
               quantity: item.quantity,
               itemCode: item.item_id,
+              series: item.series,
+              grade: item.grade,
+              price: item.price,
+              discountPercent: item.discount,
             };
           }),
         },
       }).catch(() => {
         setLoading(false);
+        ShowError("Something went wrong");
       });
       if (res.data.status === "success") {
         setErrMessage(res.data.message);
@@ -171,6 +186,16 @@ const ReturnOrder = () => {
 
   const handleSidebarCollapsed = () => {
     sidebarRef.current.openSidebar();
+  };
+
+  const checkNegative = () => {
+    let err = false;
+    formik.values.items.map((item) => {
+      if (Number(item.quantity) < 0) {
+        err = true;
+      }
+    });
+    return err;
   };
 
   const getCustomerData = async () => {
@@ -253,7 +278,7 @@ const ReturnOrder = () => {
       }
     };
 
-    getTranspoterData();
+    // getTranspoterData();
     getCustomerData();
   }, []);
 
@@ -301,20 +326,6 @@ const ReturnOrder = () => {
     });
     setContactData(res.data.message);
   };
-
-  // const getSeriesData = async (id) => {
-  //   setLoading(true);
-  //   const SeriesRes = await instance({
-  //     url: `series/getseries/${id}`,
-  //     method: "GET",
-  //     headers: {
-  //       Authorization: Cookies.get("accessToken"),
-  //     },
-  //   });
-  //   setSeriesData(SeriesRes.data.message);
-
-  //   setLoading(false);
-  // };
 
   const getListData = async (seriesID) => {
     setLoading(true);
@@ -397,32 +408,27 @@ const ReturnOrder = () => {
       const itemsArr = [];
       getListData?.data?.data?.map((subArr) => {
         subArr.map((item) => {
-          itemsArr.push({
-            ...item,
-            item_code: item.itemcode,
-            item_name: item.itemdescription,
-          });
-          formik.values.items.push({
-            id: item?.id,
-            item_id: item?.itemcode,
-            quantity: item?.quantity,
-            price: item?.price,
-            tax: 0,
-            discount: item?.discountpercent,
-          });
+          if (item) {
+            itemsArr.push({
+              ...item,
+              item_code: item.itemcode,
+              item_name: item.itemdescription,
+            });
+            formik.values.items.push({
+              id: item?.id,
+              item_id: item?.itemcode,
+              quantity: item?.quantity,
+              price: item?.price,
+              tax: 0,
+              discount: item?.discountpercent,
+              series: item?.series,
+              grade: item?.grade,
+            });
+          }
         });
       });
       setRowData(itemsArr);
-      // itemsArr.map((item) => {
-      //   formik.values.items.push({
-      //     id: item?.id,
-      //     item_id: item?.item_code,
-      //     quantity: item?.quantity,
-      //     price: item?.price,
-      //     tax: 0,
-      //     discount: item?.discountpercent,
-      //   });
-      // });
+
       setValue({
         item_quan: false,
         total_quan: calValues("total_quan"),
@@ -442,16 +448,14 @@ const ReturnOrder = () => {
         getSchoolData(value.order_type.toLowerCase());
         formik.values.return_type = value.order_type;
         break;
-      // case "Sales Order Number":
-      //   formik.values.sales_order_num = Number(value);
-      //   break;
+
       case "customer_name":
         getCustomerAddress(value.id);
         GetContactRes(value.id);
         formik.values.cutomer_name = value.id;
         break;
-      case "pref_transpoter":
-        formik.values.pref_transpoter_name = value.id;
+      case "Preffered Transpoter Name":
+        formik.values.pref_transpoter_name = value;
         break;
       case "Sales Order Date":
         formik.values.order_date = handleDate(value.toString());
@@ -470,12 +474,7 @@ const ReturnOrder = () => {
         formik.values.school_code = value?.school_code;
         formik.values.school = value.id;
         break;
-      // case "subject_name":
-      //   if (formik.values.items.length > 0) {
-      //     getCkItemBySubject(value.id, true);
-      //   }
-      //   formik.values.subject = value;
-      //   break;
+
       case "series_name":
         formik.values.series = value;
         conditionalGetList(value.id);
@@ -483,19 +482,8 @@ const ReturnOrder = () => {
         setValue((prev) => ({ ...prev, item_quan: false }));
 
         break;
-      // case "Items Quantity":
-      //   formik.values.item_quan = value;
-      //   if (formik.values.return_type === "Eupheus") {
-      //     if (rowData.length === 0) {
-      //       getListData(formik.values.series.id);
-      //     }
-      //   } else if (formik.values.return_type === "Classklap") {
-      //     getCkItemBySubject(formik.values.subject.id, false);
-      //   }
-      //   break;
 
       case "shipping_address":
-        // formik.values.s_address = value.id;
         formik.values.s_address = "dfe10e18-a7d3-4063-8624-8be8820bbc88";
         break;
       case "billing_address":
@@ -522,6 +510,15 @@ const ReturnOrder = () => {
       case "SO No.":
         console.log(value);
         getItemsBySoNo(value);
+        break;
+      case "GR Number":
+        formik.values.grNum = value;
+        break;
+      case "Number Of Boxes":
+        formik.values.numOfBoxes = Number(value);
+        break;
+      case "GR Date":
+        formik.values.grDate = handleDate(value.toString());
         break;
       default:
         break;
@@ -690,15 +687,7 @@ const ReturnOrder = () => {
                   label={"Full Return"}
                   color={"rgb(243, 244, 246)"}
                 />
-                {/* <div className=" flex flex-col gap-2 w-full">
-                  <BasicTextFields
-                    handleOrderProcessingForm={handleOrderProcessingForm}
-                    lable={"Sales Order Number"}
-                    type={"number"}
-                    variant={"standard"}
-                    multiline={false}
-                  />
-                </div> */}
+
                 <div className=" flex flex-col gap-2 w-full">
                   <SearchDropDown
                     handleOrderProcessingForm={handleOrderProcessingForm}
@@ -751,6 +740,29 @@ const ReturnOrder = () => {
                   <DatePicker
                     handleOrderProcessingForm={handleOrderProcessingForm}
                     label={"Return Date"}
+                  />
+                </div>
+                <div className=" flex flex-col gap-2 w-full">
+                  <DatePicker
+                    handleOrderProcessingForm={handleOrderProcessingForm}
+                    label={"GR Date"}
+                  />
+                </div>
+                <div className=" flex flex-col gap-2 w-full">
+                  <BasicTextFields
+                    handleOrderProcessingForm={handleOrderProcessingForm}
+                    lable={"GR Number"}
+                    variant={"standard"}
+                    multiline={false}
+                  />
+                </div>
+                <div className=" flex flex-col gap-2 w-full">
+                  <BasicTextFields
+                    handleOrderProcessingForm={handleOrderProcessingForm}
+                    lable={"Number Of Boxes"}
+                    variant={"standard"}
+                    type={"number"}
+                    multiline={false}
                   />
                 </div>
                 <div className=" flex flex-col gap-2 w-full">
@@ -933,13 +945,12 @@ const ReturnOrder = () => {
                 </div>
               </div>
               <div className="flex sm:flex-row flex-col items-center gap-[2rem] justify-between">
-                <div className=" flex flex-col gap-2 w-full md:col-span-2">
-                  <SearchDropDown
+                <div className=" flex flex-col gap-2 w-full">
+                  <BasicTextFields
                     handleOrderProcessingForm={handleOrderProcessingForm}
-                    data={transpoterData}
-                    label={"Preffered Transpoter Name"}
-                    Name={"pref_transpoter"}
-                    color={"rgb(243, 244, 246)"}
+                    lable={"Preffered Transpoter Name"}
+                    variant={"standard"}
+                    multiline={false}
                   />
                 </div>
                 {/* <div className=" flex flex-col gap-2 w-full">

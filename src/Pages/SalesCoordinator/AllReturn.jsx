@@ -7,7 +7,7 @@ import instance from "../../Instance";
 import { useLayoutEffect } from "react";
 import Cookies from "js-cookie";
 import BasicButton from "../../Components/Material/Button";
-import { ShowError } from "../../util/showError";
+import { ShowError, ShowSuccess } from "../../util/showError";
 import {
   Backdrop,
   CircularProgress,
@@ -27,6 +27,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BasicTextFields from "../../Components/Material/TextField";
 import { useFormik } from "formik";
+import DatePicker from "../../Components/Material/Date";
 
 const AllReturn = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -185,13 +186,38 @@ const AllReturn = () => {
             className={`sm:px-8 px-4 py-3 grid sm:grid-cols-1 grid-cols-1 gap-4 bg-[#141728]`}
           >
             {returnData.map((item, index) => {
-              return <ReturnDetails data={item} setLoading={setLoading} />;
+              return !item.sales_co_status ? (
+                <ReturnDetails data={item} setLoading={setLoading} />
+              ) : null;
             })}
           </div>
         </div>
       </div>
     </div>
   );
+};
+
+const handleDate = (date) => {
+  let months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const month = (months.indexOf(date.split(" ")[1]) + 1)
+    .toString()
+    .padStart(2, "0");
+  let modifiedDate = `${date.split(" ")[3]}-${month}-${date.split(" ")[2]}`;
+
+  return modifiedDate;
 };
 
 const ReturnDetails = ({ data, setLoading }) => {
@@ -205,84 +231,93 @@ const ReturnDetails = ({ data, setLoading }) => {
       grNumber: "",
       grDate: "",
       numOfBoxes: "",
-      recievedQty: "",
       transporterName: "",
     },
     validate: (values) => {
-      //   const errors = {};
-      //   if (
-      //     !values.return_type ||
-      //     !values.sales_order_num ||
-      //     !values.cutomer_name ||
-      //     !values.school_code ||
-      //     !values.s_address ||
-      //     !values.b_address ||
-      //     !values.return_ref ||
-      //     !values.bp_contact_id ||
-      //     !values.school ||
-      //     !values.grNum ||
-      //     !values.grDate ||
-      //     !values.numOfBoxes ||
-      //     !values.pref_transpoter_name
-      //   ) {
-      //     ShowError("All fields are required");
-      //     errors.return_type = "Required";
-      //     return errors;
-      //   }
+      const errors = {};
+      let qtyError = false;
+
+      for (let i = 0; i < values.items.length; i++) {
+        const item = values.items[i];
+        if (
+          item.recievedQty === 0 ||
+          item.damageQty === 0 ||
+          item.defective === 0
+        ) {
+          qtyError = true;
+          break;
+        }
+      }
+
+      if (qtyError) {
+        ShowError(
+          "Please fill Received Quantity, Damage Quantity and Defective Quantity for all items"
+        );
+        errors.remarks = "Required";
+        return errors;
+      } else if (
+        !values.remarks ||
+        !values.grDate ||
+        !values.grNumber ||
+        !values.numOfBoxes ||
+        !values.transporterName
+      ) {
+        ShowError("Please fill all the fields");
+        errors.remarks = "Required";
+        return errors;
+      }
     },
     onSubmit: async (values) => {
-      //   setLoading(true);
-      //   const res = await instance({
-      //     url: `sales_data/createreturn`,
-      //     method: "POST",
-      //     headers: {
-      //       Authorization: `${Cookies.get("accessToken")}`,
-      //     },
-      //     data: {
-      //       returnType: values.return_type,
-      //       returnReference: values.return_ref,
-      //       salesOrderNumber: values.sales_order_num,
-      //       salesOrderDate: values.order_date,
-      //       returnDate: values.returnDate,
-      //       schoolCode: values.school_code,
-      //       bpId: values.cutomer_name,
-      //       schoolId: values.school,
-      //       transporterName: "test",
-      //       contactId: values.bp_contact_id,
-      //       remarks: values.remarks,
-      //       grNumber: values.grNum,
-      //       grDate: values.grDate,
-      //       numberOfBoxes: values.numOfBoxes,
-      //       quantity: value.total_quan,
-      //       amount: value.total,
-      //       shippingAddressId: values.s_address,
-      //       billingAddressId: values.b_address,
-      //       isFullCancel: !values.full_return,
-      //       items: values.items.map((item) => {
-      //         return {
-      //           itemId: item.id,
-      //           quantity: item.quantity,
-      //           itemCode: item.item_id,
-      //           series: item.series,
-      //           grade: item.grade,
-      //           price: item.price,
-      //           discountPercent: item.discount,
-      //         };
-      //       }),
-      //     },
-      //   }).catch(() => {
-      //     setLoading(false);
-      //   });
-      //   if (res.data.status === "success") {
-      //     setErrMessage(res.data.message);
-      //     setSnackbarErrStatus(false);
-      //     snackbarRef.current.openSnackbar();
-      //     setTimeout(() => {
-      //       window.location.reload();
-      //     }, 2000);
-      //   }
-      //   setLoading(false);
-      console.log(values);
+      setLoading(true);
+      // updating return
+      const res = await instance({
+        url: `sales_data/update-return-sales-coordinator`,
+        method: "PUT",
+        headers: {
+          Authorization: `${Cookies.get("accessToken")}`,
+        },
+        data: {
+          id: data.id,
+          remarks: values.remarks,
+          grNumber: values.grNumber,
+          grDate: values.grDate,
+          numberOfBoxes: values.numOfBoxes,
+          transporterName: values.transporterName,
+          items: values.items.map((item) => {
+            return {
+              id: item.id,
+              receivedQuantity: Number(item.recievedQty),
+              damagedQuantity: Number(item.damageQty),
+              defectiveQuantity: Number(item.defective),
+            };
+          }),
+        },
+      }).catch(() => {
+        setLoading(false);
+        ShowError("Couldn't update return");
+      });
+      // approve return
+      if (res.data.status === "success") {
+        const approve = await instance({
+          url: `sales_data/submit-return-sales-coordinator/${data.id}`,
+          method: "PATCH",
+          headers: {
+            Authorization: `${Cookies.get("accessToken")}`,
+          },
+        }).catch(() => {
+          setLoading(false);
+          ShowError("Something went wrong");
+        });
+
+        if (approve.data.status === "success") {
+          ShowSuccess(res.data.message);
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        }
+      }
+
+      setLoading(false);
     },
   });
 
@@ -304,9 +339,49 @@ const ReturnDetails = ({ data, setLoading }) => {
           damageQty: 0,
           defective: 0,
         });
+        formik.values.grNumber = res.data.data.gr_number;
+        formik.values.grDate = res.data.data.gr_date;
+        formik.values.numOfBoxes = res.data.data.boxes;
+        formik.values.transporterName = res.data.data.transporter_name;
       });
       setItems(res.data.data.return_processing_items);
     }
+  };
+
+  const alterQuantity = (id, type, value) => {
+    formik.values.items.forEach((item) => {
+      if (item.id === id) {
+        item[type] = value;
+      }
+    });
+  };
+
+  const rejectReturn = async () => {
+    setLoading(true);
+    if (!formik.values.remarks) {
+      ShowError("Please add remarks");
+    } else {
+      const res = await instance({
+        url: `sales_data/reject-return-sales-coordinator`,
+        method: "PUT",
+        data: {
+          id: data.id,
+          remarks: `REJECTED! ${formik.values.remarks}`,
+        },
+        headers: {
+          Authorization: Cookies.get("accessToken"),
+        },
+      }).catch(() => {
+        setLoading(false);
+      });
+      if (res.status === 200 && res.data.status === "success") {
+        ShowSuccess(res.data.message);
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
+      }
+    }
+    setLoading(false);
   };
 
   return (
@@ -400,6 +475,13 @@ const ReturnDetails = ({ data, setLoading }) => {
                             className="text_black"
                             variant="outlined"
                             size="small"
+                            onChange={(e) => {
+                              alterQuantity(
+                                item.id,
+                                "recievedQty",
+                                e.target.value
+                              );
+                            }}
                           />
                         </TableCell>
                         <TableCell align="center">
@@ -408,6 +490,13 @@ const ReturnDetails = ({ data, setLoading }) => {
                             className="text_black"
                             variant="outlined"
                             size="small"
+                            onChange={(e) => {
+                              alterQuantity(
+                                item.id,
+                                "damageQty",
+                                e.target.value
+                              );
+                            }}
                           />
                         </TableCell>
                         <TableCell align="center">
@@ -416,6 +505,13 @@ const ReturnDetails = ({ data, setLoading }) => {
                             className="text_black"
                             variant="outlined"
                             size="small"
+                            onChange={(e) => {
+                              alterQuantity(
+                                item.id,
+                                "defective",
+                                e.target.value
+                              );
+                            }}
                           />
                         </TableCell>
                       </TableRow>
@@ -426,18 +522,46 @@ const ReturnDetails = ({ data, setLoading }) => {
           </TableContainer>
         </Paper>
         <div className="w-full flex gap-4 mt-8">
-          <BasicTextFields lable={"Remarks"} />
-          <BasicTextFields lable={"GR number"} defaultValue={data?.gr_number} />
-          <BasicTextFields lable={"GR date"} />
-          <BasicTextFields lable={"No of boxes"} defaultValue={data?.boxes} />
-          <BasicTextFields lable={"Received QTY"} />
+          <BasicTextFields
+            lable={"Remarks"}
+            handleOrderProcessingForm={(value) => {
+              formik.values.remarks = value;
+            }}
+          />
+          <BasicTextFields
+            lable={"GR number"}
+            defaultValue={data?.gr_number}
+            handleOrderProcessingForm={(value) => {
+              formik.values.grNumber = value;
+            }}
+          />
+          <DatePicker
+            defaultDate={data.gr_date}
+            handleOrderProcessingForm={(value) => {
+              const newDate = handleDate(value.toString());
+              formik.values.grDate = newDate;
+            }}
+          />
+          <BasicTextFields
+            lable={"No of boxes"}
+            defaultValue={data?.boxes}
+            handleOrderProcessingForm={(value) =>
+              (formik.values.numOfBoxes = value)
+            }
+          />
+
           <BasicTextFields
             lable={"Transporter name"}
             defaultValue={data?.transporter_name}
+            handleOrderProcessingForm={(value) => {
+              formik.values.transporterName = value;
+            }}
           />
         </div>
         <div className="w-full flex gap-4 mt-8">
-          <BasicButton size={"small"} text={"Reject"} />
+          <div onClick={rejectReturn}>
+            <BasicButton size={"small"} text={"Reject"} />
+          </div>
           <div onClick={formik.handleSubmit}>
             <BasicButton size={"small"} text={"Approve"} />
           </div>

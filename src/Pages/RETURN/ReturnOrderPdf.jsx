@@ -80,7 +80,6 @@ export const ReturnOrderPdf = () => {
           <tr className="border-2">
             <th>Item Name</th>
             <th>Item Code</th>
-            <th>Item Subject</th>
             <th>Item Series</th>
             <th>Item Price</th>
             <th>Item Quantity</th>
@@ -92,7 +91,6 @@ export const ReturnOrderPdf = () => {
               <tr>
                 <td align="center">{item?.item_name}</td>
                 <td align="center">{item?.item_code}</td>
-                <td align="center">{item?.fk_item?.fk_subject?.subject}</td>
                 <td align="center">{item?.series}</td>
                 <td align="center">{item?.price}</td>
                 <td align="center">{item?.quantity}</td>

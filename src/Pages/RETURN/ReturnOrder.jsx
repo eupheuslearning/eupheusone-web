@@ -970,7 +970,7 @@ const ReturnOrder = () => {
                 </div>
               </div>
               <div onClick={formik.handleSubmit}>
-                <Button text={"Save for print"} disable={true} />
+                <Button text={"Save for print"} />
               </div>
             </form>
           </div>

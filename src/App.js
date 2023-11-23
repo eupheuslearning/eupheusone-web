@@ -7,6 +7,7 @@ import Loader from "./Components/Material/Loader";
 
 // import ManageOrderReturn from "./Pages/RETURN/ManageOrderReturn";
 import { ReturnOrderPdf } from "./Pages/RETURN/ReturnOrderPdf";
+import Maintanance from "./Pages/Maintanance";
 // import AllReturn from "./Pages/SalesCoordinator/AllReturn";
 // Pages
 // import MySchool from "./Pages/MySchool";
@@ -156,6 +157,14 @@ function App() {
             <Suspense fallback={<Loader loading={true} />}>
               <Routes>
                 <Route
+                  path="*"
+                  element={isAuth ? <Maintanance /> : <Login />}
+                />
+              </Routes>
+            </Suspense>
+            {/* <Suspense fallback={<Loader loading={true} />}>
+              <Routes>
+                <Route
                   path="/login"
                   element={isAuth || MsAuth ? <Home /> : <Login />}
                 />
@@ -165,30 +174,12 @@ function App() {
                     isAuth || MsAuth || Admin || Zsm ? <Home /> : <Login />
                   }
                 />
-                {/* <Route
-            path="/mySchool"
-            element={isAuth || MsAuth ? <MySchool /> : <Login />}
-          /> */}
+
                 <Route
                   path="/tagging"
                   element={isAuth || MsAuth || Zsm ? <Tagging /> : <Login />}
                 />
-                {/* <Route
-            path="/schoolDirectory"
-            element={isAuth || MsAuth ? <SchoolDirectory /> : <Login />}
-          /> */}
-                {/* <Route
-            path="/salesInvoices"
-            element={isAuth || MsAuth ? <SalesInvoices /> : <Login />}
-          /> */}
-                {/* <Route
-            path="/updateStocks"
-            element={isAuth || MsAuth ? <UpdateStocks /> : <Login />}
-          /> */}
-                {/* <Route
-            path="/opportunities"
-            element={isAuth || MsAuth ? <Opportunities /> : <Login />}
-          /> */}
+
                 <Route
                   path="/manageSchool"
                   element={
@@ -284,15 +275,10 @@ function App() {
                   }
                 />
 
-                {/* <Route
-            path="/pdf_view"
-            element={isAuth || MsAuth ? <MyDocument /> : <Login />}
-          /> */}
                 <Route
                   path="/aof"
                   element={isAuth || MsAuth || Zsm ? <AOF /> : <Login />}
                 />
-                {/* kys */}
                 <Route
                   path="/kys"
                   element={isAuth || MsAuth || Zsm ? <KYS /> : <Login />}
@@ -348,7 +334,6 @@ function App() {
                     isAuth || MsAuth || Zsm ? <ReleaseNote /> : <Login />
                   }
                 />
-                {/* release notes */}
 
                 <Route
                   path="/web-release-notes/v_1_0_0"
@@ -386,7 +371,6 @@ function App() {
 
                 <Route
                   path="/invoice_item/:invoiceid"
-                  // path="/invoice_item/"
                   element={
                     isAuth || MsAuth || Zsm ? <InvoiceItem /> : <Login />
                   }
@@ -408,7 +392,6 @@ function App() {
                   element={MsAuth || Training ? <OrderTraining /> : <Login />}
                 />
 
-                {/* <Route path="/invoice_pdf" element={<Inv />} /> */}
 
                 <Route
                   path="/view_pdf/:docnum/:docdate"
@@ -539,7 +522,6 @@ function App() {
                 <Route
                   path="/gatepass_dashboard"
                   element={Gtepas || MsAuth ? <GatePassDashboard /> : <Login />}
-                  // element={<GatePassDashboard />}
                 />
 
                 <Route
@@ -557,71 +539,58 @@ function App() {
                   element={isAuth || MsAuth || Zsm ? <AOFEdit /> : <Login />}
                 />
 
-                {/* Admin */}
 
-                {/* <Route path="/admin/signIn" element={<AdminLogin />} /> */}
 
                 <Route
                   path="/admin/home"
                   element={Admin || MsAuth ? <AdminHome /> : <Login />}
-                  // element={<AdminHome />}
                 />
 
                 <Route
                   path="/admin/manageschool"
                   element={Admin || MsAuth ? <AdminManageSchool /> : <Login />}
-                  // element={<AdminManageSchool />}
                 />
 
                 <Route
                   path="/admin/uploadinvoice"
                   element={Admin || MsAuth ? <AdminUploadInvoice /> : <Login />}
-                  // element={<AdminManageSchool />}
                 />
 
                 <Route
                   path="/admin/addschool"
                   element={Admin || MsAuth ? <AdminAddSchool /> : <Login />}
-                  // element={<AdminAddSchool />}
                 />
                 <Route
                   path="/admin/invoice"
                   element={Admin || MsAuth ? <AdminInvoice /> : <Login />}
-                  // element={<AdminInvoice />}
                 />
                 <Route
                   path="/admin/ckreport"
                   element={Admin || MsAuth ? <AdminCkReport /> : <Login />}
-                  // element={<AdminInvoice />}
                 />
                 <Route
                   path="/admin/invoice_item/:invoiceid"
-                  // element={Admin ? <AdminInvoiceItem /> : <Login />}
                   element={<AdminInvoiceItem />}
                 />
 
                 <Route
                   path="/admin/addschoolquantity/:invoiceid"
-                  // element={Admin ? <AdminAddSchoolQuantity /> : <Login />}
                   element={<AdminAddSchoolQuantity />}
                 />
 
                 <Route
                   path="/zsm/verify_aof"
                   element={Zsm || MsAuth ? <ZsmAOF /> : <Login />}
-                  // element={<ZsmAOF />}
                 />
 
                 <Route
                   path="/finance/aof"
                   element={Finance || MsAuth ? <FinanceAOF /> : <Login />}
-                  // element={<FinanceAOF />}
                 />
 
                 <Route
                   path="/saleshead/aof"
                   element={Saleshead || MsAuth ? <SalesheadAOF /> : <Login />}
-                  // element={<SalesheadAOF />}
                 />
                 <Route
                   path="/hr/home"
@@ -642,34 +611,8 @@ function App() {
                   element={HR || MsAuth ? <SendMessage /> : <Login />}
                 />
 
-                {/* <Route
-                path="/admin/tagging"
-                element={Admin ? <AdminHome /> : <Login />}
-                // element={<AdminTagging />}
-              /> */}
+              
 
-                {/* <Route
-            path="/admin/user/create/new"
-            element={Admin ? <AdminSignUp /> : <Login />}
-          /> */}
-                {/* <Route
-            path="/admin/all/user"
-            element={Admin ? <AdminAllUser /> : <Login />}
-          /> */}
-                {/* <Route
-            path="/admin/location/state"
-            element={Admin ? <AdminState /> : <Login />}
-          /> */}
-                {/* <Route
-            path="/admin/location/city"
-            element={Admin ? <AdminCity /> : <Login />}
-          />
-          <Route
-            path="/admin/location/country"
-            element={Admin ? <AdminCountry /> : <Login />}
-          /> */}
-
-                {/* Printing Routes */}
                 <Route
                   path="/printing/newPrintingReq"
                   element={Editorial ? <AddPrintingReq /> : <Login />}
@@ -678,7 +621,6 @@ function App() {
                   path="/printing/checkStatus"
                   element={Editorial ? <CheckStatus /> : <Login />}
                 />
-                {/* Reimbursement */}
                 <Route
                   path="/reimbursement_report"
                   element={
@@ -689,7 +631,6 @@ function App() {
                     )
                   }
                 />
-                {/* SM Users */}
                 <Route
                   path="/sm/doc_print"
                   element={SM ? <DocPrint /> : <Login />}
@@ -698,13 +639,12 @@ function App() {
                   path="*"
                   element={isAuth ? <PageNotFound /> : <Login />}
                 />
-                {/* Sales-Coordinator */}
                 <Route
                   path="/sc/all_return"
                   element={SalesCoordinator ? <AllReturn /> : <Login />}
                 />
               </Routes>
-            </Suspense>
+            </Suspense> */}
           </BrowserRouter>
         </div>
       </div>

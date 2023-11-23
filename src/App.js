@@ -154,15 +154,15 @@ function App() {
         <div className="!font-Roboto bg-[#111322]">
           <GlobelErrorSnackbar />
           <BrowserRouter>
-            <Suspense fallback={<Loader loading={true} />}>
+            {/* <Suspense fallback={<Loader loading={true} />}>
               <Routes>
                 <Route
                   path="*"
                   element={isAuth ? <Maintanance /> : <Login />}
                 />
               </Routes>
-            </Suspense>
-            {/* <Suspense fallback={<Loader loading={true} />}>
+            </Suspense> */}
+            <Suspense fallback={<Loader loading={true} />}>
               <Routes>
                 <Route
                   path="/login"
@@ -392,7 +392,6 @@ function App() {
                   element={MsAuth || Training ? <OrderTraining /> : <Login />}
                 />
 
-
                 <Route
                   path="/view_pdf/:docnum/:docdate"
                   element={<ViewPdf />}
@@ -539,8 +538,6 @@ function App() {
                   element={isAuth || MsAuth || Zsm ? <AOFEdit /> : <Login />}
                 />
 
-
-
                 <Route
                   path="/admin/home"
                   element={Admin || MsAuth ? <AdminHome /> : <Login />}
@@ -611,8 +608,6 @@ function App() {
                   element={HR || MsAuth ? <SendMessage /> : <Login />}
                 />
 
-              
-
                 <Route
                   path="/printing/newPrintingReq"
                   element={Editorial ? <AddPrintingReq /> : <Login />}
@@ -644,7 +639,7 @@ function App() {
                   element={SalesCoordinator ? <AllReturn /> : <Login />}
                 />
               </Routes>
-            </Suspense> */}
+            </Suspense>
           </BrowserRouter>
         </div>
       </div>

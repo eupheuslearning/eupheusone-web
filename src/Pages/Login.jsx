@@ -196,7 +196,7 @@ const Login = () => {
           res.data.type === "warehouse_GP" &&
           res.data.company === "Euphues"
         ) {
-          navigate("/gatepass_dashboard");
+          navigate("/warehouse/all_return");
         } else if (
           res.data.type === "admin" &&
           res.data.company === "Euphues"

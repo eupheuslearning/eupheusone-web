@@ -7,6 +7,7 @@ import Loader from "./Components/Material/Loader";
 
 // import ManageOrderReturn from "./Pages/RETURN/ManageOrderReturn";
 import { ReturnOrderPdf } from "./Pages/RETURN/ReturnOrderPdf";
+import AllReturnWarehouse from "./Pages/Warehouse/AllReturn";
 // import AllReturn from "./Pages/SalesCoordinator/AllReturn";
 // Pages
 // import MySchool from "./Pages/MySchool";
@@ -120,21 +121,16 @@ const ManageOrderReturn = lazy(() =>
 const AllReturn = lazy(() => import("./Pages/SalesCoordinator/AllReturn"));
 
 function App() {
-  // const [userCache, setUserCache] = useState(false);
-  // const [adminCache, setAdminCache] = useState(false);
-
   const isAuth = useSelector((state) => state.auth.user);
   const MsAuth = useSelector((state) => state.auth.msAuth);
 
-  // const isAuth = true
   const Admin = useSelector((state) => state.auth.admin);
-  // const Admin = true;
   const Zsm = useSelector((state) => state.auth.zsm);
   const Finance = useSelector((state) => state.auth.finance);
   const Saleshead = useSelector((state) => state.auth.saleshead);
   const Training = useSelector((state) => state.auth.training);
   const HR = useSelector((state) => state.auth.HR);
-  const Gtepas = useSelector((state) => state.auth.gatepass);
+  const Warehouse = useSelector((state) => state.auth.gatepass);
   const Editorial = useSelector((state) => state.auth.editorial);
   const IT = useSelector((state) => state.auth.IT);
   const SM = useSelector((state) => state.auth.SM);
@@ -538,13 +534,17 @@ function App() {
 
                 <Route
                   path="/gatepass_dashboard"
-                  element={Gtepas || MsAuth ? <GatePassDashboard /> : <Login />}
+                  element={
+                    Warehouse || MsAuth ? <GatePassDashboard /> : <Login />
+                  }
                   // element={<GatePassDashboard />}
                 />
 
                 <Route
                   path="/gatepass_invoice"
-                  element={Gtepas || MsAuth ? <GatePassInvoice /> : <Login />}
+                  element={
+                    Warehouse || MsAuth ? <GatePassInvoice /> : <Login />
+                  }
                 />
 
                 <Route
@@ -702,6 +702,10 @@ function App() {
                 <Route
                   path="/sc/all_return"
                   element={SalesCoordinator ? <AllReturn /> : <Login />}
+                />
+                <Route
+                  path="/warehouse/all_return"
+                  element={Warehouse ? <AllReturnWarehouse /> : <Login />}
                 />
               </Routes>
             </Suspense>

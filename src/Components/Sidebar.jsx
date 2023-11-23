@@ -658,6 +658,34 @@ const Sidebar = ({ sidebarCollapsed, highLight, show }) => {
             </Link>
           </>
         ) : null}
+        {userType === "warehouse_GP" ? (
+          <>
+            <Link to="/warehouse/all_return">
+              <aside
+                className={`px-6 py-2 flex gap-4 ${
+                  highLight === "manage_return_req" ? "bg-gray-500" : ""
+                } cursor-pointer group hover:bg-gray-500 rounded-md transition-all duration-150 ease-linear`}
+              >
+                <ManageSearch
+                  className={`${
+                    highLight === "manage_return_req"
+                      ? "!text-[#659DBD]"
+                      : "!text-gray-400"
+                  } group-hover:!text-[#659DBD] !transition-all !duration-150 !ease-linear`}
+                />
+                <span
+                  className={`${
+                    highLight === "manage_return_req"
+                      ? "text-gray-200"
+                      : "text-gray-400"
+                  } group-hover:!text-gray-100 transition-all duration-150 ease-linear`}
+                >
+                  Manage Order Return
+                </span>
+              </aside>
+            </Link>
+          </>
+        ) : null}
         {userType === "admin" ? <AdminSidebar highLight={highLight} /> : null}
         {/* </Link> */}
       </div>

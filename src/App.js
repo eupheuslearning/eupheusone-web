@@ -156,10 +156,7 @@ function App() {
           <BrowserRouter>
             <Suspense fallback={<Loader loading={true} />}>
               <Routes>
-                <Route
-                  path="*"
-                  element={isAuth ? <Maintanance /> : <Login />}
-                />
+                <Route path="*" element={<Maintanance />} />
               </Routes>
             </Suspense>
             {/* <Suspense fallback={<Loader loading={true} />}>

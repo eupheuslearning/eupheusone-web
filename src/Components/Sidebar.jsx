@@ -87,12 +87,13 @@ const Sidebar = ({ sidebarCollapsed, highLight, show }) => {
             Authorization: `${Cookies.get("accessToken")}`,
           },
         }).catch((err) => {
-          if (err.response.status === 401 || err.response.status === 403) {
-            if ((err.response.data.message = "you need to change password")) {
-              setOpenReset(true);
-            } else {
-              setModelOpen(true);
-            }
+          if (err.response.status === 401) {
+            setModelOpen(true);
+          } else if (
+            err.response.status === 403 &&
+            err.response.data.message === "You need to change your password"
+          ) {
+            setOpenReset(true);
           }
         });
         setUser(res.data.message);

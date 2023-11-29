@@ -132,7 +132,13 @@ const ViewCustomerLedger = () => {
     setProgLoading(true);
     const i = setInterval(() => {
       if (prog < 99) {
-        setProg((prev) => prev + 1);
+        setProg((prev) => {
+          if (prev < 99) {
+            return prev + 1;
+          } else {
+            return prev;
+          }
+        });
       }
     }, 1000);
     const res = await instance({

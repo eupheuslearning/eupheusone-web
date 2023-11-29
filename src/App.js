@@ -154,12 +154,12 @@ function App() {
         <div className="!font-Roboto bg-[#111322]">
           <GlobelErrorSnackbar />
           <BrowserRouter>
-            <Suspense fallback={<Loader loading={true} />}>
+            {/* <Suspense fallback={<Loader loading={true} />}>
               <Routes>
                 <Route path="*" element={<Maintanance />} />
               </Routes>
-            </Suspense>
-            {/* <Suspense fallback={<Loader loading={true} />}>
+            </Suspense> */}
+            <Suspense fallback={<Loader loading={true} />}>
               <Routes>
                 <Route
                   path="/login"
@@ -636,7 +636,7 @@ function App() {
                   element={SalesCoordinator ? <AllReturn /> : <Login />}
                 />
               </Routes>
-            </Suspense> */}
+            </Suspense>
           </BrowserRouter>
         </div>
       </div>

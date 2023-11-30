@@ -72,6 +72,14 @@ const Navbar = ({ handleSidebarCollapsed, info, changeYear, defaultYear }) => {
     navigate("/");
   };
 
+  const handleNavigate = () => {
+    if (Cookies.get("type") === "training") {
+      navigate("/manageSchoolTraining");
+    } else {
+      navigate("/");
+    }
+  };
+
   return (
     <div
       id="navbar"
@@ -96,15 +104,16 @@ const Navbar = ({ handleSidebarCollapsed, info, changeYear, defaultYear }) => {
             {info.title}
           </span>
           <div className="flex items-center justify-start gap-2 w-40 md:w-full">
-            <Link to="/">
-              <span
-                className={`${
-                  scroll ? "text-[#67748e]" : "text-gray-400"
-                } text-xs md:text-[1rem]`}
-              >
-                {info.details[0]}
-              </span>
-            </Link>
+            {/* <Link to="/"> */}
+            <span
+              onClick={handleNavigate}
+              className={`${
+                scroll ? "text-[#67748e]" : "text-gray-400"
+              } text-xs md:text-[1rem] cursor-pointer`}
+            >
+              {info.details[0]}
+            </span>
+            {/* </Link> */}
             <span
               className={`${
                 scroll ? "text-gray-800" : "text-gray-100"

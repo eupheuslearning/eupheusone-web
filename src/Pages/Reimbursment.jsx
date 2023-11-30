@@ -49,7 +49,7 @@ const Reimbursment = () => {
 
   const navInfo = {
     title: "Reimbursement Report",
-    details: ["Home", "Reimbursement Report"],
+    details: ["Home", "/ Reimbursement Report"],
   };
 
   const handleSidebarCollapsed = () => {

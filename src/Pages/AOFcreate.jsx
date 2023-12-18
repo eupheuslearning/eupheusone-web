@@ -29,10 +29,10 @@ const AOFcreate = () => {
   const [errMessage, setErrMessage] = useState("");
   const [remarkss, setRemarkss] = useState("");
   const [steps, setSteps] = useState({
-    step1: true,
+    step1: false,
     step2: false,
     step3: false,
-    step4: false,
+    step4: true,
   });
   const [step4, setStep4] = useState({
     tod: { applicable: false, type: false },

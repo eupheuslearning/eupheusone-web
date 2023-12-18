@@ -75,6 +75,8 @@ const Navbar = ({ handleSidebarCollapsed, info, changeYear, defaultYear }) => {
   const handleNavigate = () => {
     if (Cookies.get("type") === "training") {
       navigate("/manageSchoolTraining");
+    } else if (Cookies.get("type") === "finance") {
+      navigate("/finance/aof");
     } else {
       navigate("/");
     }

@@ -8,6 +8,7 @@ import Loader from "./Components/Material/Loader";
 // import ManageOrderReturn from "./Pages/RETURN/ManageOrderReturn";
 import { ReturnOrderPdf } from "./Pages/RETURN/ReturnOrderPdf";
 import AllReturnWarehouse from "./Pages/Warehouse/AllReturn";
+const Discount = lazy(() => import("./Pages/Discount"));
 // import AllReturn from "./Pages/SalesCoordinator/AllReturn";
 // Pages
 // import MySchool from "./Pages/MySchool";
@@ -615,6 +616,11 @@ function App() {
                 <Route
                   path="/finance/aof"
                   element={Finance || MsAuth ? <FinanceAOF /> : <Login />}
+                  // element={<FinanceAOF />}
+                />
+                <Route
+                  path="/finance/discount"
+                  element={Finance || MsAuth ? <Discount /> : <Login />}
                   // element={<FinanceAOF />}
                 />
 

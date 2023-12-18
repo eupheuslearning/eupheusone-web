@@ -28,6 +28,7 @@ import {
   Money,
   ManageSearch,
   KeyboardReturn,
+  Discount,
 } from "@mui/icons-material";
 import { Collapse } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -513,6 +514,58 @@ const SwipeableTemporaryDrawer = React.forwardRef((props, ref) => {
               >
                 Manage Return Request
               </span>
+            </aside>
+          </Link>
+        </>
+      ) : null}
+      {userType === "finance" ? (
+        <>
+          <Link to="/finance/aof">
+            <aside
+              className={`px-6 py-2 hover:bg-gray-500 flex ${
+                highLight === "aof" ? "bg-gray-500" : ""
+              } rounded-md gap-4 cursor-pointer group`}
+            >
+              <div className="flex gap-4">
+                <Dashboard
+                  className={`${
+                    highLight === "aof" ? "!text-[#659DBD]" : "!text-gray-400"
+                  } group-hover:!text-[#659DBD] !transition-all !duration-150 !ease-linear`}
+                />
+                <span
+                  className={`${
+                    highLight === "aof" ? "text-gray-200" : "text-gray-400"
+                  } group-hover:!text-gray-100 transition-all duration-150 ease-linear`}
+                >
+                  AOF
+                </span>
+              </div>
+              {/* <hr className="text-gray-300" /> */}
+            </aside>
+          </Link>
+          <Link to="/finance/discount">
+            <aside
+              className={`px-6 py-2 hover:bg-gray-500 flex ${
+                highLight === "discount" ? "bg-gray-500" : ""
+              } rounded-md gap-4 cursor-pointer group`}
+            >
+              <div className="flex gap-4">
+                <Discount
+                  className={`${
+                    highLight === "discount"
+                      ? "!text-[#659DBD]"
+                      : "!text-gray-400"
+                  } group-hover:!text-[#659DBD] !transition-all !duration-150 !ease-linear`}
+                />
+                <span
+                  className={`${
+                    highLight === "discount" ? "text-gray-200" : "text-gray-400"
+                  } group-hover:!text-gray-100 transition-all duration-150 ease-linear`}
+                >
+                  Discount
+                </span>
+              </div>
+              {/* <hr className="text-gray-300" /> */}
             </aside>
           </Link>
         </>

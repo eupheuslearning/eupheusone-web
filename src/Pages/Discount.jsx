@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import Navbar from "../Components/Navbar";
 import Sidebar from "../Components/Sidebar";
-import { Link, useLocation } from "react-router-dom";
 import SearchDropDown from "../Components/SearchDropDown";
 import SwipeableTemporaryDrawer from "../Components/Material/MaterialSidebar";
 import instance from "../Instance";
@@ -14,10 +13,8 @@ import {
   AccordionSummary,
   Autocomplete,
   Backdrop,
-  Checkbox,
   Chip,
   CircularProgress,
-  IconButton,
   Stack,
   StyledEngineProvider,
   Table,
@@ -29,13 +26,13 @@ import {
   Typography,
 } from "@mui/material";
 
-import Step4 from "../Components/Aof/Step4";
-import { Delete, ExpandMore } from "@mui/icons-material";
+import { ExpandMore } from "@mui/icons-material";
 import RowRadioButtonsGroup from "../Components/Material/RowRadioButtonGroup";
 import { useFormik } from "formik";
 import BasicButton from "../Components/Material/Button";
 import BasicTextFields from "../Components/Material/TextField";
 import { ShowError, ShowSuccess } from "../util/showError";
+import ReviewDialog from "../Components/Discount/ReviewDialog";
 
 const Discount = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -56,12 +53,13 @@ const Discount = () => {
   const [tableSeries, setTableSeries] = useState([]);
   const [titles, setTitles] = useState([]);
   const [tableTitles, setTableTitles] = useState([]);
-  const snackbarRef = useRef();
 
   const navInfo = {
     title: "Discount",
     details: ["Finance", " / Discount"],
   };
+
+  const [discountBodyData, setDiscountBodyData] = useState({});
 
   const formik = useFormik({
     initialValues: {
@@ -245,27 +243,32 @@ const Discount = () => {
           discountOn: "gross",
         });
       }
-      setLoading(true);
-      const res = await instance({
-        url: "sales_data/aof/create/discount",
-        method: "POST",
-        data: data,
-        headers: {
-          Authorization: `${Cookies.get("accessToken")}`,
-        },
-      }).catch((err) => {
-        ShowError("Something went wrong, Please try again");
-      });
-      setLoading(false);
-
-      if (res.data.status === "success") {
-        ShowSuccess(res.data.message);
-        setTimeout(() => {
-          window.location.reload();
-        }, 1500);
-      }
+      setDiscountBodyData(data);
+      dialogRef.current.openDialog();
     },
   });
+
+  const submitDiscount = async () => {
+    setLoading(true);
+    const res = await instance({
+      url: "sales_data/aof/create/discount",
+      method: "POST",
+      data: discountBodyData,
+      headers: {
+        Authorization: `${Cookies.get("accessToken")}`,
+      },
+    }).catch((err) => {
+      ShowError("Something went wrong, Please try again");
+    });
+    setLoading(false);
+
+    if (res.data.status === "success") {
+      ShowSuccess(res.data.message);
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    }
+  };
 
   const data = [
     { id: 1, bp_name: "Eupheus" },
@@ -548,6 +551,8 @@ const Discount = () => {
     setNonElt(false);
   };
 
+  const dialogRef = useRef();
+
   return (
     <div className="flex bg-[#111322]">
       <Backdrop
@@ -566,12 +571,16 @@ const Discount = () => {
           // show={show}
         />
       </div>
-
       <div
         className={`flex flex-col w-[100vw] lg:w-[83vw] lg:ml-[18vw] ${
           window.innerWidth < 1024 ? null : "md:ml-[30vw] ml-[60vw]"
         } `}
       >
+        <ReviewDialog
+          ref={dialogRef}
+          data={formik.values}
+          submitFunc={submitDiscount}
+        />
         <Navbar
           handleSidebarCollapsed={handleSidebarCollapsed}
           info={navInfo}

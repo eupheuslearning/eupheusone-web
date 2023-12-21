@@ -508,7 +508,7 @@ const Discount = () => {
           Authorization: Cookies.get("accessToken"),
         },
       });
-      setAllSchool(state.data.message.slice(1, 100));
+      setAllSchool(state.data.message);
     };
     const getAllBp = async () => {
       const bps = await instance({

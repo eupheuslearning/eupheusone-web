@@ -20,7 +20,6 @@ import {
   TableRow,
   TextField,
 } from "@mui/material";
-import UploadButton from "../../Components/Material/UploadButton";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -104,9 +103,18 @@ const AllReturnWarehouse = () => {
           <div
             className={`sm:px-8 px-4 py-3 grid sm:grid-cols-1 grid-cols-1 gap-4 bg-[#141728]`}
           >
+            {returnData.length === 0 && (
+              <p className="w-full flex justify-center text-gray-100 text-lg font-semibold">
+                No Data Found
+              </p>
+            )}
             {returnData.map((item, index) => {
               return !item.qc_status ? (
-                <ReturnDetails data={item} setLoading={setLoading} />
+                <ReturnDetails
+                  key={index}
+                  data={item}
+                  setLoading={setLoading}
+                />
               ) : null;
             })}
           </div>
@@ -116,29 +124,6 @@ const AllReturnWarehouse = () => {
   );
 };
 
-const handleDate = (date) => {
-  let months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-  const month = (months.indexOf(date.split(" ")[1]) + 1)
-    .toString()
-    .padStart(2, "0");
-  let modifiedDate = `${date.split(" ")[3]}-${month}-${date.split(" ")[2]}`;
-
-  return modifiedDate;
-};
-
 const ReturnDetails = ({ data, setLoading }) => {
   const [expanded, setExpended] = useState(false);
   const [items, setItems] = useState([]);
@@ -146,98 +131,88 @@ const ReturnDetails = ({ data, setLoading }) => {
   const formik = useFormik({
     initialValues: {
       items: [],
-      // remarks: "",
-      // grNumber: "",
-      // grDate: "",
-      // numOfBoxes: "",
-      // transporterName: "",
+      qcRemark: "",
     },
-    // validate: (values) => {
-    //   const errors = {};
-    //   let qtyError = false;
+    validate: (values) => {
+      const errors = {};
+      let qtyError = false;
 
-    //   for (let i = 0; i < values.items.length; i++) {
-    //     const item = values.items[i];
-    //     if (
-    //       item.recievedQty === 0 ||
-    //       item.damageQty === 0 ||
-    //       item.defective === 0
-    //     ) {
-    //       qtyError = true;
-    //       break;
-    //     }
-    //   }
+      for (let i = 0; i < values.items.length; i++) {
+        const item = values.items[i];
+        if (
+          item.received_quantity === 0 ||
+          item.damaged_quantity === 0 ||
+          item.defective_quantity === 0
+        ) {
+          qtyError = true;
+          break;
+        }
+      }
 
-    //   if (qtyError) {
-    //     ShowError(
-    //       "Please fill Received Quantity, Damage Quantity and Defective Quantity for all items"
-    //     );
-    //     errors.remarks = "Required";
-    //     return errors;
-    //   } else if (
-    //     !values.remarks ||
-    //     !values.grDate ||
-    //     !values.grNumber ||
-    //     !values.numOfBoxes ||
-    //     !values.transporterName
-    //   ) {
-    //     ShowError("Please fill all the fields");
-    //     errors.remarks = "Required";
-    //     return errors;
-    //   }
-    // },
+      if (qtyError) {
+        ShowError(
+          "Please fill Received Quantity, Damage Quantity and Defective Quantity for all items"
+        );
+        errors.remarks = "Required";
+        return errors;
+      } else if (!values.qcRemark) {
+        ShowError("Please Enter Remarks");
+        errors.remarks = "Required";
+        return errors;
+      }
+    },
     onSubmit: async (values) => {
       console.log(values);
-      // setLoading(true);
-      // // updating return
-      // const res = await instance({
-      //   url: `sales_data/update-return-sales-coordinator`,
-      //   method: "PUT",
-      //   headers: {
-      //     Authorization: `${Cookies.get("accessToken")}`,
-      //   },
-      //   data: {
-      //     id: data.id,
-      //     remarks: values.remarks,
-      //     grNumber: values.grNumber,
-      //     grDate: values.grDate,
-      //     numberOfBoxes: values.numOfBoxes,
-      //     transporterName: values.transporterName,
-      //     items: values.items.map((item) => {
-      //       return {
-      //         id: item.id,
-      //         receivedQuantity: Number(item.recievedQty),
-      //         damagedQuantity: Number(item.damageQty),
-      //         defectiveQuantity: Number(item.defective),
-      //       };
-      //     }),
-      //   },
-      // }).catch(() => {
-      //   setLoading(false);
-      //   ShowError("Couldn't update return");
-      // });
-      // // approve return
-      // if (res.data.status === "success") {
-      //   const approve = await instance({
-      //     url: `sales_data/submit-return-sales-coordinator/${data.id}`,
-      //     method: "PATCH",
-      //     headers: {
-      //       Authorization: `${Cookies.get("accessToken")}`,
-      //     },
-      //   }).catch(() => {
-      //     setLoading(false);
-      //     ShowError("Something went wrong");
-      //   });
+      setLoading(true);
+      // updating return
+      const res = await instance({
+        url: `sales_data/update-return-qc`,
+        method: "PUT",
+        headers: {
+          Authorization: `${Cookies.get("accessToken")}`,
+        },
+        data: {
+          id: data.id,
+          remarks: values.qcRemark,
+          grNumber: data.gr_number,
+          grDate: data.gr_date,
+          numberOfBoxes: data.boxes,
+          transporterName: data.transporter_name,
+          items: values.items.map((item) => {
+            return {
+              id: item.id,
+              receivedQuantity: item.received_quantity,
+              damagedQuantity: item.damaged_quantity,
+              defectiveQuantity: item.defective_quantity,
+            };
+          }),
+        },
+      }).catch(() => {
+        setLoading(false);
+        ShowError("Couldn't update return");
+      });
+      // approve return
+      if (res.data.status === "success") {
+        const approve = await instance({
+          url: `sales_data//submit-return-qc/${data.id}`,
+          method: "PATCH",
+          headers: {
+            Authorization: `${Cookies.get("accessToken")}`,
+          },
+        }).catch(() => {
+          setLoading(false);
+          ShowError("Something went wrong");
+        });
 
-      //   if (approve.data.status === "success") {
-      //     ShowSuccess(res.data.message);
-      //     setTimeout(() => {
-      //       window.location.reload();
-      //     }, 2000);
-      //   }
-      // }
+        if (approve.data.status === "success") {
+          ShowSuccess(res.data.message);
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        }
+      }
 
-      // setLoading(false);
+      setLoading(false);
     },
   });
 
@@ -259,24 +234,26 @@ const ReturnDetails = ({ data, setLoading }) => {
   };
 
   const alterQuantity = (id, type, value) => {
-    formik.values.items.forEach((item) => {
-      if (item.id === id) {
-        item[type] = value;
+    for (let i = 0; i < formik.values.items.length; i++) {
+      const ele = formik.values.items[i];
+      if (ele.id === id) {
+        ele[type] = Number(value);
+        break;
       }
-    });
+    }
   };
 
   const rejectReturn = async () => {
     setLoading(true);
-    if (!formik.values.remarks) {
+    if (!formik.values.qcRemark) {
       ShowError("Please add remarks");
     } else {
       const res = await instance({
-        url: `sales_data/reject-return-sales-coordinator`,
+        url: `sales_data/reject-return-qc`,
         method: "PUT",
         data: {
           id: data.id,
-          remarks: `REJECTED! ${formik.values.remarks}`,
+          remarks: `REJECTED! ${formik.values.qcRemark}`,
         },
         headers: {
           Authorization: Cookies.get("accessToken"),
@@ -396,6 +373,7 @@ const ReturnDetails = ({ data, setLoading }) => {
                             className="text_black !w-full"
                             variant="outlined"
                             size="small"
+                            disabled
                             defaultValue={item?.series}
                             onChange={(e) => {
                               console.log(formik.values.items[index]);
@@ -407,6 +385,7 @@ const ReturnDetails = ({ data, setLoading }) => {
                             className="text_black"
                             variant="outlined"
                             size="small"
+                            disabled
                             defaultValue={item?.grade}
                           />
                         </TableCell>
@@ -420,7 +399,7 @@ const ReturnDetails = ({ data, setLoading }) => {
                             onChange={(e) => {
                               alterQuantity(
                                 item.id,
-                                "recievedQty",
+                                "received_quantity",
                                 e.target.value
                               );
                             }}
@@ -436,7 +415,7 @@ const ReturnDetails = ({ data, setLoading }) => {
                             onChange={(e) => {
                               alterQuantity(
                                 item.id,
-                                "damageQty",
+                                "damaged_quantity",
                                 e.target.value
                               );
                             }}
@@ -452,7 +431,7 @@ const ReturnDetails = ({ data, setLoading }) => {
                             onChange={(e) => {
                               alterQuantity(
                                 item.id,
-                                "defective",
+                                "defective_quantity",
                                 e.target.value
                               );
                             }}
@@ -467,6 +446,12 @@ const ReturnDetails = ({ data, setLoading }) => {
         </Paper>
         <div className="w-full flex gap-4 mt-8 flex-wrap">
           <BasicTextFields
+            lable={"Remarks"}
+            handleOrderProcessingForm={(value, name) => {
+              formik.values.qcRemark = value;
+            }}
+          />
+          <BasicTextFields
             lable={"Sales Coordinator Remarks"}
             defaultValue={data?.sales_co_remarks}
             disable={true}
@@ -477,7 +462,11 @@ const ReturnDetails = ({ data, setLoading }) => {
             defaultValue={data?.gr_number}
             disable={true}
           />
-          <DatePicker defaultDate={data.gr_date} disabled={true} />
+          <DatePicker
+            label={"GR Date"}
+            defaultDate={data.gr_date}
+            disabled={true}
+          />
           <BasicTextFields
             lable={"No of boxes"}
             defaultValue={data?.boxes}

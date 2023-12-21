@@ -99,7 +99,7 @@ const SearchDropDown = ({
           return option.order_type;
           break;
         case "customer_name":
-          return option.bp_name;
+          return option.bp_name.trim();
           break;
         case "school_name":
           return option.school_name;
@@ -266,7 +266,7 @@ const SearchDropDown = ({
           break;
         case "schools_aof":
           if (option?.school_name) {
-            return option.school_name;
+            return option.school_name.trim();
           } else {
             return "";
           }
@@ -526,7 +526,7 @@ const SearchDropDown = ({
           {...defaultProps}
           disabled={disable}
           disableClearable
-          loading={true}
+          // loading={true}
           // multiple={multiple}
           defaultValue={defaultValue ? defaultValue : null}
           color={color}

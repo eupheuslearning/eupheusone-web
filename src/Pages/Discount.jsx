@@ -501,6 +501,7 @@ const Discount = () => {
 
   useLayoutEffect(() => {
     const getSchools = async () => {
+      setLoading(true);
       const state = await instance({
         url: "school/get/allschools",
         method: "GET",
@@ -508,6 +509,8 @@ const Discount = () => {
           Authorization: Cookies.get("accessToken"),
         },
       });
+      setLoading(false);
+
       setAllSchool(state.data.message);
     };
     const getAllBp = async () => {
@@ -518,6 +521,20 @@ const Discount = () => {
           Authorization: Cookies.get("accessToken"),
         },
       });
+
+      //   const newArr = [];
+      //   for (let i = 0; i < bps.data.message.slice(1, 1000).length; i++) {
+      //     const ele = bps.data.message.slice(1, 1000)[i];
+      //     if (ele?.bp_name) {
+      //       newArr.push({
+      //         bp_name: ele.bp_name
+      //           .trim()
+      //           .replaceAll("(", " ")
+      //           .replaceAll(")", " "),
+      //       });
+      //     }
+      //   }
+      //   setBps(newArr);
       setBps(bps.data.message);
     };
     const getSries = async () => {
@@ -597,6 +614,7 @@ const Discount = () => {
                 label={"Select School"}
                 color={"rgb(243, 244, 246)"}
               />
+
               <SearchDropDown
                 Name={"customer_name"}
                 data={bps}

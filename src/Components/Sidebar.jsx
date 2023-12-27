@@ -753,6 +753,30 @@ const Sidebar = ({ sidebarCollapsed, highLight, show }) => {
                 </span>
               </aside>
             </Link>
+            <Link to="/manageSchool">
+              <aside
+                className={`px-6 py-2 flex gap-4 cursor-pointer ${
+                  highLight === "manageSchool" ? "bg-gray-500" : ""
+                } group hover:bg-gray-500 rounded-md transition-all duration-150 ease-linear`}
+              >
+                <School
+                  className={`${
+                    highLight === "manageSchool"
+                      ? "!text-[#659DBD]"
+                      : "!text-gray-400"
+                  } group-hover:!text-[#659DBD] !transition-all !duration-150 !ease-linear`}
+                />
+                <span
+                  className={`${
+                    highLight === "manageSchool"
+                      ? "text-gray-200"
+                      : "text-gray-400"
+                  } group-hover:!text-gray-100 transition-all duration-150 ease-linear`}
+                >
+                  Manage School
+                </span>
+              </aside>
+            </Link>
           </>
         ) : null}
         {userType === "warehouse_GP" ? (

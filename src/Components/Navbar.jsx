@@ -77,6 +77,8 @@ const Navbar = ({ handleSidebarCollapsed, info, changeYear, defaultYear }) => {
       navigate("/manageSchoolTraining");
     } else if (Cookies.get("type") === "finance") {
       navigate("/finance/aof");
+    } else if (Cookies.get("type") === "sales_coordinator") {
+      navigate("/sc/all_return");
     } else {
       navigate("/");
     }

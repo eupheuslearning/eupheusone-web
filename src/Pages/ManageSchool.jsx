@@ -27,6 +27,7 @@ const ManageSchool = () => {
   const [cityAvl, setCityAvl] = useState(true);
   const [represen, setRepresen] = useState([]);
   const [Row, setRow] = useState([]);
+  const [disableSchoolUpdate, setDisableSchoolUpdate] = useState(false);
   const [id, setId] = useState({
     user_id: "",
     state_id: "",
@@ -36,6 +37,8 @@ const ManageSchool = () => {
     title: "Manage School",
     details: ["Home", " / Manage School"],
   };
+
+  const userType = Cookies.get("type");
 
   const Tablecolumns = [
     { field: "SchoolName", headerName: "School Name", width: 300 },
@@ -91,8 +94,14 @@ const ManageSchool = () => {
 
   const getRowData = async () => {
     setLoading(true);
+    let url;
+    if (userType === "sales_coordinator") {
+      url = "school/get/allSchoolsAdmin";
+    } else {
+      url = "school//get/allUserAndRepSchool";
+    }
     const res = await instance({
-      url: `school//get/allUserAndRepSchool`,
+      url,
       method: "GET",
       headers: {
         Authorization: `${Cookies.get("accessToken")}`,
@@ -100,7 +109,7 @@ const ManageSchool = () => {
     });
 
     const data = res.data.message;
-    // console.log(data);
+    console.log(data);
 
     const rows = res.data.message.map((item, index) => {
       return {
@@ -207,16 +216,6 @@ const ManageSchool = () => {
     FileSaver.saveAs(data, fileName + fileExtension);
   };
 
-  // const csvData = json2csv.parse(returnRowData());
-  // let csvData;
-  // jsonexport(returnRowData(), function (err, csv) {
-  //   if (err) return console.error(err);
-  //   csvData = csv;
-  // });
-  // const encodedUri = encodeURI(`data:text/csv;charset=utf-8,${csvData}`);
-
-  // console.log(id);
-
   const handleOrderProcessingForm = async (value, type) => {
     // console.log(value, type);
     switch (type) {
@@ -258,10 +257,26 @@ const ManageSchool = () => {
     setLoading(false);
   };
 
+  const updateDisableSchoolUpdate = () => {
+    if (userType === "sales_coordinator") {
+      setDisableSchoolUpdate(true);
+    }
+  };
+
   useLayoutEffect(() => {
+    let userUrl;
+    let stateUrl;
+
+    if (userType === "sales_coordinator") {
+      userUrl = "user/getAllUsersManageSchool";
+      stateUrl = "location/state/get/allStates";
+    } else {
+      userUrl = "user/getRelatedUser";
+      stateUrl = "location/state/get/states/byUserAndRep";
+    }
     const getRepres = async () => {
       const res = await instance({
-        url: "user/getRelatedUser",
+        url: userUrl,
         method: "GET",
         headers: {
           Authorization: `${Cookies.get("accessToken")}`,
@@ -282,7 +297,7 @@ const ManageSchool = () => {
     };
     const getStates = async () => {
       const res = await instance({
-        url: "location/state/get/states/byUserAndRep",
+        url: stateUrl,
         method: "GET",
         headers: {
           Authorization: `${Cookies.get("accessToken")}`,
@@ -295,6 +310,7 @@ const ManageSchool = () => {
 
     getStates();
     getRepres();
+    updateDisableSchoolUpdate();
     getRowData();
   }, []);
 
@@ -384,9 +400,11 @@ const ManageSchool = () => {
               <Link to="/addschool">
                 <BasicButton text={"Create New School"} />
               </Link>
-              <Link to="/tagging">
-                <BasicButton text={"Tag Existing School"} />
-              </Link>
+              {userType === "sales_coordinator" ? null : (
+                <Link to="/tagging">
+                  <BasicButton text={"Tag Existing School"} />
+                </Link>
+              )}
             </div>
 
             <DataTable
@@ -394,6 +412,7 @@ const ManageSchool = () => {
               checkbox={false}
               Tablecolumns={Tablecolumns}
               tableName="ManageSchool"
+              disableSchoolUpdate={disableSchoolUpdate}
             />
           </div>
         </div>

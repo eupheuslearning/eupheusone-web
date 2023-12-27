@@ -26,15 +26,15 @@ export default function DataTable({
   Tablecolumns,
   tableName,
   handleTaggingClick,
+  disableSchoolUpdate,
 }) {
   const [q, setQ] = React.useState("");
   const [entries, setEntries] = React.useState(10);
   const [schoolId, setSchoolId] = useState("");
   const [schoolStatus, setSchoolStatus] = useState("");
   const navigate = useNavigate();
-  const openDialog = () => {
-    dialogRef.current.openDialog();
-  };
+  console.log(disableSchoolUpdate);
+
   // console.log(rows);
   const search = (rowss) => {
     return rowss.filter((row) => {
@@ -212,7 +212,9 @@ export default function DataTable({
     console.log(value);
     switch (tableName) {
       case "ManageSchool":
-        navigate(`/update_school/${value.row.id}`);
+        if (!disableSchoolUpdate) {
+          navigate(`/update_school/${value.row.id}`);
+        }
         break;
       case "Tagging":
         handleTaggingClick(value.id);

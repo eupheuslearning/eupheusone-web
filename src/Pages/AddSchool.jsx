@@ -12,7 +12,7 @@ import SearchDropDown from "../Components/SearchDropDown";
 import BasicTextFields from "../Components/Material/TextField";
 import { Backdrop, CircularProgress } from "@mui/material";
 import instance from "../Instance";
-import ControlledSearchDropDown from "../Components/Material/ControlledSearchDropDown";
+// import ControlledSearchDropDown from "../Components/Material/ControlledSearchDropDown";
 import Snackbars from "../Components/Material/SnackBar";
 import validateEmail from "../util/validateEmail";
 
@@ -26,6 +26,7 @@ const AddSchool = () => {
   const [snackbarErrStatus, setSnackbarErrStatus] = useState(true);
   const [state, setState] = useState(null);
   const [city, setCity] = useState(null);
+  const [represen, setRepresen] = useState([]);
   const [steps, setSteps] = useState({
     step1: true,
     step2: false,
@@ -38,6 +39,7 @@ const AddSchool = () => {
 
   const formik = useFormik({
     initialValues: {
+      userId: "",
       school_name: "",
       aff_code: "",
       board: "",
@@ -55,6 +57,11 @@ const AddSchool = () => {
 
     validate: () => {
       const errors = {};
+      if (userType === "sales_coordinator") {
+        if (!formik.values.userId) {
+          errors.userId = "Required";
+        }
+      }
       if (!formik.values.school_name) {
         errors.school_name = "Required";
       }
@@ -78,6 +85,7 @@ const AddSchool = () => {
       if (!formik.values.pin_code) {
         errors.school_name = "Required";
       }
+      console.log(errors);
       return errors;
     },
     onSubmit: async (values) => {
@@ -99,6 +107,9 @@ const AddSchool = () => {
         pin: formik.values.pin_code,
         address: formik.values.address,
       };
+      if (formik.values.userId) {
+        data["userId"] = formik.values.userId;
+      }
       if (formik.values.aff_code) {
         data["aff_code"] = formik.values.aff_code;
       }
@@ -106,8 +117,14 @@ const AddSchool = () => {
         data["web"] = formik.values.web;
       }
       console.log(data);
+      let url = "";
+      if (userType === "sales_coordinator") {
+        url = "school/admin/create";
+      } else {
+        url = "school/create";
+      }
       const res = await instance({
-        url: "school/create",
+        url,
         method: "POST",
         data: data,
         headers: {
@@ -151,6 +168,8 @@ const AddSchool = () => {
   const handleOrderProcessingForm = async (value, type) => {
     switch (type) {
       // step 1
+      case "select_represent":
+        formik.values.userId = value?.fk_user?.id;
       case "board_name_addschool":
         formik.values.board = value.id;
         break;
@@ -186,6 +205,12 @@ const AddSchool = () => {
         setValues({ stateId: value.fk_state_id });
         getCityByState(value.fk_state_id);
         break;
+      case "state_manageSchool":
+        console.log(value);
+        formik.values.state = value?.id;
+        setValues({ stateId: value?.id });
+        getCityByState(value?.id);
+        break;
       case "select_city":
         formik.values.city = value.id;
         break;
@@ -200,6 +225,7 @@ const AddSchool = () => {
     }
     // console.log(formik.values)
   };
+  const userType = Cookies.get("type");
 
   useLayoutEffect(() => {
     const getBoards = async () => {
@@ -222,9 +248,17 @@ const AddSchool = () => {
       });
       setCategory(category.data.message);
     };
+
+    let stateUrl;
+
+    if (userType === "sales_coordinator") {
+      stateUrl = "location/state/get/allStates";
+    } else {
+      stateUrl = "location/state/get/states";
+    }
     const getState = async () => {
       const state = await instance({
-        url: "location/state/get/states",
+        url: stateUrl,
         method: "GET",
         headers: {
           Authorization: Cookies.get("accessToken"),
@@ -233,9 +267,23 @@ const AddSchool = () => {
       // console.log(state.data);
       setState(state.data.message);
     };
+
+    const getAllUser = async () => {
+      const allUsers = await instance({
+        url: "user/getAllUsersManageSchool",
+        method: "GET",
+        headers: {
+          Authorization: `${Cookies.get("accessToken")}`,
+        },
+      });
+      setRepresen(allUsers.data.message);
+    };
     getBoards();
     getCategory();
     getState();
+    if (userType === "sales_coordinator") {
+      getAllUser();
+    }
   }, []);
 
   const navInfo = {
@@ -330,6 +378,15 @@ const AddSchool = () => {
               {steps.step1 ? (
                 <div className="flex flex-col gap-4 items-start w-[90%] px-6 bg-slate-600 rounded-md py-6 mb-[5rem]">
                   <div className="grid sm:grid-rows-2 sm:grid-cols-2 grid-rows-4 grid-cols-1 w-full mt-6 gap-6 rounded-md bg-slate-600">
+                    {userType === "sales_coordinator" ? (
+                      <SearchDropDown
+                        label={"Select User *"}
+                        handleOrderProcessingForm={handleOrderProcessingForm}
+                        color={"rgb(243, 244, 246)"}
+                        data={represen}
+                        Name="select_represent"
+                      />
+                    ) : null}
                     <BasicTextFields
                       lable={"Enter School Name *"}
                       handleOrderProcessingForm={handleOrderProcessingForm}
@@ -364,6 +421,9 @@ const AddSchool = () => {
                     className="mt-3"
                     onClick={() => {
                       if (
+                        (userType === "sales_coordinator"
+                          ? formik.values.userId
+                          : true) &&
                         formik.values.school_name &&
                         formik.values.board &&
                         formik.values.category &&
@@ -475,13 +535,23 @@ const AddSchool = () => {
               {steps.step3 ? (
                 <div className="flex flex-col gap-4 items-start w-[90%] px-6 bg-slate-600 rounded-md py-6 mb-[5rem]">
                   <div className="grid sm:grid-rows-2 sm:grid-cols-3 grid-rows-4 grid-cols-1 w-full mt-6 gap-6 rounded-md bg-slate-600">
-                    <SearchDropDown
-                      handleOrderProcessingForm={handleOrderProcessingForm}
-                      label={"Select State *"}
-                      data={state}
-                      Name={"select_state"}
-                      color={"rgb(243, 244, 246)"}
-                    />
+                    {userType === "sales_coordinator" ? (
+                      <SearchDropDown
+                        handleOrderProcessingForm={handleOrderProcessingForm}
+                        label={"Select State *"}
+                        data={state}
+                        Name={"state_manageSchool"}
+                        color={"rgb(243, 244, 246)"}
+                      />
+                    ) : (
+                      <SearchDropDown
+                        handleOrderProcessingForm={handleOrderProcessingForm}
+                        label={"Select State *"}
+                        data={state}
+                        Name={"select_state"}
+                        color={"rgb(243, 244, 246)"}
+                      />
+                    )}
                     <SearchDropDown
                       handleOrderProcessingForm={handleOrderProcessingForm}
                       label={"Select City *"}

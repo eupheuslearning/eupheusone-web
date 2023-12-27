@@ -189,7 +189,11 @@ function App() {
                 <Route
                   path="/manageSchool"
                   element={
-                    isAuth || MsAuth || Zsm ? <ManageSchool /> : <Login />
+                    isAuth || MsAuth || Zsm || SalesCoordinator ? (
+                      <ManageSchool />
+                    ) : (
+                      <Login />
+                    )
                   }
                 />
                 <Route
@@ -218,7 +222,13 @@ function App() {
                 />
                 <Route
                   path="/addschool"
-                  element={isAuth || MsAuth || Zsm ? <AddSchool /> : <Login />}
+                  element={
+                    isAuth || MsAuth || Zsm || SalesCoordinator ? (
+                      <AddSchool />
+                    ) : (
+                      <Login />
+                    )
+                  }
                 />
                 <Route
                   path="/addschooltraining"

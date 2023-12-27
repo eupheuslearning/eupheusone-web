@@ -99,7 +99,7 @@ const SearchDropDown = ({
           return option.order_type;
           break;
         case "customer_name":
-          return option.bp_name.trim();
+          return option.bp_name.toUpperCase();
           break;
         case "school_name":
           return option.school_name;

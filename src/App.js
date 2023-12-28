@@ -479,14 +479,23 @@ function App() {
                 <Route
                   path="/print_pdf"
                   element={
-                    isAuth || MsAuth || Zsm || Admin ? <PrintPDF /> : <Login />
+                    isAuth || MsAuth || Zsm || Admin || SalesCoordinator ? (
+                      <PrintPDF />
+                    ) : (
+                      <Login />
+                    )
                   }
                 />
 
                 <Route
                   path="/invoice_pdf_single"
                   element={
-                    isAuth || MsAuth || Zsm || SM || Admin ? (
+                    isAuth ||
+                    MsAuth ||
+                    Zsm ||
+                    SM ||
+                    Admin ||
+                    SalesCoordinator ? (
                       <ViewInvoiceSingle />
                     ) : (
                       <Login />
@@ -496,7 +505,12 @@ function App() {
                 <Route
                   path="/credit/invoice_pdf_single"
                   element={
-                    isAuth || MsAuth || Zsm || SM || Admin ? (
+                    isAuth ||
+                    MsAuth ||
+                    Zsm ||
+                    SM ||
+                    Admin ||
+                    SalesCoordinator ? (
                       <CreditSinglePdf />
                     ) : (
                       <Login />
@@ -507,7 +521,12 @@ function App() {
                 <Route
                   path="/invoice_pdf_double"
                   element={
-                    isAuth || MsAuth || Zsm || SM || Admin ? (
+                    isAuth ||
+                    MsAuth ||
+                    Zsm ||
+                    SM ||
+                    Admin ||
+                    SalesCoordinator ? (
                       <ViewInvoiceDouble />
                     ) : (
                       <Login />
@@ -518,7 +537,12 @@ function App() {
                 <Route
                   path="/customer_pdf"
                   element={
-                    isAuth || MsAuth || Zsm || SM || Admin ? (
+                    isAuth ||
+                    MsAuth ||
+                    Zsm ||
+                    SM ||
+                    Admin ||
+                    SalesCoordinator ? (
                       <ViewCustomerLedger />
                     ) : (
                       <Login />

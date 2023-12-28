@@ -36,6 +36,7 @@ const ViewInvoiceDouble = () => {
 
   let userId = "";
   let Admin = Cookies.get("type") === "admin";
+  let SalesCoordinator = Cookies.get("type") === "sales_coordinator";
 
   const limiter = new Bottleneck({
     maxConcurrent: 2, // Maximum number of concurrent requests
@@ -71,7 +72,7 @@ const ViewInvoiceDouble = () => {
   // };
   useEffect(() => {
     getCustomers();
-    if (Admin) {
+    if (Admin || SalesCoordinator) {
       getUsers();
     }
     const handleWidth = () => {
@@ -103,7 +104,7 @@ const ViewInvoiceDouble = () => {
     let url = "sales_data/get_all_bps";
     if (type === "SM") {
       url = "sales_data/get_all_sm_bps";
-    } else if (type === "admin") {
+    } else if (type === "admin" || type === "sales_coordinator") {
       url = `user/admin/get/customers/${userId}`;
     }
     const res = await instance({
@@ -324,8 +325,8 @@ const ViewInvoiceDouble = () => {
         <div className="min-h-[100vh] pt-[2vh] max-h-full bg-[#141728]">
           <div className=" sm:px-8 px-2 py-3 bg-[#141728]">
             <div className=" py-10 grid grid-cols-2 grid-rows-2 md:flex md:justify-around md:items-center px-6 mb-8 mt-6 gap-6 rounded-md bg-slate-600">
-              {Admin ? (
-                <div className="flex flex-col gap-2 w-full md:w-[20vw]">
+              {Admin || SalesCoordinator ? (
+                <div className="flex flex-col gap-2 w-full md:w-[15vw]">
                   <SearchDropDown
                     label={"Select User"}
                     handleOrderProcessingForm={handleOrderProcessingForm}
@@ -335,7 +336,7 @@ const ViewInvoiceDouble = () => {
                   />
                 </div>
               ) : null}
-              <div className="flex flex-col gap-2 w-full md:w-[20vw]">
+              <div className="flex flex-col gap-2 w-full md:w-[15vw]">
                 <SearchDropDown
                   label={"Select Customer"}
                   handleOrderProcessingForm={handleOrderProcessingForm}

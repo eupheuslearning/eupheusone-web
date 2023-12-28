@@ -114,7 +114,8 @@ export default function DataTable({
             row?.State?.toLowerCase().indexOf(q) > -1 ||
             row?.Address?.toLowerCase().indexOf(q) > -1 ||
             row?.SalesRep?.toLowerCase().indexOf(q) > -1 ||
-            row?.City?.toLowerCase().indexOf(q) > -1
+            row?.City?.toLowerCase().indexOf(q) > -1 ||
+            row?.CrmId?.toLowerCase().indexOf(q) > -1
           );
           break;
         case "ManageSchoolAdmin":

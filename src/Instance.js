@@ -4,8 +4,8 @@ import store from "./Store";
 
 const instance = axios.create({
   // baseURL: "https://api.eupheusapp.com/api/",
-  baseURL: "https://eupheusonestageapi.eupheusapp.com/api/",
-  // baseURL: "http://192.168.7.160:5070/api/",
+  // baseURL: "https://eupheusonestageapi.eupheusapp.com/api/",
+  baseURL: "http://192.168.7.160:5070/api/",
   // baseURL: "http://192.168.7.55:5070/api/",
 });
 

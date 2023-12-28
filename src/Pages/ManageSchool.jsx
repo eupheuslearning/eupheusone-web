@@ -64,6 +64,14 @@ const ManageSchool = () => {
     },
   ];
 
+  if (userType === "sales_coordinator") {
+    Tablecolumns.unshift({
+      field: "CrmId",
+      headerName: "CRM Id",
+      width: 150,
+    });
+  }
+
   const handleSidebarCollapsed = () => {
     sidebarRef.current.openSidebar();
   };
@@ -124,6 +132,7 @@ const ManageSchool = () => {
         stateId: item?.school_addresses[0]?.fk_state.id,
         City: item?.school_addresses[0]?.fk_city.city,
         cityId: item?.school_addresses[0]?.fk_city.id,
+        CrmId: item?.temp_id,
       };
     });
     setRow(rows);
@@ -196,6 +205,9 @@ const ManageSchool = () => {
         State: obj.State,
         City: obj.City,
       };
+      if (userType === "sales_coordinator") {
+        reqObj.CrmId = obj.CrmId;
+      }
       reqExportData.push(reqObj);
     }
     // console.log(reqExportData);

@@ -4,7 +4,7 @@ import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 
 import logoLight from "../../assets/img/logo-light-icon.png";
 import { useState } from "react";
-import { Dashboard, Money } from "@mui/icons-material";
+import { Dashboard, Discount, Money } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useLayoutEffect } from "react";
 import Cookies from "js-cookie";
@@ -130,6 +130,29 @@ const SwipeableTemporaryDrawer5 = React.forwardRef((props, ref) => {
               AOF
             </span>
           </div>
+        </aside>
+      </Link>
+      <Link to="/finance/discount">
+        <aside
+          className={`px-6 py-2 mb-4 hover:bg-gray-500 flex ${
+            highLight === "discount" ? "bg-gray-500" : ""
+          } rounded-md gap-4 cursor-pointer group`}
+        >
+          <div className="flex gap-4">
+            <Discount
+              className={`${
+                highLight === "discount" ? "!text-[#659DBD]" : "!text-gray-400"
+              } group-hover:!text-[#659DBD] !transition-all !duration-150 !ease-linear`}
+            />
+            <span
+              className={`${
+                highLight === "discount" ? "text-gray-200" : "text-gray-400"
+              } group-hover:!text-gray-100 transition-all duration-150 ease-linear`}
+            >
+              Discount
+            </span>
+          </div>
+          {/* <hr className="text-gray-300" /> */}
         </aside>
       </Link>
       <Link to="/reimbursement_report">

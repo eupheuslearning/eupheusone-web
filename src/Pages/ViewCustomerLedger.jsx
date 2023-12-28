@@ -38,6 +38,7 @@ const ViewCustomerLedger = () => {
   const [prog, setProg] = useState(0);
 
   let Admin = Cookies.get("type") === "admin";
+  let SalesCoordinator = Cookies.get("type") === "sales_coordinator";
   let userId = "";
   const navInfo = {
     title: "Doc Print",
@@ -68,7 +69,7 @@ const ViewCustomerLedger = () => {
 
   useEffect(() => {
     getCustomers();
-    if (Admin) {
+    if (Admin || SalesCoordinator) {
       getUsers();
     }
     const handleWidth = () => {
@@ -91,7 +92,7 @@ const ViewCustomerLedger = () => {
     let url = "sales_data/get_all_bps";
     if (type === "SM") {
       url = "sales_data/get_all_sm_bps";
-    } else if (type === "admin") {
+    } else if (type === "admin" || type === "sales_coordinator") {
       url = `user/admin/get/customers/${userId}`;
     }
     const res = await instance({
@@ -131,13 +132,15 @@ const ViewCustomerLedger = () => {
     };
     setProgLoading(true);
     const i = setInterval(() => {
-      setProg((prev) => {
-        if (prev < 99) {
-          return prev + 1;
-        } else {
-          return prev;
-        }
-      });
+      if (prog < 99) {
+        setProg((prev) => {
+          if (prev < 99) {
+            return prev + 1;
+          } else {
+            return prev;
+          }
+        });
+      }
     }, 1000);
     const res = await instance({
       url: `doc_print/ledger/getpdf`,
@@ -237,8 +240,8 @@ const ViewCustomerLedger = () => {
         <div className="min-h-[100vh] pt-[2vh] max-h-full bg-[#141728]">
           <div className=" sm:px-8 px-2 py-3 bg-[#141728]">
             <div className="py-10 grid grid-cols-2 grid-rows-2 md:flex md:justify-around md:items-center px-6 mb-8 mt-6 gap-6 rounded-md bg-slate-600">
-              {Admin ? (
-                <div className="flex flex-col gap-2 w-full md:w-[30vw]">
+              {Admin || SalesCoordinator ? (
+                <div className="flex flex-col gap-2 w-full md:w-[15vw]">
                   <SearchDropDown
                     label={"Select User"}
                     handleOrderProcessingForm={handleOrderProcessingForm}
@@ -248,7 +251,7 @@ const ViewCustomerLedger = () => {
                   />
                 </div>
               ) : null}
-              <div className="flex flex-col gap-2 w-full md:w-[20vw]">
+              <div className="flex flex-col gap-2 w-full md:w-[15vw]">
                 <SearchDropDown
                   label={"Select Customer"}
                   handleOrderProcessingForm={handleOrderProcessingForm}

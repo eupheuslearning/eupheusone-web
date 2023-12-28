@@ -295,7 +295,7 @@ const Reimbursment = () => {
             ref={sidebarRef}
             sidebarCollapsed={sidebarCollapsed}
             show={show}
-            highLight={"salesToCash"}
+            highLight={"myExpense"}
           />
         </div>
         <div

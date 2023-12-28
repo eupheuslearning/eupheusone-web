@@ -99,7 +99,7 @@ const SearchDropDown = ({
           return option.order_type;
           break;
         case "customer_name":
-          return option.bp_name;
+          return option.bp_name.toUpperCase();
           break;
         case "school_name":
           return option.school_name;
@@ -265,8 +265,11 @@ const SearchDropDown = ({
           return option.series;
           break;
         case "schools_aof":
-          // console.log(option);
-          return option.school_name;
+          if (option?.school_name) {
+            return option.school_name.trim();
+          } else {
+            return "";
+          }
           break;
         case "series_aof_item":
           return option.series;
@@ -523,6 +526,7 @@ const SearchDropDown = ({
           {...defaultProps}
           disabled={disable}
           disableClearable
+          // loading={true}
           // multiple={multiple}
           defaultValue={defaultValue ? defaultValue : null}
           color={color}

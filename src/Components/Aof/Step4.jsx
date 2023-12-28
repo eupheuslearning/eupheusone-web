@@ -354,19 +354,7 @@ const Step4 = ({ setSteps, formik, setLoading }) => {
       case "tod applicable":
         formik.values.TodApplicable = value;
         break;
-      //   case "tod type":
-      //     if (value === "yes") {
-      //       console.log("Overall business value selected");
-      //       // special_obj.dis_type = "overall business"
-      //       // console.log(special_obj)
-      //       setStep4({ ...step4, tod: { applicable: true, type: true } });
-      //     } else {
-      //       console.log("Specific selected");
-      //       // special_obj.dis_type = "specific"
-      //       // console.log(special_obj)
-      //       setStep4({ ...step4, tod: { applicable: true, type: false } });
-      //     }
-      //     break;
+
       case "special applicable":
         if (value === "yes") {
           setSpecialObj({ ...special_obj, eligibile: "yes" });

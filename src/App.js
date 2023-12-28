@@ -8,6 +8,8 @@ import Loader from "./Components/Material/Loader";
 // import ManageOrderReturn from "./Pages/RETURN/ManageOrderReturn";
 import { ReturnOrderPdf } from "./Pages/RETURN/ReturnOrderPdf";
 import Maintanance from "./Pages/Maintanance";
+import AllReturnWarehouse from "./Pages/Warehouse/AllReturn";
+const Discount = lazy(() => import("./Pages/Discount"));
 // import AllReturn from "./Pages/SalesCoordinator/AllReturn";
 // Pages
 // import MySchool from "./Pages/MySchool";
@@ -121,21 +123,16 @@ const ManageOrderReturn = lazy(() =>
 const AllReturn = lazy(() => import("./Pages/SalesCoordinator/AllReturn"));
 
 function App() {
-  // const [userCache, setUserCache] = useState(false);
-  // const [adminCache, setAdminCache] = useState(false);
-
   const isAuth = useSelector((state) => state.auth.user);
   const MsAuth = useSelector((state) => state.auth.msAuth);
 
-  // const isAuth = true
   const Admin = useSelector((state) => state.auth.admin);
-  // const Admin = true;
   const Zsm = useSelector((state) => state.auth.zsm);
   const Finance = useSelector((state) => state.auth.finance);
   const Saleshead = useSelector((state) => state.auth.saleshead);
   const Training = useSelector((state) => state.auth.training);
   const HR = useSelector((state) => state.auth.HR);
-  const Gtepas = useSelector((state) => state.auth.gatepass);
+  const Warehouse = useSelector((state) => state.auth.gatepass);
   const Editorial = useSelector((state) => state.auth.editorial);
   const IT = useSelector((state) => state.auth.IT);
   const SM = useSelector((state) => state.auth.SM);
@@ -180,7 +177,11 @@ function App() {
                 <Route
                   path="/manageSchool"
                   element={
-                    isAuth || MsAuth || Zsm ? <ManageSchool /> : <Login />
+                    isAuth || MsAuth || Zsm || SalesCoordinator ? (
+                      <ManageSchool />
+                    ) : (
+                      <Login />
+                    )
                   }
                 />
                 <Route
@@ -209,7 +210,13 @@ function App() {
                 />
                 <Route
                   path="/addschool"
-                  element={isAuth || MsAuth || Zsm ? <AddSchool /> : <Login />}
+                  element={
+                    isAuth || MsAuth || Zsm || SalesCoordinator ? (
+                      <AddSchool />
+                    ) : (
+                      <Login />
+                    )
+                  }
                 />
                 <Route
                   path="/addschooltraining"
@@ -451,14 +458,23 @@ function App() {
                 <Route
                   path="/print_pdf"
                   element={
-                    isAuth || MsAuth || Zsm || Admin ? <PrintPDF /> : <Login />
+                    isAuth || MsAuth || Zsm || Admin || SalesCoordinator ? (
+                      <PrintPDF />
+                    ) : (
+                      <Login />
+                    )
                   }
                 />
 
                 <Route
                   path="/invoice_pdf_single"
                   element={
-                    isAuth || MsAuth || Zsm || SM || Admin ? (
+                    isAuth ||
+                    MsAuth ||
+                    Zsm ||
+                    SM ||
+                    Admin ||
+                    SalesCoordinator ? (
                       <ViewInvoiceSingle />
                     ) : (
                       <Login />
@@ -468,7 +484,12 @@ function App() {
                 <Route
                   path="/credit/invoice_pdf_single"
                   element={
-                    isAuth || MsAuth || Zsm || SM || Admin ? (
+                    isAuth ||
+                    MsAuth ||
+                    Zsm ||
+                    SM ||
+                    Admin ||
+                    SalesCoordinator ? (
                       <CreditSinglePdf />
                     ) : (
                       <Login />
@@ -479,7 +500,12 @@ function App() {
                 <Route
                   path="/invoice_pdf_double"
                   element={
-                    isAuth || MsAuth || Zsm || SM || Admin ? (
+                    isAuth ||
+                    MsAuth ||
+                    Zsm ||
+                    SM ||
+                    Admin ||
+                    SalesCoordinator ? (
                       <ViewInvoiceDouble />
                     ) : (
                       <Login />
@@ -490,7 +516,12 @@ function App() {
                 <Route
                   path="/customer_pdf"
                   element={
-                    isAuth || MsAuth || Zsm || SM || Admin ? (
+                    isAuth ||
+                    MsAuth ||
+                    Zsm ||
+                    SM ||
+                    Admin ||
+                    SalesCoordinator ? (
                       <ViewCustomerLedger />
                     ) : (
                       <Login />
@@ -517,12 +548,17 @@ function App() {
 
                 <Route
                   path="/gatepass_dashboard"
-                  element={Gtepas || MsAuth ? <GatePassDashboard /> : <Login />}
+                  element={
+                    Warehouse || MsAuth ? <GatePassDashboard /> : <Login />
+                  }
+                  // element={<GatePassDashboard />}
                 />
 
                 <Route
                   path="/gatepass_invoice"
-                  element={Gtepas || MsAuth ? <GatePassInvoice /> : <Login />}
+                  element={
+                    Warehouse || MsAuth ? <GatePassInvoice /> : <Login />
+                  }
                 />
 
                 <Route
@@ -581,6 +617,11 @@ function App() {
                   path="/finance/aof"
                   element={Finance || MsAuth ? <FinanceAOF /> : <Login />}
                 />
+                <Route
+                  path="/finance/discount"
+                  element={Finance || MsAuth ? <Discount /> : <Login />}
+                  // element={<FinanceAOF />}
+                />
 
                 <Route
                   path="/saleshead/aof"
@@ -634,6 +675,10 @@ function App() {
                 <Route
                   path="/sc/all_return"
                   element={SalesCoordinator ? <AllReturn /> : <Login />}
+                />
+                <Route
+                  path="/warehouse/all_return"
+                  element={Warehouse ? <AllReturnWarehouse /> : <Login />}
                 />
               </Routes>
             </Suspense>

@@ -1,9 +1,9 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import Button from "@mui/material/Button";
+// import Button from "@mui/material/Button";
 
-import Divider from "@mui/material/Divider";
+// import Divider from "@mui/material/Divider";
 
 import logoLight from "../../assets/img/logo-light-icon.png";
 import { useState } from "react";
@@ -28,6 +28,7 @@ import {
   Money,
   ManageSearch,
   KeyboardReturn,
+  Discount,
 } from "@mui/icons-material";
 import { Collapse } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -36,6 +37,7 @@ import Cookies from "js-cookie";
 import instance from "../../Instance";
 import TransitionsModal from "./Model";
 import { useRef } from "react";
+import AdminSidebar from "../Sidebar/AdminSidebar";
 // import DialogSlide from "./Dialog";
 
 const SwipeableTemporaryDrawer = React.forwardRef((props, ref) => {
@@ -518,6 +520,139 @@ const SwipeableTemporaryDrawer = React.forwardRef((props, ref) => {
         </>
       ) : null}
 
+      {userType === "finance" ? (
+        <>
+          <Link to="/finance/aof">
+            <aside
+              className={`px-6 py-2 hover:bg-gray-500 flex ${
+                highLight === "aof" ? "bg-gray-500" : ""
+              } rounded-md gap-4 cursor-pointer group`}
+            >
+              <div className="flex gap-4">
+                <Dashboard
+                  className={`${
+                    highLight === "aof" ? "!text-[#659DBD]" : "!text-gray-400"
+                  } group-hover:!text-[#659DBD] !transition-all !duration-150 !ease-linear`}
+                />
+                <span
+                  className={`${
+                    highLight === "aof" ? "text-gray-200" : "text-gray-400"
+                  } group-hover:!text-gray-100 transition-all duration-150 ease-linear`}
+                >
+                  AOF
+                </span>
+              </div>
+              {/* <hr className="text-gray-300" /> */}
+            </aside>
+          </Link>
+          <Link to="/finance/discount">
+            <aside
+              className={`px-6 py-2 hover:bg-gray-500 flex ${
+                highLight === "discount" ? "bg-gray-500" : ""
+              } rounded-md gap-4 cursor-pointer group`}
+            >
+              <div className="flex gap-4">
+                <Discount
+                  className={`${
+                    highLight === "discount"
+                      ? "!text-[#659DBD]"
+                      : "!text-gray-400"
+                  } group-hover:!text-[#659DBD] !transition-all !duration-150 !ease-linear`}
+                />
+                <span
+                  className={`${
+                    highLight === "discount" ? "text-gray-200" : "text-gray-400"
+                  } group-hover:!text-gray-100 transition-all duration-150 ease-linear`}
+                >
+                  Discount
+                </span>
+              </div>
+              {/* <hr className="text-gray-300" /> */}
+            </aside>
+          </Link>
+        </>
+      ) : null}
+      {userType === "warehouse_GP" ? (
+        <>
+          <Link to="/warehouse/all_return">
+            <aside
+              className={`px-6 py-2 flex gap-4 ${
+                highLight === "manage_return_req" ? "bg-gray-500" : ""
+              } cursor-pointer group hover:bg-gray-500 rounded-md transition-all duration-150 ease-linear`}
+            >
+              <ManageSearch
+                className={`${
+                  highLight === "manage_return_req"
+                    ? "!text-[#659DBD]"
+                    : "!text-gray-400"
+                } group-hover:!text-[#659DBD] !transition-all !duration-150 !ease-linear`}
+              />
+              <span
+                className={`${
+                  highLight === "manage_return_req"
+                    ? "text-gray-200"
+                    : "text-gray-400"
+                } group-hover:!text-gray-100 transition-all duration-150 ease-linear`}
+              >
+                Manage Order Return
+              </span>
+            </aside>
+          </Link>
+        </>
+      ) : null}
+      {userType === "sales_coordinator" ? (
+        <>
+          <Link to="/sc/all_return">
+            <aside
+              className={`px-6 py-2 flex gap-4 ${
+                highLight === "manage_return_req" ? "bg-gray-500" : ""
+              } cursor-pointer group hover:bg-gray-500 rounded-md transition-all duration-150 ease-linear`}
+            >
+              <ManageSearch
+                className={`${
+                  highLight === "manage_return_req"
+                    ? "!text-[#659DBD]"
+                    : "!text-gray-400"
+                } group-hover:!text-[#659DBD] !transition-all !duration-150 !ease-linear`}
+              />
+              <span
+                className={`${
+                  highLight === "manage_return_req"
+                    ? "text-gray-200"
+                    : "text-gray-400"
+                } group-hover:!text-gray-100 transition-all duration-150 ease-linear`}
+              >
+                Manage Order Return
+              </span>
+            </aside>
+          </Link>
+          <Link to="/manageSchool">
+            <aside
+              className={`px-6 py-2 flex mt-2 gap-4 cursor-pointer ${
+                highLight === "manageSchool" ? "bg-gray-500" : ""
+              } group hover:bg-gray-500 rounded-md transition-all duration-150 ease-linear`}
+            >
+              <School
+                className={`${
+                  highLight === "manageSchool"
+                    ? "!text-[#659DBD]"
+                    : "!text-gray-400"
+                } group-hover:!text-[#659DBD] !transition-all !duration-150 !ease-linear`}
+              />
+              <span
+                className={`${
+                  highLight === "manageSchool"
+                    ? "text-gray-200"
+                    : "text-gray-400"
+                } group-hover:!text-gray-100 transition-all duration-150 ease-linear`}
+              >
+                Manage School
+              </span>
+            </aside>
+          </Link>
+        </>
+      ) : null}
+
       {userType === "user" ||
       userType === "editorial" ||
       userType === "IT" ||
@@ -597,6 +732,7 @@ const SwipeableTemporaryDrawer = React.forwardRef((props, ref) => {
           </Link>
         </>
       ) : null}
+      {userType === "admin" ? <AdminSidebar highLight={highLight} /> : null}
     </Box>
   );
 

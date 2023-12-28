@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import Navbar from "../Components/Navbar";
-import Sidebar from "../Components/Sidebar5";
+import Sidebar from "../Components/Sidebar";
 // import { Add } from '@mui/icons-material'
 import { Link, useLocation } from "react-router-dom";
 import DataTable from "../Components/DataTable";
 // import { rows, ManageSchoolRows } from '../DummyData'
 import SearchDropDown from "../Components/SearchDropDown";
-import SwipeableTemporaryDrawer from "../Components/Material/MaterialSidebar5";
+import SwipeableTemporaryDrawer from "../Components/Material/MaterialSidebar";
 import instance from "../Instance";
 import { useLayoutEffect } from "react";
 import Cookies from "js-cookie";

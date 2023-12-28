@@ -22,6 +22,7 @@ import {
   Money,
   KeyboardReturn,
   ManageSearch,
+  Discount,
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import logoLight from "../assets/img/logo-light-icon.png";
@@ -101,6 +102,17 @@ const Sidebar = ({ sidebarCollapsed, highLight, show }) => {
     };
     getUser();
   }, []);
+
+  const roleSidebarArr = {
+    user: [
+      {
+        name: "Dashboard",
+        icon: <Dashboard />,
+        path: "/",
+        highLight: "dashboard",
+      },
+    ],
+  };
 
   const openDialog = () => {
     dialogRef.current.openDialog();
@@ -245,6 +257,61 @@ const Sidebar = ({ sidebarCollapsed, highLight, show }) => {
                 >
                   Order Tagging
                 </span>
+              </aside>
+            </Link>
+          </>
+        ) : null}
+
+        {userType === "finance" ? (
+          <>
+            <Link to="/finance/aof">
+              <aside
+                className={`px-6 py-2 hover:bg-gray-500 flex ${
+                  highLight === "aof" ? "bg-gray-500" : ""
+                } rounded-md gap-4 cursor-pointer group`}
+              >
+                <div className="flex gap-4">
+                  <Dashboard
+                    className={`${
+                      highLight === "aof" ? "!text-[#659DBD]" : "!text-gray-400"
+                    } group-hover:!text-[#659DBD] !transition-all !duration-150 !ease-linear`}
+                  />
+                  <span
+                    className={`${
+                      highLight === "aof" ? "text-gray-200" : "text-gray-400"
+                    } group-hover:!text-gray-100 transition-all duration-150 ease-linear`}
+                  >
+                    AOF
+                  </span>
+                </div>
+                {/* <hr className="text-gray-300" /> */}
+              </aside>
+            </Link>
+            <Link to="/finance/discount">
+              <aside
+                className={`px-6 py-2 hover:bg-gray-500 flex ${
+                  highLight === "discount" ? "bg-gray-500" : ""
+                } rounded-md gap-4 cursor-pointer group`}
+              >
+                <div className="flex gap-4">
+                  <Discount
+                    className={`${
+                      highLight === "discount"
+                        ? "!text-[#659DBD]"
+                        : "!text-gray-400"
+                    } group-hover:!text-[#659DBD] !transition-all !duration-150 !ease-linear`}
+                  />
+                  <span
+                    className={`${
+                      highLight === "discount"
+                        ? "text-gray-200"
+                        : "text-gray-400"
+                    } group-hover:!text-gray-100 transition-all duration-150 ease-linear`}
+                  >
+                    Discount
+                  </span>
+                </div>
+                {/* <hr className="text-gray-300" /> */}
               </aside>
             </Link>
           </>
@@ -521,6 +588,36 @@ const Sidebar = ({ sidebarCollapsed, highLight, show }) => {
                 </span>
               </aside>
             </Link>
+            {/* {roleSidebarArr.user.map((item) => {
+              return (
+                <Link to={item.path}>
+                  <aside
+                    className={`px-6 py-2 hover:bg-gray-500 flex ${
+                      highLight === "dashboard" ? "bg-gray-500" : ""
+                    } rounded-md gap-4 cursor-pointer group`}
+                  >
+                    <div className="flex gap-4">
+                      <Dashboard
+                        className={`${
+                          highLight === `${item.highLight}`
+                            ? "!text-[#659DBD]"
+                            : "!text-gray-400"
+                        } group-hover:!text-[#659DBD] !transition-all !duration-150 !ease-linear`}
+                      />
+                      <span
+                        className={`${
+                          highLight === `${item.highLight}`
+                            ? "text-gray-200"
+                            : "text-gray-400"
+                        } group-hover:!text-gray-100 transition-all duration-150 ease-linear`}
+                      >
+                        {item.name}
+                      </span>
+                    </div>
+                  </aside>
+                </Link>
+              );
+            })} */}
           </>
         ) : null}
 
@@ -634,6 +731,80 @@ const Sidebar = ({ sidebarCollapsed, highLight, show }) => {
         {userType === "sales_coordinator" ? (
           <>
             <Link to="/sc/all_return">
+              <aside
+                className={`px-6 py-2 flex gap-4 ${
+                  highLight === "manage_return_req" ? "bg-gray-500" : ""
+                } cursor-pointer group hover:bg-gray-500 rounded-md transition-all duration-150 ease-linear`}
+              >
+                <ManageSearch
+                  className={`${
+                    highLight === "manage_return_req"
+                      ? "!text-[#659DBD]"
+                      : "!text-gray-400"
+                  } group-hover:!text-[#659DBD] !transition-all !duration-150 !ease-linear`}
+                />
+                <span
+                  className={`${
+                    highLight === "manage_return_req"
+                      ? "text-gray-200"
+                      : "text-gray-400"
+                  } group-hover:!text-gray-100 transition-all duration-150 ease-linear`}
+                >
+                  Manage Order Return
+                </span>
+              </aside>
+            </Link>
+            <Link to="/manageSchool">
+              <aside
+                className={`px-6 py-2 flex gap-4 cursor-pointer ${
+                  highLight === "manageSchool" ? "bg-gray-500" : ""
+                } group hover:bg-gray-500 rounded-md transition-all duration-150 ease-linear`}
+              >
+                <School
+                  className={`${
+                    highLight === "manageSchool"
+                      ? "!text-[#659DBD]"
+                      : "!text-gray-400"
+                  } group-hover:!text-[#659DBD] !transition-all !duration-150 !ease-linear`}
+                />
+                <span
+                  className={`${
+                    highLight === "manageSchool"
+                      ? "text-gray-200"
+                      : "text-gray-400"
+                  } group-hover:!text-gray-100 transition-all duration-150 ease-linear`}
+                >
+                  Manage School
+                </span>
+              </aside>
+            </Link>
+            <Link to="/print_pdf">
+              <aside
+                className={`px-6 py-2 flex gap-4 ${
+                  highLight === "printpdf" ? "bg-gray-500" : ""
+                } cursor-pointer group hover:bg-gray-500 rounded-md transition-all duration-150 ease-linear`}
+              >
+                <PrintOutlined
+                  className={`${
+                    highLight === "printpdf"
+                      ? "!text-[#659DBD]"
+                      : "!text-gray-400"
+                  } group-hover:!text-[#659DBD] !transition-all !duration-150 !ease-linear`}
+                />
+                <span
+                  className={`${
+                    highLight === "printpdf" ? "text-gray-200" : "text-gray-400"
+                  } group-hover:!text-gray-100 transition-all duration-150 ease-linear`}
+                >
+                  Doc Print
+                </span>
+              </aside>
+            </Link>
+          </>
+        ) : null}
+        {userType === "warehouse_GP" ? (
+          <>
+            <Link to="/warehouse/all_return">
               <aside
                 className={`px-6 py-2 flex gap-4 ${
                   highLight === "manage_return_req" ? "bg-gray-500" : ""

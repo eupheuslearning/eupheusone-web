@@ -40,6 +40,7 @@ const CreditSinglePdf = () => {
     end: "2024-03-31",
   });
   let Admin = Cookies.get("type") === "admin";
+  let SalesCoordinator = Cookies.get("type") === "sales_coordinator";
   let userId = "";
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -98,7 +99,7 @@ const CreditSinglePdf = () => {
   useEffect(() => {
     getCustomers();
     searchCreditNote();
-    if (Admin) {
+    if (Admin || SalesCoordinator) {
       getUsers();
     }
     const handleWidth = () => {
@@ -121,7 +122,7 @@ const CreditSinglePdf = () => {
     let url = "sales_data/get_all_bps";
     if (type === "SM") {
       url = "sales_data/get_all_sm_bps";
-    } else if (type === "admin") {
+    } else if (type === "admin" || type === "sales_coordinator") {
       url = `user/admin/get/customers/${userId}`;
     }
     setLoading(true);
@@ -236,7 +237,7 @@ const CreditSinglePdf = () => {
         <div className="min-h-[100vh] pt-[2vh] max-h-full bg-[#141728]">
           <div className=" sm:px-8 px-2 py-3 bg-[#141728]">
             <div className="grid grid-cols-2 grid-rows-2 md:flex md:justify-around md:items-center px-6 mb-8 py-3 mt-6 gap-6 rounded-md bg-slate-600">
-              {Admin ? (
+              {Admin || SalesCoordinator ? (
                 <div className="flex flex-col gap-2 w-full md:w-[30vw]">
                   <label className="text-gray-100">Users</label>
 

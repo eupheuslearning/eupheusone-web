@@ -44,6 +44,7 @@ const ViewInvoiceSingle = () => {
     setPage(newPage);
   };
   let Admin = Cookies.get("type") === "admin";
+  let SalesCoordinator = Cookies.get("type") === "sales_coordinator";
   let userId = "";
   const changeYear = (year) => {
     let newYear = {
@@ -78,7 +79,7 @@ const ViewInvoiceSingle = () => {
     if (!SM) {
       searchPDF();
     }
-    if (Admin) {
+    if (Admin || SalesCoordinator) {
       getUsers();
     }
     const handleWidth = () => {
@@ -119,10 +120,10 @@ const ViewInvoiceSingle = () => {
     let url = "sales_data/get_all_bps";
     if (type === "SM") {
       url = "sales_data/get_all_sm_bps";
-    } else if (type === "admin") {
+    } else if (type === "admin" || type === "sales_coordinator") {
       url = `user/admin/get/customers/${userId}`;
     }
-    setLoading(true);
+    // setLoading(true);
     const res = await instance({
       url,
       method: "GET",
@@ -131,7 +132,7 @@ const ViewInvoiceSingle = () => {
       },
     });
     setCustomer(res.data.message);
-    setLoading(false);
+    // setLoading(false);
   };
 
   const getUsers = async () => {
@@ -173,7 +174,7 @@ const ViewInvoiceSingle = () => {
 
   const searchPDF = async () => {
     let url = "doc_print/invoive/list";
-    if (Admin) {
+    if (Admin || SalesCoordinator) {
       url = "doc_print/invoive/list-admin";
     }
     setLoading(true);
@@ -257,7 +258,7 @@ const ViewInvoiceSingle = () => {
         <div className="min-h-[100vh] pt-[2vh] max-h-full bg-[#141728]">
           <div className=" sm:px-8 px-2 py-3 bg-[#141728]">
             <div className="grid grid-cols-2 grid-rows-2 md:flex md:justify-around md:items-center px-6 mb-8 py-3 mt-6 gap-6 rounded-md bg-slate-600">
-              {Admin ? (
+              {Admin || SalesCoordinator ? (
                 <div className="flex flex-col gap-2 w-full md:w-[30vw]">
                   <label className="text-gray-100">Users</label>
 
